@@ -7,15 +7,26 @@ export(float) var terminal_speed = gravity * 20
 var directional_input  = Vector2.ZERO
 var bottom_pos = 0
 
+var _up_string = "ui_p2up"
+var _down_string = "ui_p2down"
+var _left_string = "ui_p2left"
+var _right_string = "ui_p2right"
+var _p1_side = true
 var _bottom
+
+func _init():
+	if self.x > 0:
+		_p1_side = false
+		
+	
 
 func _ready():
 	_bottom = self.get_node("char_bottom")
 	
 
 func _physics_process(delta):
-	var x_sum = Input.get_axis("ui_left", "ui_right")
-	var y_sum = Input.get_axis("ui_up", "ui_down")
+	var x_sum = Input.get_axis(_left_string, _right_string)
+	var y_sum = Input.get_axis(_up_string, _down_string)
 	
 	bottom_pos = (_bottom.get_global_position().y)
 	var grounded = bottom_pos >= 0
