@@ -7,16 +7,17 @@ export(float) var terminal_speed = gravity * 20
 var directional_input  = Vector2.ZERO
 var bottom_pos = 0
 
-var _up_string = "ui_p2up"
-var _down_string = "ui_p2down"
-var _left_string = "ui_p2left"
-var _right_string = "ui_p2right"
+var _up_string = "ui_p1up"
+var _down_string = "ui_p1down"
+var _left_string = "ui_p1left"
+var _right_string = "ui_p1right"
 var _p1_side = true
 var _bottom
 
 func _init():
-	if self.x > 0:
-		_p1_side = false
+	print("start")
+	#if self.position.x > 0:
+	#	_p1_side = false
 		
 	
 
@@ -32,6 +33,7 @@ func _physics_process(delta):
 	var grounded = bottom_pos >= 0
 	
 	print(bottom_pos)
+	print(directional_input)
 	
 	if (grounded):		
 		#X movement
