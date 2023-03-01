@@ -13,6 +13,7 @@ var _left_string = "ui_p1left"
 var _right_string = "ui_p1right"
 var _p1_side = true
 var _bottom
+var _other
 
 func _init():
 	print("start")
@@ -63,3 +64,14 @@ func _physics_process(delta):
 	
 
 	move_and_collide(directional_input)
+	
+	
+	
+
+func config(other_player):
+	# player object assumes it's player 1 until otherwise stated
+	
+	_up_string = "ui_p2up"
+	_down_string = "ui_p2down"
+	_left_string = "ui_p2left"
+	_right_string = "ui_p2right"
