@@ -70,8 +70,11 @@ func _physics_process(delta):
 
 func config(other_player):
 	# player object assumes it's player 1 until otherwise stated
+	_other = other_player
 	
-	_up_string = "ui_p2up"
-	_down_string = "ui_p2down"
-	_left_string = "ui_p2left"
-	_right_string = "ui_p2right"
+	if _other._bottom.x > self.x:
+		_p1_side = false
+		_up_string = "ui_p2up"
+		_down_string = "ui_p2down"
+		_left_string = "ui_p2left"
+		_right_string = "ui_p2right"
