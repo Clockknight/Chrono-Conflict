@@ -33,8 +33,8 @@ func _physics_process(delta):
 	bottom_pos = (_bottom.get_global_position().y)
 	var grounded = bottom_pos >= 0
 	
-	print(bottom_pos)
-	print(directional_input)
+	#print(bottom_pos)
+	#print(directional_input)
 	
 	if (grounded):		
 		#X movement
@@ -62,19 +62,27 @@ func _physics_process(delta):
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
 	
-
+	
+	#Should only collide if im on the ground and not moving up
 	move_and_collide(directional_input)
 	
+	
+	sidecheck()
+	
+	
+func sidecheck():
+	_p1_side = self.position.x < _other.position.x
 	
 	
 
 func config(other_player):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
+	sidecheck()
 	
-	if _other._bottom.x > self.x:
-		_p1_side = false
+	if not _p1_side:
 		_up_string = "ui_p2up"
 		_down_string = "ui_p2down"
 		_left_string = "ui_p2left"
 		_right_string = "ui_p2right"
+
