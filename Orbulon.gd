@@ -11,6 +11,11 @@ var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
 var _left_string = "ui_p1left"
 var _right_string = "ui_p1right"
+var _a1_string = "ui_p1a1"
+var _a2_string = "ui_p1a2"
+var _a3_string = "ui_p1a3"
+var _a4_string = "ui_p1a4"
+
 var _p1_side = true
 var _bottom
 var _other
@@ -85,4 +90,7 @@ func config(other_player):
 		_down_string = "ui_p2down"
 		_left_string = "ui_p2left"
 		_right_string = "ui_p2right"
-
+		_a1_string = "ui_p2a1"
+		_a2_string = "ui_p2a2"
+		_a3_string = "ui_p2a3"
+		_a4_string = "ui_p2a4"
