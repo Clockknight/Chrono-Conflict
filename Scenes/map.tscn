@@ -48,3 +48,5 @@ region_rect = Rect2( 10, 10, 10, 0 )
 
 [node name="char_bottom" type="Position2D" parent="manager/test_Orbulon"]
 position = Vector2( 0, 64 )
+
+[node name="Area2D" type="Area2D" parent="."]

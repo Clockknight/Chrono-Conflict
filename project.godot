@@ -8,10 +8,32 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Area2D",
+"class": "Box",
+"language": "GDScript",
+"path": "res://Nodes/Boxes/box.gd"
+}, {
+"base": "Box",
+"class": "Hitbox",
+"language": "GDScript",
+"path": "res://Nodes/Boxes/hitbox.gd"
+}, {
+"base": "Box",
+"class": "Hurtbox",
+"language": "GDScript",
+"path": "res://Nodes/Boxes/hurtbox.gd"
+} ]
+_global_script_class_icons={
+"Box": "",
+"Hitbox": "",
+"Hurtbox": ""
+}
+
 [application]
 
 config/name="Chronal Combat"
-run/main_scene="res://map.tscn"
+run/main_scene="res://Scenes/map.tscn"
 config/icon="res://icon.png"
 
 [gui]
