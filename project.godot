@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "Hurtbox",
 "language": "GDScript",
 "path": "res://Nodes/Boxes/hurtbox.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "player",
+"language": "GDScript",
+"path": "res://Scripts/Player.gd"
 } ]
 _global_script_class_icons={
 "Box": "",
 "Hitbox": "",
-"Hurtbox": ""
+"Hurtbox": "",
+"player": ""
 }
 
 [application]
@@ -35,6 +41,10 @@ _global_script_class_icons={
 config/name="Chronal Combat"
 run/main_scene="res://Scenes/map.tscn"
 config/icon="res://icon.png"
+
+[debug]
+
+settings/fps/force_fps=60
 
 [gui]
 
