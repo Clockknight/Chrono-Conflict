@@ -22,9 +22,6 @@ func _physics_process(delta):
 	bottom_pos = (_bottom.get_global_position().y)
 	var grounded = bottom_pos >= 0
 	
-	#print(bottom_pos)
-	#print(directional_input)
-	
 	if (grounded):		
 		#X movement
 		directional_input.x = x_sum
@@ -55,8 +52,8 @@ func _physics_process(delta):
 	#Should only collide if im on the ground and not moving up
 	move_and_collide(directional_input)
 	
-	
-	sidecheck()
+	if(_other):
+		sidecheck()
 	
 	
 	

@@ -3,7 +3,7 @@ extends KinematicBody2D
 
 export(float) var horizontal_speed = 25.0
 export(float) var vertical_speed = 80.0
-export(float) var gravity = 5
+export(float) var gravity = 5.0
 export(float) var terminal_speed = gravity * 20
 var directional_input  = Vector2.ZERO
 
@@ -26,7 +26,9 @@ var _bottom
 func configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
+	print("_other_player assigned" + _other)
 	sidecheck()
+	print("config sidecheck() ran")
 	
 	if not _p1_side:
 		_up_string = "ui_p2up"
@@ -41,3 +43,9 @@ func configure(other_player):
 
 func sidecheck():
 	_p1_side = self.position.x < _other.position.x
+
+func move_tick():
+	print("move_tick")
+	
+func box_tick():
+	print("box_tick")

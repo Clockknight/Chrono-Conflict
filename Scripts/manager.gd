@@ -29,10 +29,12 @@ func _ready():
 				p2 = player
 				
 		
+		p1.configure(p2)
+		p2.configure(p1)
+				
+		
 	# run config() on each, setting their control strings as needed depending on which is p1/p2
 	
-	p1.configure(p2)
-	p2.configure(p1)
 	pass
 
 
@@ -55,6 +57,6 @@ func _tick():
 
 # other checks 
 # hit/hurtbox collisions
-	p1.move_tick()
-	p2.move_tick()
+	p1.box_tick()
+	p2.box_tick()
 # update states based on collisions
