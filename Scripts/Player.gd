@@ -21,7 +21,10 @@ var _other
 var _p1_side = true
 var _bottom
 
+var bottom_pos = 0
 
+func ready():
+	_bottom = self.get_node("char_bottom")
 
 func configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
@@ -45,10 +48,14 @@ func _sidecheck():
 	_p1_side = self.position.x < _other.position.x
 
 func tick():
+	#move self and move projectiles, which should move child boxes as well
 	_move_tick()
-	# check box interactions
+	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
-	# then spawn new boxes
+	# check box interactions
+	# _tick_interact()
+	
+	
 	
 	
 

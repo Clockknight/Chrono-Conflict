@@ -1,6 +1,5 @@
 extends player
 
-var bottom_pos = 0
 
 
 
@@ -11,9 +10,6 @@ func _init():
 		
 	
 
-func _ready():
-	_bottom = self.get_node("char_bottom")
-	
 
 
 
