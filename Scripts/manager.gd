@@ -46,17 +46,12 @@ func _ready():
 
 
 func _on_Timer_timeout():
-	_tick()
+	_tick_players()
 	
 	
-func _tick():
+func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
-	p1.move_tick()
-	p2.move_tick()
+	p1.tick()
+	p2.tick()
 
-# other checks 
-# hit/hurtbox collisions
-	p1.box_tick()
-	p2.box_tick()
-# update states based on collisions
