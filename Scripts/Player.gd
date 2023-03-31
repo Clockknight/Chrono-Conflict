@@ -24,12 +24,13 @@ var _bottom
 var bottom_pos = 0
 
 func ready():
+	#TODO redo so that bottom is kept track thru calculations
 	_bottom = self.get_node("char_bottom")
 
-func configure(other_player):
+func _configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
-	print("_other_player assigned" + _other)
+	print("_other_player assigned")
 	_sidecheck()
 	print("config sidecheck() ran")
 	

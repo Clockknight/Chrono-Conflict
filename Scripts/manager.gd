@@ -10,14 +10,6 @@ var _timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_timer = Timer.new()
-	add_child(_timer)
-	_timer.connect("timeout", self, "_on_Timer_timeout")
-	_timer.set_wait_time(1.0)
-	_timer.set_one_shot(false) # Make sure it loops
-	_timer.start()
-	
-	
 	# find all children (there should be 2)
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
@@ -27,13 +19,20 @@ func _ready():
 				p1 = player
 			else:
 				p2 = player
+		# run config function on each, setting their control strings as needed depending on which is p1/p2
+		print(p1)
+		p1._configure(p2)
+		p2._configure(p1)
+
+	#Creat timer
+	_timer = Timer.new()
+	add_child(_timer)
+	_timer.connect("timeout", self, "_on_Timer_timeout")
+	_timer.set_wait_time(1.0)
+	_timer.set_one_shot(false) # Make sure it loops
+	_timer.start()
 				
 		
-		p1.configure(p2)
-		p2.configure(p1)
-				
-		
-	# run config() on each, setting their control strings as needed depending on which is p1/p2
 	
 	pass
 
