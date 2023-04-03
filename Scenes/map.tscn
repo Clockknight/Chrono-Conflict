@@ -23,7 +23,7 @@ script = ExtResource( 3 )
 position = Vector2( 217, -251 )
 script = ExtResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="manager/test_Orbulon2"]
+[node name="Box_Collision" type="CollisionShape2D" parent="manager/test_Orbulon2"]
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="manager/test_Orbulon2"]
@@ -38,7 +38,7 @@ position = Vector2( 0, 64 )
 position = Vector2( -373, -375 )
 script = ExtResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="manager/test_Orbulon"]
+[node name="Box_Collision" type="CollisionShape2D" parent="manager/test_Orbulon"]
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="manager/test_Orbulon"]

@@ -13,3 +13,6 @@ extends player
 
 # func to spawn box given array of variables describing it
 
+
+# TODO define orbulon specific functions- probably just a special move or command normal or something
+# maybe some weights

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/cc - sfx - hit.mp3-55e167f5ffcda27846bce96f82c6f0ae.mp3str"
+
+[deps]
+
+source_file="res://Sound/cc - sfx - hit.mp3"
+dest_files=[ "res://.import/cc - sfx - hit.mp3-55e167f5ffcda27846bce96f82c6f0ae.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

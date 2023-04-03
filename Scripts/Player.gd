@@ -19,13 +19,9 @@ var _a4_string = "ui_p1a4"
 
 var _other
 var _p1_side = true
-var _bottom
 
 var bottom_pos = 0
 
-func ready():
-	#TODO redo so that bottom is kept track thru calculations
-	_bottom = self.get_node("char_bottom")
 
 func _configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
@@ -57,14 +53,15 @@ func tick():
 	# _tick_interact()
 	
 	
+func _calc_bottom_y():
 	
-	
+	return self.position.y + abs($Box_Collision.shape.extents.y)
 
 func _move_tick():
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
-	bottom_pos = (_bottom.get_global_position().y)
+	bottom_pos = _calc_bottom_y()
 	var grounded = bottom_pos >= 0
 	
 	if (grounded):		
@@ -94,8 +91,8 @@ func _move_tick():
 			directional_input.y = terminal_speed
 	
 	
-	#Should only collide if im on the ground and not moving up
-	move_and_collide(directional_input)
+	# TODO disable collisions when grounded is false
+		move_and_collide(directional_input)
 	
 	if(_other):
 		_sidecheck()
