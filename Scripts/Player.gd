@@ -19,16 +19,16 @@ var _a4_string = "ui_p1a4"
 
 var _other
 var _p1_side = true
-
-var bottom_pos = 0
+var _grounded:bool
+var _bottom_pos = 0
 
 
 func _configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
-	print("_other_player assigned")
+
 	_sidecheck()
-	print("config sidecheck() ran")
+
 	
 	if not _p1_side:
 		_up_string = "ui_p2up"
@@ -61,10 +61,13 @@ func _move_tick():
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
-	bottom_pos = _calc_bottom_y()
-	var grounded = bottom_pos >= 0
+	_bottom_pos = _calc_bottom_y()
+	_grounded = _bottom_pos >= 0
 	
-	if (grounded):		
+	if (_grounded):		
+		print("Grounded")
+		print(_bottom_pos)
+		print(y_sum)
 		#X movement
 		directional_input.x = x_sum
 		directional_input.x *= horizontal_speed
@@ -73,11 +76,10 @@ func _move_tick():
 		self.scale.y = 1
 		directional_input.y = 0
 		
-		if (y_sum == 0):
-			if (bottom_pos > 0):
-				directional_input.y = -1 * bottom_pos
-			
-		elif (y_sum > 0):
+		if (_bottom_pos > 0):
+			directional_input.y = -1 * _bottom_pos
+		
+		if (y_sum > 0):
 			self.scale.y = .5
 			directional_input.x = 0
 			
@@ -85,7 +87,7 @@ func _move_tick():
 			directional_input.y += y_sum * vertical_speed
 		
 	
-	elif (not grounded):
+	elif (not _grounded):
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
@@ -98,4 +100,4 @@ func _move_tick():
 		_sidecheck()
 		
 func _box_tick():
-	print("box_tick")
+	_bottom_pos = _bottom_pos
