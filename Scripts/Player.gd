@@ -19,9 +19,14 @@ var _a4_string = "ui_p1a4"
 
 var _other
 var _p1_side = true
-var _grounded:bool
 var _bottom_pos = 0
 
+
+func _calc_bottom_y():
+	_bottom_pos = self.position.y + abs($Box_Collision.shape.extents.y)
+
+func _sidecheck():
+	_p1_side = self.position.x < _other.position.x
 
 func _configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
@@ -41,8 +46,6 @@ func _configure(other_player):
 		_a4_string = "ui_p2a4"
 
 
-func _sidecheck():
-	_p1_side = self.position.x < _other.position.x
 
 func tick():
 	#move self and move projectiles, which should move child boxes as well
@@ -50,24 +53,18 @@ func tick():
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
 	# check box interactions
-	# _tick_interact()
+	# _interact_tick()
 	
 	
-func _calc_bottom_y():
-	
-	return self.position.y + abs($Box_Collision.shape.extents.y)
 
 func _move_tick():
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
-	_bottom_pos = _calc_bottom_y()
-	_grounded = _bottom_pos >= 0
+	_calc_bottom_y()
 	
-	if (_grounded):		
-		print("Grounded")
-		print(_bottom_pos)
-		print(y_sum)
+	if (_bottom_pos >= 0):		
+		get_node("Box_Collision").disabled = false
 		#X movement
 		directional_input.x = x_sum
 		directional_input.x *= horizontal_speed
@@ -81,23 +78,29 @@ func _move_tick():
 		
 		if (y_sum > 0):
 			self.scale.y = .5
+			directional_input 
 			directional_input.x = 0
 			
 		elif (y_sum < 0):
 			directional_input.y += y_sum * vertical_speed
+			
+		
+		move_and_collide(directional_input)
 		
 	
-	elif (not _grounded):
+	else:
+		get_node("Box_Collision").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
-	
-	
-	# TODO disable collisions when grounded is false
 		move_and_collide(directional_input)
+	
+
 	
 	if(_other):
 		_sidecheck()
 		
 func _box_tick():
 	_bottom_pos = _bottom_pos
+
+

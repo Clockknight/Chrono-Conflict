@@ -25,9 +25,6 @@ script = ExtResource( 3 )
 position = Vector2( 217, -251 )
 script = ExtResource( 1 )
 
-[node name="Box_Collision" type="CollisionShape2D" parent="manager/test_Orbulon2"]
-shape = SubResource( 1 )
-
 [node name="Sprite" type="Sprite" parent="manager/test_Orbulon2"]
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
@@ -36,12 +33,12 @@ region_rect = Rect2( 10, 10, 10, 0 )
 [node name="char_bottom" type="Position2D" parent="manager/test_Orbulon2"]
 position = Vector2( 0, 64 )
 
+[node name="Box_Collision" type="CollisionShape2D" parent="manager/test_Orbulon2"]
+shape = SubResource( 1 )
+
 [node name="test_Orbulon" type="KinematicBody2D" parent="manager"]
 position = Vector2( -373, -375 )
 script = ExtResource( 1 )
-
-[node name="Box_Collision" type="CollisionShape2D" parent="manager/test_Orbulon"]
-shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="manager/test_Orbulon"]
 scale = Vector2( 2, 2 )
@@ -50,3 +47,6 @@ region_rect = Rect2( 10, 10, 10, 0 )
 
 [node name="char_bottom" type="Position2D" parent="manager/test_Orbulon"]
 position = Vector2( 0, 64 )
+
+[node name="Box_Collision" type="CollisionShape2D" parent="manager/test_Orbulon"]
+shape = SubResource( 1 )
