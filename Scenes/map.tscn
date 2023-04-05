@@ -10,12 +10,13 @@ extents = Vector2( 64, 64 )
 [node name="Scene" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 0, -600 )
 current = true
 zoom = Vector2( 5, 5 )
 editor_draw_drag_margin = true
 
 [node name="test_Groundline" type="Sprite" parent="."]
-scale = Vector2( 30, 0.2 )
+scale = Vector2( 75, 0.2 )
 texture = ExtResource( 2 )
 
 [node name="manager" type="Node" parent="."]
