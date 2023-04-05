@@ -82,7 +82,7 @@ func _move_tick():
 			directional_input.x = 0
 			
 		elif (y_sum < 0):
-			directional_input.y += y_sum * vertical_speed
+			directional_input.y = y_sum * vertical_speed
 			
 		
 		move_and_collide(directional_input)
