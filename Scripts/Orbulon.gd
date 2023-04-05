@@ -1,12 +1,11 @@
 extends player
 
-
-
-
-#func _init():
-	#if self.position.x > 0:
-	#	_p1_side = false
-		
+func _ready():
+	self.preloadedAssets = []
+	self.horizontal_speed = 25.0
+	self.vertical_speed = 80.0
+	self.gravity = 5.0
+	self.terminal_speed = 100.0
 	
 
 # func to take in 2d array and repeatedly call below box

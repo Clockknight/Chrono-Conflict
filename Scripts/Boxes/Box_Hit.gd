@@ -1,4 +1,4 @@
-class_name Hitbox
+class_name Box_Hit
 extends Box
 
 func _init() -> void:

@@ -1,12 +1,16 @@
 class_name player
 extends KinematicBody2D
 
-export(float) var horizontal_speed = 25.0
-export(float) var vertical_speed = 80.0
-export(float) var gravity = 5.0
-export(float) var terminal_speed = gravity * 20
+export(float) var horizontal_speed 
+export(float) var vertical_speed 
+export(float) var gravity 
+export(float) var terminal_speed 
 var directional_input  = Vector2.ZERO
 
+var preloadedBoxes := [
+	"res://Nodes/Boxes/box.gd"
+]
+var preloadedAssets
 
 var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
@@ -45,8 +49,6 @@ func _configure(other_player):
 		_a3_string = "ui_p2a3"
 		_a4_string = "ui_p2a4"
 
-
-
 func tick():
 	#move self and move projectiles, which should move child boxes as well
 	_move_tick()
@@ -55,8 +57,6 @@ func tick():
 	# check box interactions
 	# _interact_tick()
 	
-	
-
 func _move_tick():
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
@@ -78,24 +78,19 @@ func _move_tick():
 		
 		if (y_sum > 0):
 			self.scale.y = .5
-			directional_input 
 			directional_input.x = 0
 			
 		elif (y_sum < 0):
 			directional_input.y = y_sum * vertical_speed
-			
-		
-		move_and_collide(directional_input)
-		
 	
 	else:
 		get_node("Box_Collision").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
-		move_and_collide(directional_input)
 	
 
+	move_and_collide(directional_input)
 	
 	if(_other):
 		_sidecheck()
