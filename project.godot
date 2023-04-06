@@ -15,14 +15,19 @@ _global_script_classes=[ {
 "path": "res://Scripts/Boxes/Box.gd"
 }, {
 "base": "Box",
+"class": "Collision_Box",
+"language": "GDScript",
+"path": "res://Scripts/Boxes/Collision_Box.gd"
+}, {
+"base": "Box",
 "class": "Hit_Box",
 "language": "GDScript",
-"path": "res://Scripts/Boxes/Box_Hit.gd"
+"path": "res://Scripts/Boxes/Hit_Box.gd"
 }, {
 "base": "Box",
 "class": "Hurt_Box",
 "language": "GDScript",
-"path": "res://Scripts/Boxes/Box_Hurt.gd"
+"path": "res://Scripts/Boxes/Hurt_Box.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "player",
@@ -31,6 +36,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Box": "",
+"Collision_Box": "",
 "Hit_Box": "",
 "Hurt_Box": "",
 "player": ""

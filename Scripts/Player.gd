@@ -27,7 +27,7 @@ var _bottom_pos = 0
 
 
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + abs($Box_Collision.shape.extents.y)
+	_bottom_pos = self.position.y + abs($Collision_Box.shape.extents.y)
 
 func _sidecheck():
 	_p1_side = self.position.x < _other.position.x
@@ -64,7 +64,7 @@ func _move_tick():
 	_calc_bottom_y()
 	
 	if (_bottom_pos >= 0):		
-		get_node("Box_Collision").disabled = false
+		get_node("Collision_Box").disabled = false
 		#X movement
 		directional_input.x = x_sum
 		directional_input.x *= horizontal_speed
@@ -84,7 +84,7 @@ func _move_tick():
 			directional_input.y = y_sum * vertical_speed
 	
 	else:
-		get_node("Box_Collision").disabled = true
+		get_node("Collision_Box").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
@@ -98,4 +98,13 @@ func _move_tick():
 func _box_tick():
 	_bottom_pos = _bottom_pos
 
-
+func _interact_tick():
+	print("Interactions")
+	
+func damage(amount: int):
+	_debug_message(())
+	
+func _debug_message(msg: String):
+	if (_p1_side):
+		print(msg)
+	
