@@ -1,4 +1,4 @@
-class_name Box_Hurt
+class_name Hurt_Box
 extends Box
 
 

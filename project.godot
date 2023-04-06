@@ -15,12 +15,12 @@ _global_script_classes=[ {
 "path": "res://Scripts/Boxes/Box.gd"
 }, {
 "base": "Box",
-"class": "Box_Hit",
+"class": "Hit_Box",
 "language": "GDScript",
 "path": "res://Scripts/Boxes/Box_Hit.gd"
 }, {
 "base": "Box",
-"class": "Box_Hurt",
+"class": "Hurt_Box",
 "language": "GDScript",
 "path": "res://Scripts/Boxes/Box_Hurt.gd"
 }, {
@@ -31,8 +31,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Box": "",
-"Box_Hit": "",
-"Box_Hurt": "",
+"Hit_Box": "",
+"Hurt_Box": "",
 "player": ""
 }
 

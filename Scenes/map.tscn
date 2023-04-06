@@ -1,14 +1,18 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Orbulon.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/manager.gd" type="Script" id=3]
-[ext_resource path="res://Nodes/Boxes/Box_Collision.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Nodes/Boxes/Box_Hit.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Nodes/Boxes/Box_Hurt.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Nodes/Boxes/Collision_Box.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Boxes/Box_Hurt.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/Boxes/Box_Hit.gd" type="Script" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 64, 64 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+[sub_resource type="RectangleShape2D" id=3]
 
 [node name="Scene" type="Node2D"]
 
@@ -46,8 +50,16 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
 region_rect = Rect2( 10, 10, 10, 0 )
 
-[node name="Box_Collision" parent="manager/Character_Orbulon2" instance=ExtResource( 4 )]
+[node name="Collision Box" parent="manager/Character_Orbulon2" instance=ExtResource( 4 )]
 
-[node name="Box_Hurt" parent="manager/Character_Orbulon2" instance=ExtResource( 6 )]
+[node name="Hurt_Box" type="Area2D" parent="manager/Character_Orbulon2"]
+script = ExtResource( 5 )
 
-[node name="Box_Hit" parent="manager/Character_Orbulon2" instance=ExtResource( 5 )]
+[node name="Hurt_Box" type="CollisionShape2D" parent="manager/Character_Orbulon2/Hurt_Box"]
+shape = SubResource( 2 )
+
+[node name="Hit_Box" type="Area2D" parent="manager/Character_Orbulon2"]
+script = ExtResource( 6 )
+
+[node name="Hit_Box" type="CollisionShape2D" parent="manager/Character_Orbulon2/Hit_Box"]
+shape = SubResource( 3 )
