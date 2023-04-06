@@ -8,10 +8,9 @@ func _ready():
 	self.terminal_speed = 100.0
 	
 
-# func to take in 2d array and repeatedly call below box
+# func spawn_boxes(framedata: 2dArray):
+# take in 2d array and repeatedly call below box spawning func
 
-# func to spawn box given array of variables describing it
+# func spawn_box(framedata: 1dArray):
+# spawn box given array of variables describing it
 
-
-# TODO define orbulon specific functions- probably just a special move or command normal or something
-# maybe some weights
