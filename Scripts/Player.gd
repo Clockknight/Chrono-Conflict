@@ -102,7 +102,7 @@ func _interact_tick():
 	print("Interactions")
 	
 func damage(amount: int):
-	_debug_message(())
+	_debug_message("DMG: "+str(amount))
 	
 func _debug_message(msg: String):
 	if (_p1_side):
