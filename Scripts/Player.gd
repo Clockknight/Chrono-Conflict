@@ -25,12 +25,17 @@ var _other
 var _p1_side = true
 var _bottom_pos = 0
 
+var _grounded = false
 
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + abs($Collision_Box.shape.extents.y)
+	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
-	_p1_side = self.position.x < _other.position.x
+	if _p1_side != (self.position.x < _other.position.x):
+		_p1_side = not _p1_side
+		if _grounded:
+			$Sprite.set_flip_h(true)
 
 func _configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
@@ -63,14 +68,14 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
-	if (_bottom_pos >= 0):		
+	if (_grounded):		
 		get_node("Collision_Box").disabled = false
 		#X movement
 		directional_input.x = x_sum
 		directional_input.x *= horizontal_speed
 		
 		#Y movement
-		self.scale.y = 1
+		self.scale.y = 1 
 		directional_input.y = 0
 		
 		if (_bottom_pos > 0):
@@ -90,7 +95,11 @@ func _move_tick():
 			directional_input.y = terminal_speed
 	
 
-	move_and_collide(directional_input)
+
+	var collision = move_and_collide(directional_input)
+	if collision:
+		print_debug("collided with: "+ str(collision.collider.name))
+		print_debug("(discarded) remaining motion: " + str(collision.remainder))
 	
 	if(_other):
 		_sidecheck()

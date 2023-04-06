@@ -46,7 +46,7 @@ _global_script_class_icons={
 
 config/name="Chronal Combat"
 run/main_scene="res://Scenes/map.tscn"
-config/icon="res://icon.png"
+config/icon="res://sprites/icon.png"
 
 [debug]
 

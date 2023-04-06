@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://Scripts/Boxes/Box_Hit.gd" type="Script" id=1]
-
-[sub_resource type="RectangleShape2D" id=3]
-
-[node name="Box_Hit" type="CollisionShape2D"]
-shape = SubResource( 3 )
-script = ExtResource( 1 )
