@@ -8,9 +8,14 @@ func _ready():
 	self.terminal_speed = 100.0
 	
 
-# func spawn_boxes(framedata: 2dArray):
-# take in 2d array and repeatedly call below box spawning func
+func _box_tick():
+	if Input.is_action_just_pressed(_a1_string):
+		_debug_message("Success!")
+		spawn_box()
 
-# func spawn_box(framedata: 1dArray):
-# spawn box given array of variables describing it
+func _interact_tick():
+	self.gravity = self.gravity	
+	#_debug_message("Success!")
+
+
 

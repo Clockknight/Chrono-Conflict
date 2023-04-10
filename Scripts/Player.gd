@@ -8,7 +8,8 @@ export(float) var terminal_speed
 var directional_input  = Vector2.ZERO
 
 var preloadedBoxes := [
-	"res://Nodes/Boxes/box.gd"
+	preload("res://Scenes/Boxes/Hit_Box.tscn"),
+	preload("res://Scenes/Boxes/Hurt_Box.tscn")
 ]
 var preloadedAssets
 
@@ -26,9 +27,13 @@ var _p1_side = true
 var _bottom_pos = 0
 
 var _grounded = false
+var _base_scaley
+
+func _ready():
+	_base_scaley = scale.y
 
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + abs($Collision_Box.shape.extents.y)
+	_bottom_pos = self.position.y + abs($Collision_Box.shape.extents.y) * scale.y
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
@@ -60,7 +65,7 @@ func tick():
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
 	# check box interactions
-	# _interact_tick()
+	_interact_tick()
 	
 func _move_tick():
 	var x_sum = Input.get_axis(_left_string, _right_string)
@@ -75,14 +80,14 @@ func _move_tick():
 		directional_input.x *= horizontal_speed
 		
 		#Y movement
-		self.scale.y = 1 
+		self.scale.y = _base_scaley 
 		directional_input.y = 0
 		
 		if (_bottom_pos > 0):
 			directional_input.y = -1 * _bottom_pos
 		
 		if (y_sum > 0):
-			self.scale.y = .5
+			self.scale.y = _base_scaley * .5
 			directional_input.x = 0
 			
 		elif (y_sum < 0):
@@ -105,10 +110,10 @@ func _move_tick():
 		_sidecheck()
 		
 func _box_tick():
-	_bottom_pos = _bottom_pos
+	_debug_message("Box_Tick Not Inherited")
 
 func _interact_tick():
-	print("Interactions")
+	_debug_message("Interact_Tick Not Inherited")
 	
 func damage(amount: int):
 	_debug_message("DMG: "+str(amount))
@@ -117,3 +122,14 @@ func _debug_message(msg: String):
 	if (_p1_side):
 		print(msg)
 	
+	
+# func spawn_boxes(framedata: 2dArray):
+# take in 2d array and repeatedly call below box spawning func
+
+#func spawn_box(framedata: 1dArray):
+func spawn_box():
+	#spawn box given array of variables describing it
+	var newBox : Box = preloadedBoxes[0].instance()
+	newBox.position = Vector2(20, 0)
+	self.add_child(newBox)
+
