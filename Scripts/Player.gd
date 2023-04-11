@@ -89,6 +89,7 @@ func _move_tick():
 		if (y_sum > 0):
 			self.scale.y = _base_scaley * .5
 			directional_input.x = 0
+			directional_input.y += self._base_scaley
 			
 		elif (y_sum < 0):
 			directional_input.y = y_sum * vertical_speed
@@ -105,6 +106,7 @@ func _move_tick():
 	if collision:
 		print_debug("collided with: "+ str(collision.collider.name))
 		print_debug("(discarded) remaining motion: " + str(collision.remainder))
+		print_debug("(discarded) remaining motion: " + str(collision.travel))
 	
 	if(_other):
 		_sidecheck()

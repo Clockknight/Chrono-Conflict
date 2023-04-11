@@ -11,7 +11,7 @@ func _ready():
 func _box_tick():
 	if Input.is_action_just_pressed(_a1_string):
 		_debug_message("Success!")
-		spawn_box()
+		.spawn_box()
 
 func _interact_tick():
 	self.gravity = self.gravity	
