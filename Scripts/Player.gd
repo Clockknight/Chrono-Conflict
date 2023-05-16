@@ -131,6 +131,7 @@ func _debug_message(msg: String):
 #func spawn_box(framedata: 1dArray):
 func spawn_box():
 	#spawn box given array of variables describing it
+	_debug_message("Test")
 	var newBox : Box = preloadedBoxes[0].instance()
 	newBox.position = Vector2(20, 0)
 	self.add_child(newBox)

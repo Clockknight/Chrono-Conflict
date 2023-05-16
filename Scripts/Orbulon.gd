@@ -9,9 +9,12 @@ func _ready():
 	
 
 func _box_tick():
-	if Input.is_action_just_pressed(_a1_string):
-		_debug_message("Success!")
+	if Input.is_action_pressed(_a1_string):
 		.spawn_box()
+	#if Input.is_action_just_pressed(_a1_string):
+	#	_debug_message("Success!")
+	#	_debug_message(_a1_string)
+	#	.spawn_box()
 
 func _interact_tick():
 	self.gravity = self.gravity	
