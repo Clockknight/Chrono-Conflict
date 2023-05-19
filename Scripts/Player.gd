@@ -132,11 +132,7 @@ func spawn_box():
 	_debug_message("Test")
 	var collision : CollisionShape2D = self.get_node("Collision_Box")
 	var newBox : Box = preloadHitBox
-	# first determine size
-	# determine expected position
-	
+	newBox.set_box(128,0, 10,10)
 	#newBox.position = Vector2(self.scale.x * self.get_node("Collision_Box").get_shape().get_extents()[0], 0)
-	newBox.position = Vector2(128,0)
-	newBox.scale = Vector2(10, 10)
 	self.add_child(newBox)
 
