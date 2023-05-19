@@ -7,10 +7,8 @@ export(float) var gravity
 export(float) var terminal_speed 
 var directional_input  = Vector2.ZERO
 
-var preloadedBoxes := [
-	preload("res://Scenes/Boxes/Hit_Box.tscn"),
-	preload("res://Scenes/Boxes/Hurt_Box.tscn")
-]
+var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
+var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadedAssets
 
 var _up_string = "ui_p1up"
@@ -132,7 +130,11 @@ func _debug_message(msg: String):
 func spawn_box():
 	#spawn box given array of variables describing it
 	_debug_message("Test")
-	var newBox : Box = preloadedBoxes[0].instance()
+	var collision : CollisionShape2D = self.get_node("Collision_Box")
+	var newBox : Box = preloadHitBox
+	# first determine size
+	# determine expected position
+	
 	#newBox.position = Vector2(self.scale.x * self.get_node("Collision_Box").get_shape().get_extents()[0], 0)
 	newBox.position = Vector2(128,0)
 	newBox.scale = Vector2(10, 10)
