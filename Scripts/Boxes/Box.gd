@@ -1,5 +1,5 @@
 class_name Box
-extends Node2D
+extends CollisionObject2D
 
 
 func _init() -> void:

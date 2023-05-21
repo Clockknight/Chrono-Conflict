@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node2D",
+"base": "CollisionObject2D",
 "class": "Box",
 "language": "GDScript",
 "path": "res://Scripts/Boxes/Box.gd"
