@@ -9,9 +9,14 @@ func _ready():
 	
 
 func _box_tick():
+	
+	for _i in self.get_children():
+		if _i is Box:
+			_i.tick()
 	#if Input.is_action_pressed(_a1_string):
 	if Input.is_action_just_pressed(_a1_string):
 		.spawn_box()
+	
 	#	_debug_message("Success!")
 	#	_debug_message(_a1_string)
 	#	.spawn_box()

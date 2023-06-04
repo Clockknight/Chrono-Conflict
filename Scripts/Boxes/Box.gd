@@ -1,14 +1,28 @@
 class_name Box
 extends CollisionObject2D
 
+var _frames_remaining = -1
+var parent
 
 func _init() -> void:
 	pass
 
 
-func set_box(parent, posx, posy, scalex, scaley):
-	parent.position = Vector2(posx, posy)
-	parent.scale = Vector2(scalex, scaley)
+func set_box(posx, posy, scalex, scaley, lifespan):
+	self.position = Vector2(posx, posy)
+	self.scale = Vector2(scalex, scaley)
+	parent = self.get_parent()
+	
+	
+func tick():
+	_frames_remaining -= 1
+	if _frames_remaining <= 0:
+		parent.remove_child(self)
+	
+
+func interrupt():
+	parent.remove_child(self)
+	
 # func tick
 # if lifetime <= 0
 # kill this object
