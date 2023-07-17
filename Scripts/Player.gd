@@ -129,11 +129,10 @@ func _debug_message(msg: String):
 #func spawn_box(framedata: 1dArray):
 func spawn_box():
 	#spawn box given array of variables describing it
-	_debug_message("Test")
 	var collision : CollisionShape2D = self.get_node("Collision_Box")
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
-	newBox.set_box(128, 0, 10, 10, 15)
-	#newBox.position = Vector2(self.scale.x * self.get_node("Collision_Box").get_shape().get_extents()[0], 0)
+	newBox.set_box(200, 0, 10, 10, 15)
+	
 	
 

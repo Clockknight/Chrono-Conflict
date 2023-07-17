@@ -11,6 +11,7 @@ func _init() -> void:
 func set_box(posx, posy, scalex, scaley, lifespan):
 	self.position = Vector2(posx, posy)
 	self.scale = Vector2(scalex, scaley)
+	self._frames_remaining = lifespan
 	parent = self.get_parent()
 	
 	
@@ -22,7 +23,3 @@ func tick():
 
 func interrupt():
 	parent.remove_child(self)
-	
-# func tick
-# if lifetime <= 0
-# kill this object
