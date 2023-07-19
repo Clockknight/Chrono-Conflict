@@ -114,6 +114,16 @@ func _box_tick():
 
 func _interact_tick():
 	_debug_message("Interact_Tick Not Inherited")
+	# todo:
+	# create a hurtbox
+	# create transparent sprites of multiple colors
+	# find all boxes touching hurtbox
+	# filter out to hitboxes
+		# How to deal with fireball and punch hitting at same time?
+	# run interrupt on one of those hitboxes
+		# How to deal with attacks that have multiple boxes but have the same properties? eg cammy dp, what if someone got hit by the edge box on one frame, then a deeper one on the second?
+		# this should delete all boxes related to that attack and return DMG
+
 	
 func damage(amount: int):
 	_debug_message("DMG: "+str(amount))

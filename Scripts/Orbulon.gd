@@ -18,16 +18,6 @@ func _box_tick():
 		.spawn_box()
 	
 
-func _interact_tick():
-	self.gravity = self.gravity	
-	# todo:
-	# create a hurtbox
-	# find all boxes touching hurtbox
-	# filter out to hitboxes
-		# How to deal with fireball and punch hitting at same time?
-	# run interrupt on one of those hitboxes
-		# How to deal with attacks that have multiple boxes but have the same properties? eg cammy dp, what if someone got hit by the edge box on one frame, then a deeper one on the second?
-		# this should delete all boxes related to that attack and return DMG
 		
 	
 
