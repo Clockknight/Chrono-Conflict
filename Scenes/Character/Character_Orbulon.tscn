@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://sprites/collisionbox.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Orbulon.gd" type="Script" id=2]
 [ext_resource path="res://sprites/mark.png" type="Texture" id=3]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=5]
+
+[sub_resource type="RectangleShape2D" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -14,6 +16,13 @@ script = ExtResource( 2 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 region_rect = Rect2( 10, 10, 10, 0 )
+
+[node name="Hurt_Box" type="CollisionShape2D" parent="."]
+position = Vector2( 35, -9 )
+scale = Vector2( 2, 4 )
+shape = SubResource( 2 )
+
+[node name="Hurt_Box_Sprite" type="Sprite" parent="Hurt_Box"]
 
 [node name="Collision_Box" type="CollisionShape2D" parent="."]
 scale = Vector2( 6.5, 6.5 )
