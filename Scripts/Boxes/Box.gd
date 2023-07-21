@@ -23,3 +23,6 @@ func tick():
 
 func interrupt():
 	parent.remove_child(self)
+	
+func get_shape() -> void:
+	pass
