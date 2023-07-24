@@ -93,7 +93,11 @@ func _move_tick():
 			directional_input.y = y_sum * vertical_speed
 	
 	else:
-		get_node("Collision_Box").disabled = true
+		# TODO search through all children to find all collision boxes then turn them all off. WIll need to refactor like this for other, similar functions too with the other boxes.
+		for child in self.get_children():
+			if 'Collision' in child.name:
+				child.disable()
+		#get_node("Collision_Box").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed

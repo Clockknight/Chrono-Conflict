@@ -7,6 +7,8 @@ var parent
 func _init() -> void:
 	pass
 
+func disable():
+	self.get_child(0).disable()
 
 func set_box(posx, posy, scalex, scaley, lifespan):
 	self.position = Vector2(posx, posy)
