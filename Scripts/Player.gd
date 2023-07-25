@@ -31,7 +31,7 @@ func _ready():
 	_base_scaley = scale.y
 
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + abs($Collision_Box.get_child(0).shape.extents.y) * scale.y
+	_bottom_pos = self.position.y + $Collision_Box.calc_height() * scale.y
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
@@ -72,7 +72,7 @@ func _move_tick():
 	_calc_bottom_y()
 	
 	if (_grounded):		
-		get_node("Collision_Box").disabled = false
+		$Collision_Box.disable(false)
 		#X movement
 		directional_input.x = x_sum
 		directional_input.x *= horizontal_speed
@@ -93,10 +93,9 @@ func _move_tick():
 			directional_input.y = y_sum * vertical_speed
 	
 	else:
-		# TODO search through all children to find all collision boxes then turn them all off. WIll need to refactor like this for other, similar functions too with the other boxes.
 		for child in self.get_children():
 			if 'Collision' in child.name:
-				child.disable()
+				child.disable(true)
 		#get_node("Collision_Box").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):

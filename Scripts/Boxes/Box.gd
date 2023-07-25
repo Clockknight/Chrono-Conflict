@@ -7,8 +7,8 @@ var parent
 func _init() -> void:
 	pass
 
-func disable():
-	self.get_child(0).disable()
+func disable(disable_toggle):
+	self.get_child(0).disabled = disable_toggle
 
 func set_box(posx, posy, scalex, scaley, lifespan):
 	self.position = Vector2(posx, posy)
@@ -17,10 +17,14 @@ func set_box(posx, posy, scalex, scaley, lifespan):
 	parent = self.get_parent()
 	
 	
+func calc_height():
+	return self.get_child(0).shape.extents.y
+	
 func tick():
 	_frames_remaining -= 1
-	if _frames_remaining <= 0:
-		parent.remove_child(self)
+	if _frames_remaining == 0:
+		print(parent)
+		queue_free()
 	
 
 func interrupt():
