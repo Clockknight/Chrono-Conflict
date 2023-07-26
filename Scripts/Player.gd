@@ -104,10 +104,8 @@ func _move_tick():
 
 
 	var collision = move_and_collide(directional_input)
-	if collision:
-		print_debug("collided with: "+ str(collision.collider.name))
-		print_debug("(discarded) remaining motion: " + str(collision.remainder))
-		print_debug("(discarded) remaining motion: " + str(collision.travel))
+#	if collision:
+#		print_debug("collided with: "+ str(collision.collider.name))
 	
 	if(_other):
 		_sidecheck()
@@ -118,8 +116,7 @@ func _box_tick():
 func _interact_tick():
 	_debug_message("Interact_Tick Not Inherited")
 	# todo:
-	# create a hurtbox
-	# create transparent sprites of multiple colors
+	# regularly create a hurtbox
 	# find all boxes touching hurtbox
 	# filter out to hitboxes
 		# How to deal with fireball and punch hitting at same time?
@@ -146,6 +143,3 @@ func spawn_box():
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
 	newBox.set_box(200, 0, 10, 10, 15)
-	
-	
-

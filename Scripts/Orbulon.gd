@@ -16,10 +16,3 @@ func _box_tick():
 	#if Input.is_action_pressed(_a1_string):
 	if Input.is_action_just_pressed(_a1_string):
 		.spawn_box()
-	
-
-		
-	
-
-
-
