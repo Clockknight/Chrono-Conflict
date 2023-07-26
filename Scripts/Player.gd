@@ -31,7 +31,7 @@ func _ready():
 	_base_scaley = scale.y
 
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Collision_Box.calc_height() * scale.y
+	_bottom_pos = self.position.y + $Collision_Box.calc_height()
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():

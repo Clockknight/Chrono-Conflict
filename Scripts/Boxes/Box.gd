@@ -18,7 +18,7 @@ func set_box(posx, posy, scalex, scaley, lifespan):
 	
 	
 func calc_height():
-	return self.get_child(0).shape.extents.y
+	return self.get_child(0).shape.extents.y * self.get_child(0).scale.y
 	
 func tick():
 	_frames_remaining -= 1
