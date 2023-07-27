@@ -11,6 +11,8 @@ var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadedAssets
 
+var collision : CollisionShape2D 
+
 var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
 var _left_string = "ui_p1left"
@@ -29,6 +31,7 @@ var _base_scaley
 
 func _ready():
 	_base_scaley = scale.y
+	collision = self.get_node("Collision_Box")
 
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Collision_Box.calc_height()
@@ -93,9 +96,7 @@ func _move_tick():
 			directional_input.y = y_sum * vertical_speed
 	
 	else:
-		for child in self.get_children():
-			if 'Collision' in child.name:
-				child.disable(true)
+		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
@@ -104,6 +105,7 @@ func _move_tick():
 
 
 	var collision = move_and_collide(directional_input)
+	_debug_message(str( $Collision_Box.get_child(0).disabled))
 #	if collision:
 #		print_debug("collided with: "+ str(collision.collider.name))
 	
@@ -114,7 +116,8 @@ func _box_tick():
 	_debug_message("Box_Tick Not Inherited")
 
 func _interact_tick():
-	_debug_message("Interact_Tick Not Inherited")
+	#_debug_message("Interact_Tick Not Inherited")
+	_sidecheck()
 	# todo:
 	# regularly create a hurtbox
 	# find all boxes touching hurtbox
@@ -139,7 +142,6 @@ func _debug_message(msg: String):
 #func spawn_box(framedata: 1dArray):
 func spawn_box():
 	#spawn box given array of variables describing it
-	var collision : CollisionShape2D = self.get_node("Collision_Box")
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
 	newBox.set_box(200, 0, 10, 10, 15)

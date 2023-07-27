@@ -1,5 +1,5 @@
 class_name Box
-extends CollisionObject2D
+extends CollisionShape2D
 
 var _frames_remaining = -1
 var parent
@@ -18,6 +18,10 @@ func set_box(posx, posy, scalex, scaley, lifespan):
 	
 	
 func calc_height():
+	#print("ping")
+	#print(self.get_child(0).shape.extents.y)
+	#print(self.get_child(0).scale.y)
+	#print(self.get_child(0).shape.extents.y * self.get_child(0).scale.y)
 	return self.get_child(0).shape.extents.y * self.get_child(0).scale.y
 	
 func tick():
@@ -32,5 +36,5 @@ func tick():
 func interrupt():
 	parent.remove_child(self)
 	
-func get_shape() -> void:
-	pass
+func Shape2D get_shape():
+	return null

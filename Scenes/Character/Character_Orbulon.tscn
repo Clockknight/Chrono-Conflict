@@ -9,12 +9,12 @@
 [node name="Character_Orbulon" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
+[node name="Collision_Box" parent="." instance=ExtResource( 1 )]
+
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 2, 2 )
 texture = ExtResource( 5 )
 region_rect = Rect2( 10, 10, 10, 0 )
-
-[node name="Collision_Box" parent="." instance=ExtResource( 1 )]
 
 [node name="Hurt_Box" type="CollisionShape2D" parent="."]
 position = Vector2( 35, -9 )
