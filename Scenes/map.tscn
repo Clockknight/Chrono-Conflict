@@ -21,8 +21,6 @@ script = ExtResource( 3 )
 
 [node name="Character_Orbulon" parent="manager" instance=ExtResource( 1 )]
 position = Vector2( -300, -500 )
-scale = Vector2( 1, 1 )
 
 [node name="Character_Orbulon2" parent="manager" instance=ExtResource( 1 )]
 position = Vector2( 300, -64 )
-scale = Vector2( 1, 1 )

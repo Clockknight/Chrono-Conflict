@@ -36,5 +36,5 @@ func tick():
 func interrupt():
 	parent.remove_child(self)
 	
-func Shape2D get_shape():
+func get_shape():
 	return null
