@@ -34,7 +34,7 @@ func _ready():
 	collision = self.get_node("Collision_Box")
 
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Collision_Box.calc_height()
+	_bottom_pos = self.position.y + $Collision_Box.calc_height() * self.scale.y
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
@@ -74,6 +74,9 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
+	
+	_debug_message(str( $Collision_Box.disabled))
+	
 	if (_grounded):		
 		$Collision_Box.disable(false)
 		#X movement
@@ -105,7 +108,6 @@ func _move_tick():
 
 
 	var collision = move_and_collide(directional_input)
-	_debug_message(str( $Collision_Box.get_child(0).disabled))
 #	if collision:
 #		print_debug("collided with: "+ str(collision.collider.name))
 	

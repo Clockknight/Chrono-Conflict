@@ -8,7 +8,7 @@ func _init() -> void:
 	pass
 
 func disable(disable_toggle):
-	self.get_child(0).disabled = disable_toggle
+	self.disabled = disable_toggle
 
 func set_box(posx, posy, scalex, scaley, lifespan):
 	self.position = Vector2(posx, posy)
@@ -22,7 +22,7 @@ func calc_height():
 	#print(self.get_child(0).shape.extents.y)
 	#print(self.get_child(0).scale.y)
 	#print(self.get_child(0).shape.extents.y * self.get_child(0).scale.y)
-	return self.get_child(0).shape.extents.y * self.get_child(0).scale.y
+	return self.shape.extents.y * self.scale.y
 	
 func tick():
 	_frames_remaining -= 1
