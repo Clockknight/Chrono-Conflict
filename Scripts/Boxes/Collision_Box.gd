@@ -1,5 +1,5 @@
 class_name Collision_Box
-extends CollisionObject2D
+extends CollisionShape2D
 
 var parent
 
@@ -20,5 +20,7 @@ func calc_height():
 	
 func get_box():
 	return $Box_Shape
-#func _init() -> void:
 	
+	
+func disable(disable_toggle):
+	self.disabled = disable_toggle

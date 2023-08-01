@@ -1,12 +1,11 @@
 [gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://Scripts/Boxes/Hurt_Box.gd" type="Script" id=1]
 [ext_resource path="res://sprites/hurtbox.png" type="Texture" id=2]
 
-[sub_resource type="RectangleShape2D" id=2]
-
-[node name="Hurt_Box" type="CollisionShape2D"]
+[node name="Hurt_Box" type="Area2D"]
 physics_interpolation_mode = 1
-shape = SubResource( 2 )
+script = ExtResource( 1 )
 
 [node name="Hurt_Box_Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.3, 0.3 )
