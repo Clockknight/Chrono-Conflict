@@ -1,5 +1,5 @@
 class_name Box
-extends CollisionShape2D
+extends Area2D
 
 var _frames_remaining = -1
 var parent
@@ -15,14 +15,6 @@ func set_box(posx, posy, scalex, scaley, lifespan):
 	self.scale = Vector2(scalex, scaley)
 	self._frames_remaining = lifespan
 	parent = self.get_parent()
-	
-	
-func calc_height():
-	#print("ping")
-	#print(self.get_child(0).shape.extents.y)
-	#print(self.get_child(0).scale.y)
-	#print(self.get_child(0).shape.extents.y * self.get_child(0).scale.y)
-	return self.shape.extents.y * self.scale.y
 	
 func tick():
 	_frames_remaining -= 1

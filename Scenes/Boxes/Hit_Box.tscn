@@ -7,7 +7,6 @@
 
 [node name="Hit_Box" type="CollisionShape2D"]
 shape = SubResource( 1 )
-disabled = true
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
