@@ -74,9 +74,6 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
-	
-	_debug_message(str( $Collision_Box.disabled))
-	
 	if (_grounded):		
 		$Collision_Box.disable(false)
 		#X movement

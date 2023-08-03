@@ -17,7 +17,6 @@ func set_box(posx, posy, scalex, scaley, lifespan):
 func tick():
 	_frames_remaining -= 1
 	if _frames_remaining == 0:
-		print(parent)
 		queue_free()
 	elif _frames_remaining < -1:
 		_frames_remaining = -1

@@ -11,10 +11,6 @@ func set_box(posx, posy, scalex, scaley, lifespan):
 	
 	
 func calc_height():
-	#print("ping")
-	#print(self.get_child(0).shape.extents.y)
-	#print(self.get_child(0).scale.y)
-	#print(self.get_child(0).shape.extents.y * self.get_child(0).scale.y)
 	return self.shape.extents.y * self.scale.y
 	
 	

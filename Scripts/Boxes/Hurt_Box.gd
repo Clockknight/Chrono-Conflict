@@ -1,8 +1,6 @@
 class_name Hurt_Box
 extends Box
 
-
-#func _init() -> void:
 	
 func _ready() -> void:
 	connect("area_entered", self, "_on_area_entered")

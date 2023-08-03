@@ -1,14 +1,10 @@
 extends Node
 
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 var p1 = false
 var p2
 var _timer
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	# find all children (there should be 2)
 	# Find the two player objects
