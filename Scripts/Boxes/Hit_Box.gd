@@ -3,9 +3,6 @@ extends Box
 
 var test = []
 
-func _init() -> void:
-	collision_layer = 0
-	collision_mask = 2
 	
 
 func _ready():
