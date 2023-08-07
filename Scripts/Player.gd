@@ -33,6 +33,7 @@ func _ready():
 	_base_scaley = scale.y
 	collision = self.get_node("Collision_Box")
 
+## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Collision_Box.calc_height() * self.scale.y
 	_grounded = _bottom_pos >= 0
@@ -63,10 +64,16 @@ func _configure(other_player):
 func tick():
 	#move self and move projectiles, which should move child boxes as well
 	_move_tick()
+	if(_p1_side):
+		_other._move_tick()
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
+	if(_p1_side):
+		_other._box_tick()
 	# check box interactions
 	_interact_tick()
+	if(_p1_side):
+		_other._interact_tick()
 	
 func _move_tick():
 	var x_sum = Input.get_axis(_left_string, _right_string)
