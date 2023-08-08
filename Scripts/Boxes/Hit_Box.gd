@@ -16,7 +16,7 @@ func tick():
 	#check for hurt boxes	
 	test = get_overlapping_areas()
 	if (test != []):
-		print(test)
+		print(str(test) + " " + str(_frames_remaining))
 		#if this box is overlapping a hurtbox
 		#report to hurtbox
 		#report to own parent

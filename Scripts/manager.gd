@@ -6,6 +6,7 @@ var p2
 var _timer
 var _fps
 
+var _framerate = 60.0
 var frames = 0
 
 func _ready():
@@ -28,7 +29,7 @@ func _ready():
 	add_child(_timer)
 	_timer.TIMER_PROCESS_IDLE
 	_timer.connect("timeout", self, "_on_timer_timeout")
-	_timer.set_wait_time(1.0 / 60)
+	_timer.set_wait_time(1.0 / _framerate)
 	_timer.set_one_shot(false) # Make sure it loops
 	_timer.start()
 	
@@ -54,14 +55,14 @@ func _on_timer_timeout():
 	
 	
 func _on_fps_timeout():
-	
-	print(frames)
+#	print(frames)
 	frames = 0
 
 	
 func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
+	self.get_parent().get_node("Camera2D").position += 1
 	p1.tick()
 
 

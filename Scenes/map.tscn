@@ -9,7 +9,7 @@
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 0, -600 )
 current = true
-zoom = Vector2( 5, 5 )
+zoom = Vector2( 3, 3 )
 editor_draw_drag_margin = true
 
 [node name="test_Groundline" type="Sprite" parent="."]
