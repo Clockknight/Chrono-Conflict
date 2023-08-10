@@ -6,7 +6,11 @@ var p2
 var _timer
 var _fps
 
-var _framerate = 60.0
+var _cameraPosX
+var _cameraPosY
+
+var _stage_boundaries = 1000
+var _framerate = 1
 var frames = 0
 
 func _ready():
@@ -19,8 +23,9 @@ func _ready():
 				p1 = player
 			else:
 				p2 = player
+				
+		p1._debug = true
 		# run config function on each, setting their control strings as needed depending on which is p1/p2
-		print(p1)
 		p1._configure(p2)
 		p2._configure(p1)
 
@@ -51,7 +56,10 @@ func _ready():
 
 func _on_timer_timeout():
 	_tick_players()
+	_tick_camera()
+	
 	frames += 1
+	print(frames)
 	
 	
 func _on_fps_timeout():
@@ -62,7 +70,12 @@ func _on_fps_timeout():
 func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
-	self.get_parent().get_node("Camera2D").position += 1
 	p1.tick()
+	
+	
 
 
+func _tick_camera():
+	var temp = self.get_parent().get_node("Camera2D").position
+	
+#	if(_cameraPosX >)

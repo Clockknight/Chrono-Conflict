@@ -22,6 +22,7 @@ var _a2_string = "ui_p1a2"
 var _a3_string = "ui_p1a3"
 var _a4_string = "ui_p1a4"
 
+var _debug = false
 var _other
 var _p1_side = true
 var _bottom_pos = 0
@@ -39,10 +40,21 @@ func _calc_bottom_y():
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
+
+	_debug_message("sc0.0: " + str(_p1_side))
+	_debug_message("sc0.1: " + str((self.position.x < _other.position.x)))
+	_debug_message("sc0.2: " + str(_p1_side != (self.position.x < _other.position.x)))
+	_debug_message("sc0.3: " + str(_other.position.x))
 	if _p1_side != (self.position.x < _other.position.x):
+		_debug_message("sc1:")
 		_p1_side = not _p1_side
-		if _grounded:
-			$Sprite.set_flip_h(true)
+
+	_debug_message("sc2")
+	
+	if _grounded:
+		if (_p1_side and scale.x < 0) or (not _p1_side and scale.x > 0):
+			self.scale.x *= -1
+#		$Sprite.set_flip_h(true)
 
 func _configure(other_player):
 	# player object assumes it's player 1 until otherwise stated
@@ -111,19 +123,17 @@ func _move_tick():
 	
 
 
-	var collision = move_and_collide(directional_input)
-#	if collision:
+	var collision_report = move_and_collide(directional_input)
+#	if collision_report:
 #		print_debug("collided with: "+ str(collision.collider.name))
 	
-	if(_other):
-		_sidecheck()
+	_sidecheck()
 		
 func _box_tick():
 	_debug_message("Box_Tick Not Inherited")
 
 func _interact_tick():
-	#_debug_message("Interact_Tick Not Inherited")
-	_sidecheck()
+	_debug_message("Interact_Tick Not Inherited")
 	# todo:
 	# regularly create a hurtbox
 	# find all boxes touching hurtbox
@@ -138,7 +148,7 @@ func damage(amount: int):
 	_debug_message("DMG: "+str(amount))
 	
 func _debug_message(msg: String):
-	if (_p1_side):
+	if (not _debug):
 		print(msg)
 	
 	
