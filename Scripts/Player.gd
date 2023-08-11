@@ -23,6 +23,7 @@ var _a3_string = "ui_p1a3"
 var _a4_string = "ui_p1a4"
 
 var _debug = false
+var _flipped = false
 var _other
 var _p1_side = true
 var _bottom_pos = 0
@@ -52,8 +53,12 @@ func _sidecheck():
 	_debug_message("sc2")
 	
 	if _grounded:
-		if (_p1_side and scale.x < 0) or (not _p1_side and scale.x > 0):
+		_debug_message("sc2.1: " + str((_p1_side and scale.x < 0)))
+		_debug_message("sc2.2: " + str((not _p1_side and scale.x > 0)))
+		_debug_message("sc2.3: " + str(self.scale.x))
+		if (_flipped and _p1_side and scale.x < 0) or (not _flipped and not _p1_side and scale.x > 0):
 			self.scale.x *= -1
+			self._flipped = not self._flipped
 #		$Sprite.set_flip_h(true)
 
 func _configure(other_player):

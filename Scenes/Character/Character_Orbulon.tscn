@@ -18,5 +18,5 @@ texture = ExtResource( 5 )
 region_rect = Rect2( 10, 10, 10, 0 )
 
 [node name="Hurt_Box" parent="." instance=ExtResource( 3 )]
-position = Vector2( 35, -9 )
+position = Vector2( 35, 15 )
 scale = Vector2( 2, 4 )
