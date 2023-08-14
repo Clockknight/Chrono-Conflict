@@ -6,11 +6,10 @@ var p2
 var _timer
 var _fps
 
-var _cameraPosX
-var _cameraPosY
+var _camera_pos
 
 var _stage_boundaries = 1000
-var _framerate = 1
+var _framerate = 60
 var frames = 0
 
 func _ready():
@@ -59,7 +58,6 @@ func _on_timer_timeout():
 	_tick_camera()
 	
 	frames += 1
-	print(frames)
 	
 	
 func _on_fps_timeout():
@@ -76,6 +74,14 @@ func _tick_players():
 
 
 func _tick_camera():
-	var temp = self.get_parent().get_node("Camera2D").position
+
+	_camera_pos = p1.position + p2.position
 	
-#	if(_cameraPosX >)
+	_camera_pos.x /= 2
+	#	if(_cameraPosX >)
+	
+	_camera_pos.y = 0
+	# if (_camera_pos_y > 0)
+
+	self.get_parent().get_node("Camera2D").position = _camera_pos
+	
