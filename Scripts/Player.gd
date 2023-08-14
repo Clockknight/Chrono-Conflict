@@ -25,40 +25,29 @@ var _a4_string = "ui_p1a4"
 var _debug = false
 var _other
 var _p1_side = true
-var _bottom_pos = 0
-
+var _flipped = false
 var _grounded = false
-var _base_scaley
 
+var _bottom_pos = 0
+var _base_scaley
 func _ready():
 	_base_scaley = scale.y
 	collision = self.get_node("Collision_Box")
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Collision_Box.calc_height() * self.scale.y
+	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
 
-	_debug_message("sc0.0: " + str(_p1_side))
-	_debug_message("sc0.1: " + str((self.position.x < _other.position.x)))
-	_debug_message("sc0.2: " + str(_p1_side != (self.position.x < _other.position.x)))
-	_debug_message("sc0.3: " + str(_other.position.x))
 	if _p1_side != (self.position.x < _other.position.x):
-		_debug_message("sc1:")
 		_p1_side = not _p1_side
-
-	_debug_message("sc2")
 	
 	if _grounded:
-		_debug_message("sc2.1: " + str((_p1_side and scale.x < 0)))
-		_debug_message("sc2.2: " + str((not _p1_side and scale.x > 0)))
-		_debug_message("sc2.3: " + str(self.scale.x))
-		if (_p1_side and scale.x < 0) or (not _p1_side and scale.x > 0):
+		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
 			self.scale.x *= -1
-			self.transform.x *= -1
-			
+			self._flipped = not _flipped
 #		$Sprite.set_flip_h(true)
 
 func _configure(other_player):
@@ -66,7 +55,6 @@ func _configure(other_player):
 	_other = other_player
 
 	_sidecheck()
-
 	
 	if not _p1_side:
 		_up_string = "ui_p2up"
@@ -105,7 +93,6 @@ func _move_tick():
 		directional_input.x *= horizontal_speed
 		
 		#Y movement
-		self.scale.y = _base_scaley 
 		directional_input.y = 0
 		
 		if (_bottom_pos > 0):
@@ -166,3 +153,4 @@ func spawn_box():
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
 	newBox.set_box(200, 0, 10, 10, 15)
+

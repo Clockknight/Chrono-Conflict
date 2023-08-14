@@ -10,7 +10,7 @@ var _cameraPosX
 var _cameraPosY
 
 var _stage_boundaries = 1000
-var _framerate = 120
+var _framerate = 1
 var frames = 0
 
 func _ready():
