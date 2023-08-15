@@ -30,6 +30,8 @@ var _grounded = false
 
 var _bottom_pos = 0
 var _base_scaley
+var _stage_bounds 
+
 func _ready():
 	_base_scaley = scale.y
 	collision = self.get_node("Collision_Box")
@@ -40,7 +42,6 @@ func _calc_bottom_y():
 	_grounded = _bottom_pos >= 0
 
 func _sidecheck():
-
 	if _p1_side != (self.position.x < _other.position.x):
 		_p1_side = not _p1_side
 	
@@ -50,9 +51,10 @@ func _sidecheck():
 			self._flipped = not _flipped
 #		$Sprite.set_flip_h(true)
 
-func _configure(other_player):
+func _configure(other_player, bounds):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
+	self._stage_bounds = bounds
 
 	_sidecheck()
 	

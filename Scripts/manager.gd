@@ -25,8 +25,8 @@ func _ready():
 				
 		p1._debug = true
 		# run config function on each, setting their control strings as needed depending on which is p1/p2
-		p1._configure(p2)
-		p2._configure(p1)
+		p1._configure(p2, _stage_boundaries)
+		p2._configure(p1, _stage_boundaries)
 
 	#Creat timer
 	_timer = Timer.new()
