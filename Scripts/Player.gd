@@ -71,8 +71,6 @@ func _configure(other_player, bounds):
 func tick():
 	#move self and move projectiles, which should move child boxes as well
 	_move_tick()
-	if(_p1_side):
-		_other._move_tick()
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
 	if(_p1_side):
@@ -82,7 +80,7 @@ func tick():
 	if(_p1_side):
 		_other._interact_tick()
 	
-func _move_tick():
+func _move_tick(attempted_move = Vector2.ZERO):
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
@@ -114,7 +112,18 @@ func _move_tick():
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
+
+
+	if(abs(directional_input.x + self.position.x) > _stage_bounds):
+		directional_input.x -= (abs(directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 	
+	if(_p1_side):
+		_other._move_tick(directional_input)
+		
+#	else:
+		
+	# downbacking is irrelevant, just dont move camera if they dont agree on a move
+
 
 
 	var collision_report = move_and_collide(directional_input)
@@ -122,6 +131,8 @@ func _move_tick():
 #		print_debug("collided with: "+ str(collision.collider.name))
 	
 	_sidecheck()
+	
+	return directional_input
 		
 func _box_tick():
 	_debug_message("Box_Tick Not Inherited")
