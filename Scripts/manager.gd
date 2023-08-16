@@ -8,7 +8,7 @@ var _fps
 
 var _camera_pos
 
-var _stage_boundaries = 1000
+var _stage_boundaries = 3000
 var _framerate = 60
 var frames = 0
 

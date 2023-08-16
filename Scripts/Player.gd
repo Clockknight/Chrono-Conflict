@@ -149,8 +149,10 @@ func _interact_tick():
 		# this should delete all boxes related to that attack and return DMG
 
 	
-func damage(amount: int):
+func damage(amount: int, hit_location: Vector2):
 	_debug_message("DMG: "+str(amount))
+	# create image where i got hit
+	# create sprite (location, duration, image)	
 	
 func _debug_message(msg: String):
 	if (not _debug):
@@ -166,4 +168,7 @@ func spawn_box():
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
 	newBox.set_box(200, 0, 10, 10, 15)
+	
+func spawn_sprite(displacement: Vector2, duration: int, image_loc: String):
+	_debug_message("Spawn_Sprite not implemented")
 
