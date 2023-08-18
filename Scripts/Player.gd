@@ -9,7 +9,7 @@ var directional_input  = Vector2.ZERO
 
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
-var preloadedAssets
+var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
 
 var collision : CollisionShape2D 
 
@@ -170,5 +170,7 @@ func spawn_box():
 	newBox.set_box(200, 0, 10, 10, 15)
 	
 func spawn_sprite(displacement: Vector2, duration: int, image_loc: String):
-	_debug_message("Spawn_Sprite not implemented")
+	var newSprite : Sprite_Box = preloadSprite.instance()
+	self.add_child(newSprite)
+	newSprite.set_Sprite(displacement, duration, image_loc)
 
