@@ -149,10 +149,9 @@ func _interact_tick():
 		# this should delete all boxes related to that attack and return DMG
 
 	
-func damage(amount: int, hit_location: Vector2):
-	_debug_message("DMG: "+str(amount))
-	# create image where i got hit
-	# create sprite (location, duration, image)	
+func damage(amount: int, hit_location: Vector2, duration:int):
+
+	spawn_sprite(hit_location, duration, "res://sprites/pow.png")
 	
 func _debug_message(msg: String):
 	if (not _debug):

@@ -1,7 +1,7 @@
 extends player
 
 func _ready():
-	self.preloadedAssets = []
+
 	self.horizontal_speed = 25.0
 	self.vertical_speed = 80.0
 	self.gravity = 5.0
