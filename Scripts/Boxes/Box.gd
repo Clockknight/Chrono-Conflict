@@ -21,7 +21,7 @@ func tick():
 	
 
 func interrupt():
-	self.get_parent().remove_child(self)
+	queue_free()
 	
 func get_shape():
 	return null

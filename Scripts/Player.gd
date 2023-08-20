@@ -152,6 +152,10 @@ func _interact_tick():
 func damage(amount: int, hit_location: Vector2, duration:int):
 	spawn_sprite(hit_location, duration, "res://sprites/pow.png")
 	
+func clash(e1: Hit_Box, e2:Hit_Box):
+	if not _p1_side:
+		_debug_message("Clash detected", 1)
+	
 func _debug_message(msg: String, level:int=0):
 	self.get_parent()._debug_message(msg, level, _p1_side)
 	
