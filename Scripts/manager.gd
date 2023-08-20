@@ -11,6 +11,9 @@ var _camera_pos
 var _stage_boundaries = 3000
 var _framerate = 60
 var frames = 0
+var _min_level = 1
+
+var _observe_players = [true]
 
 func _ready():
 	# find all children (there should be 2)
@@ -85,3 +88,6 @@ func _tick_camera():
 
 	self.get_parent().get_node("Camera2D").position = _camera_pos
 	
+func _debug_message(msg:String, level:int, p1:bool):
+	if (level > _min_level and p1 in _observe_players):
+		print(msg)

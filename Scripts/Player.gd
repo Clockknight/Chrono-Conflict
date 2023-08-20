@@ -135,10 +135,10 @@ func _move_tick(attempted_move = Vector2.ZERO):
 	return directional_input
 		
 func _box_tick():
-	_debug_message("Box_Tick Not Inherited")
+	_debug_message("Box_Tick Not Inherited", 0)
 
 func _interact_tick():
-	_debug_message("Interact_Tick Not Inherited")
+	_debug_message("Interact_Tick Not Inherited",0)
 	# todo:
 	# regularly create a hurtbox
 	# find all boxes touching hurtbox
@@ -150,12 +150,10 @@ func _interact_tick():
 
 	
 func damage(amount: int, hit_location: Vector2, duration:int):
-
 	spawn_sprite(hit_location, duration, "res://sprites/pow.png")
 	
-func _debug_message(msg: String):
-	if (not _debug):
-		print(msg)
+func _debug_message(msg: String, level:int=0):
+	self.get_parent()._debug_message(msg, level, _p1_side)
 	
 	
 # func spawn_boxes(framedata: 2dArray):
@@ -171,5 +169,5 @@ func spawn_box():
 func spawn_sprite(displacement: Vector2, duration: int, image_loc: String):
 	var newSprite : Sprite_Box = preloadSprite.instance()
 	self.add_child(newSprite)
-	newSprite.set_Sprite(displacement, duration, image_loc)
+	newSprite.set_sprite(displacement, duration, image_loc)
 
