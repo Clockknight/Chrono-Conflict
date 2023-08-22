@@ -10,6 +10,7 @@ var directional_input  = Vector2.ZERO
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
+var sprites = [preload("res://sprites/pow.png")]
 
 var collision : CollisionShape2D 
 
@@ -150,7 +151,7 @@ func _interact_tick():
 
 	
 func damage(amount: int, hit_location: Vector2, duration:int):
-	spawn_sprite(hit_location, duration, "res://sprites/pow.png")
+	spawn_sprite(hit_location, duration, 0)
 	
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
@@ -170,8 +171,8 @@ func spawn_box():
 	self.add_child(newBox)
 	newBox.set_box(200, 0, 10, 10, 15)
 	
-func spawn_sprite(displacement: Vector2, duration: int, image_loc: String):
+func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	var newSprite : Sprite_Box = preloadSprite.instance()
 	self.add_child(newSprite)
-	newSprite.set_sprite(displacement, duration, image_loc)
+	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 

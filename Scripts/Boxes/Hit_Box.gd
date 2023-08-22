@@ -32,14 +32,6 @@ func tick():
 			for e in hit_boxes:
 				e.get_parent().clash(self, e)
 			
-		#if this box is overlapping a hurtbox
-		#report to hurtbox
-		#report to own parent
-		
-		#otherwise
-		# if hitbox seen
-		#report to hitbox
-		#report to own parent
 	.tick()
 	
 	
