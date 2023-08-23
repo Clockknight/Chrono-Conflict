@@ -9,7 +9,6 @@ func _ready():
 	
 
 func _box_tick():
-	
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()

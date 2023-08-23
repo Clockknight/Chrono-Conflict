@@ -32,6 +32,12 @@ func tick():
 			for e in hit_boxes:
 				e.get_parent().clash(self, e)
 			
+		#damag/clash function shouldnt immediately make player take damage, but instead set itself up with some variables, which can be passsed on to the manager or other functions in another tick step
+		#if its p2, and the hitbox's owner is clear of these, then check for projectiles
+		# if its p2, and the owner is being told to clash, then check if there's any hurtbox overlap. override if that's the case.
+		# if its p2, and the owner is being told to hit, check for hurtboxes to look for a trade,
+		#if its p1, calc as normal
+			
 	.tick()
 	
 	
