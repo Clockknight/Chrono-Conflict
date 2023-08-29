@@ -8,8 +8,8 @@ var _fps
 
 var _camera_pos
 
-var _stage_boundaries = 3000
 var _framerate = 60
+var _stage_boundaries = 3000
 var frames = 0
 var _min_level = 1
 
@@ -72,7 +72,6 @@ func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
 	p1.tick()
-	
 	
 
 

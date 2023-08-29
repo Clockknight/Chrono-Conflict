@@ -20,8 +20,6 @@ func tick():
 		_frames_remaining = -1
 	
 
-func interrupt():
-	queue_free()
 	
 func get_shape():
 	return null

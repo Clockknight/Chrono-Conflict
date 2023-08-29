@@ -26,7 +26,7 @@ func tick():
 
 		if hurt_boxes != []:
 			for e in hurt_boxes:
-				e.get_parent().damage(5, self.position,10 )
+				e.get_parent().damage(0, 5, self.position,10 )
 				queue_free()
 		elif hit_boxes != []:
 			for e in hit_boxes:

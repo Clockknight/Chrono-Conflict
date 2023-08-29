@@ -33,6 +33,8 @@ var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
 
+var _interactions = []
+
 func _ready():
 	_base_scaley = scale.y
 	collision = self.get_node("Collision_Box")
@@ -72,14 +74,13 @@ func _configure(other_player, bounds):
 func tick():
 	#move self and move projectiles, which should move child boxes as well
 	_move_tick()
+	_other._move_tick()
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
-	if(_p1_side):
-		_other._box_tick()
+	_other._box_tick()
 	# check box interactions
 	_interact_tick()
-	if(_p1_side):
-		_other._interact_tick()
+	_other._interact_tick()
 	
 func _move_tick(attempted_move = Vector2.ZERO):
 	var x_sum = Input.get_axis(_left_string, _right_string)
@@ -118,8 +119,6 @@ func _move_tick(attempted_move = Vector2.ZERO):
 	if(abs(directional_input.x + self.position.x) > _stage_bounds):
 		directional_input.x -= (abs(directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 	
-	if(_p1_side):
-		_other._move_tick(directional_input)
 		
 #	else:
 		
@@ -145,8 +144,8 @@ func _interact_tick():
 			_i.tick()
 
 	
-func damage(amount: int, hit_location: Vector2, duration:int):
-	spawn_sprite(hit_location, duration, 0)
+func damage(priority:int, amount: int, hit_location: Vector2, duration:int):
+	_interactions.append([priority, amount, hit_location, duration])
 	
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
@@ -159,12 +158,12 @@ func _debug_message(msg: String, level:int=0):
 # func spawn_boxes(framedata: 2dArray):
 # take in 2d array and repeatedly call below box spawning func
 
-#func spawn_box(framedata: 1dArray):
-func spawn_box():
+	
+func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 	#spawn box given array of variables describing it
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
-	newBox.set_box(200, 0, 10, 10, 15)
+	newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	
 func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	var newSprite : Sprite_Box = preloadSprite.instance()
