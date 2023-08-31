@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/whiff.mp3-7c5fed2f17e7b7bf46c3d4f17cb26a21.mp3str"
+
+[deps]
+
+source_file="res://Sound/whiff.mp3"
+dest_files=[ "res://.import/whiff.mp3-7c5fed2f17e7b7bf46c3d4f17cb26a21.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

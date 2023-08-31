@@ -11,8 +11,10 @@ var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
 var sprites = [preload("res://sprites/pow.png")]
+var sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
 
 var collision : CollisionShape2D 
+var SFx_Audio 
 
 var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
@@ -38,6 +40,7 @@ var _interactions = []
 func _ready():
 	_base_scaley = scale.y
 	collision = self.get_node("Collision_Box")
+	SFx_Audio = self.get_node("SFx_Audio")
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
@@ -164,6 +167,9 @@ func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, l
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
 	newBox.set_box(posx, posy, scalex,scaley, lifetime)
+	SFx_Audio.stream = sfxs[0]
+	SFx_Audio.play()
+
 	
 func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	var newSprite : Sprite_Box = preloadSprite.instance()
