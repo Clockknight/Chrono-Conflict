@@ -85,6 +85,8 @@ func tick():
 	_interact_tick()
 	_other._interact_tick()
 	
+	_process_tick()
+	
 func _move_tick(attempted_move = Vector2.ZERO):
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
@@ -145,6 +147,15 @@ func _interact_tick():
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()
+			
+			
+func _process_tick():
+	_debug_message("Process Tick not Implemented!")
+	# look at list of interactions, compare highest priority value on list of interactions against other
+	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
+		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
+		
+	
 
 	
 func damage(priority:int, amount: int, hit_location: Vector2, duration:int):
@@ -166,8 +177,8 @@ func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, l
 	#spawn box given array of variables describing it
 	var newBox : Box = preloadHitBox.instance()
 	self.add_child(newBox)
-	newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	SFx_Audio.stream = sfxs[0]
+	newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	SFx_Audio.play()
 
 	
