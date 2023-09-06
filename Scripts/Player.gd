@@ -1,11 +1,8 @@
 class_name player
 extends KinematicBody2D
 
-export(float) var horizontal_speed 
-export(float) var vertical_speed 
-export(float) var gravity 
-export(float) var terminal_speed 
-var directional_input  = Vector2.ZERO
+enum State {FREE, PRIOR, CURR, END, STUN}
+
 
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
@@ -15,6 +12,8 @@ var sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), pr
 
 var collision : CollisionShape2D 
 var SFx_Audio 
+
+var directional_input  = Vector2.ZERO
 
 var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
@@ -30,10 +29,16 @@ var _other
 var _p1_side = true
 var _flipped = false
 var _grounded = false
+var _state = State.FREE
 
 var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
+
+var horizontal_speed 
+var vertical_speed 
+var gravity 
+var terminal_speed 
 
 var _interactions = []
 
@@ -88,6 +93,8 @@ func tick():
 	_process_tick()
 	
 func _move_tick(attempted_move = Vector2.ZERO):
+	if(_state != State.FREE and _grounded):
+		return
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
