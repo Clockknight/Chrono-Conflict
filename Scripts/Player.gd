@@ -1,7 +1,7 @@
 class_name player
 extends KinematicBody2D
 
-enum State {FREE, PRIOR, CURR, END, STUN}
+enum State {FREE, CURR, END, STUN}
 
 
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
@@ -31,6 +31,7 @@ var _flipped = false
 var _grounded = false
 var _state = State.FREE
 
+var _state_frames_left
 var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
@@ -80,17 +81,40 @@ func _configure(other_player, bounds):
 		_a4_string = "ui_p2a4"
 
 func tick():
+	#TODO
+	#make an input tick
+	
+	_state_tick()
+	_other._state_tick()
+	
 	#move self and move projectiles, which should move child boxes as well
 	_move_tick()
 	_other._move_tick()
+	
+	
+	
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
 	_other._box_tick()
+	
+	
 	# check box interactions
 	_interact_tick()
 	_other._interact_tick()
 	
 	_process_tick()
+	
+func _state_tick():
+	_debug_message(str(_state_frames_left), 2)
+	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
+	if _state == State.FREE:
+		_state_frames_left = 1
+	else:
+		_state_frames_left -= 1
+		if _state_frames_left <= 0:
+			_state = State.FREE
+			# TODO 
+			# need to put in a clause here for states are transitioning. Theorhetically, that data should be loaded in already, maybe as a 2D array, or something.
 	
 func _move_tick(attempted_move = Vector2.ZERO):
 	if(_state != State.FREE and _grounded):
@@ -146,9 +170,18 @@ func _move_tick(attempted_move = Vector2.ZERO):
 	
 	return directional_input
 		
+		
+
+	
 func _box_tick():
-	if Input.is_action_just_pressed(_a1_string):
-		spawn_box()
+	if _state == State.FREE:
+		if Input.is_action_just_pressed(_a1_string):
+			spawn_box()
+			_state_frames_left = 5
+			_state = State.CURR
+			
+		
+
 
 func _interact_tick():
 	for _i in self.get_children():
