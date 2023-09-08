@@ -105,8 +105,9 @@ func tick():
 	_process_tick()
 	
 func _state_tick():
-	_debug_message(str(_state_frames_left), 2)
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
+	_debug_message("state" +str(_state==State.FREE), 2)
+	_debug_message(str(_state_frames_left),2)
 	if _state == State.FREE:
 		_state_frames_left = 1
 	else:
@@ -117,15 +118,14 @@ func _state_tick():
 			# need to put in a clause here for states are transitioning. Theorhetically, that data should be loaded in already, maybe as a 2D array, or something.
 	
 func _move_tick(attempted_move = Vector2.ZERO):
-	if(_state != State.FREE and _grounded):
-		return
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
 	_calc_bottom_y()
 	
-	if (_grounded):		
+	if (_grounded and _state == State.FREE):		
 		$Collision_Box.disable(false)
+		_debug_message("move" + str(_state), 2)
 		#X movement
 		directional_input.x = x_sum
 		directional_input.x *= horizontal_speed
@@ -133,8 +133,6 @@ func _move_tick(attempted_move = Vector2.ZERO):
 		#Y movement
 		directional_input.y = 0
 		
-		if (_bottom_pos > 0):
-			directional_input.y = -1 * _bottom_pos
 		
 		if (y_sum > 0):
 			self.scale.y = _base_scaley * .5
@@ -144,12 +142,19 @@ func _move_tick(attempted_move = Vector2.ZERO):
 		elif (y_sum < 0):
 			directional_input.y = y_sum * vertical_speed
 	
-	else:
+	elif(not _grounded):
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
+			
+			
+	else:
+		directional_input.x = 0
+
+	if (_bottom_pos > 0):
+		directional_input.y = -1 * _bottom_pos
 
 
 	if(abs(directional_input.x + self.position.x) > _stage_bounds):
@@ -177,7 +182,7 @@ func _box_tick():
 	if _state == State.FREE:
 		if Input.is_action_just_pressed(_a1_string):
 			spawn_box()
-			_state_frames_left = 5
+			_state_frames_left = 15
 			_state = State.CURR
 			
 		
