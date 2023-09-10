@@ -104,6 +104,15 @@ func tick():
 	
 	_process_tick()
 	
+
+
+func _input_tick():
+	_debug_message("Input Tick not implemented")
+	#TODO
+	# read current inputs, and use these instead of reading input for upcoming functions
+	
+	#Later, this function can send the current input to a stack of inputs, so motions can be read there instead of here
+	
 func _state_tick():
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	_debug_message("state" +str(_state==State.FREE), 2)
@@ -176,6 +185,7 @@ func _move_tick(attempted_move = Vector2.ZERO):
 	return directional_input
 		
 		
+
 
 	
 func _box_tick():
