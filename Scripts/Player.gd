@@ -209,7 +209,13 @@ func _process_tick():
 	# look at list of interactions, compare highest priority value on list of interactions against other
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
-		
+	
+	#TODO how to tell if previous state was free or stun?
+	# if bool check for if state just changed?
+	if _state == State.FREE:
+		get_node("Sprite").texture
+	elif _state == State.STUN:
+		get_node("Sprite")
 	
 
 	
