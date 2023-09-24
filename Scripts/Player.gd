@@ -7,7 +7,7 @@ enum State {FREE, CURR, END, STUN}
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
-var sprites = [preload("res://sprites/pow.png")]
+var sprites = [preload("res://sprites/pow.png"), preload("res://sprites/stunned.png")]
 var sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
 
 var collision : CollisionShape2D 
@@ -213,7 +213,7 @@ func _process_tick():
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
 	if _state == State.FREE:
-		get_node("Sprite").texture
+		$Sprite.set_texture()
 	elif _state == State.STUN:
 		get_node("Sprite")
 	
