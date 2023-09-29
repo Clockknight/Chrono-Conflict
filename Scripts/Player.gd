@@ -33,6 +33,8 @@ var _flipped = false
 var _grounded = false
 var _state = State.FREE
 
+var _cur_input 
+
 var _state_frames_left
 var _bottom_pos = 0
 var _base_scaley
@@ -83,8 +85,9 @@ func _configure(other_player, bounds):
 		_a4_string = "ui_p2a4"
 
 func tick():
-	#TODO
-	#make an input tick
+	# Read Inputs and save the input for this frame for later use
+	_input_tick()
+	_other._input_tick()
 	
 	_state_tick()
 	_other._state_tick()
@@ -109,11 +112,22 @@ func tick():
 
 
 func _input_tick():
-	_debug_message("Input Tick not implemented")
-	#TODO
-	# read current inputs, and use these instead of reading input for upcoming functions
+	_cur_input = _read_input()
+		
 	
+	
+	# todo	
+	#	refactor other functions to use an input variable to figure out what to do
+	
+		
+	#TODO
 	#Later, this function can send the current input to a stack of inputs, so motions can be read there instead of here
+	
+func _read_input():
+	var x_sum = Input.get_axis(_left_string, _right_string)
+	var y_sum = Input.get_axis(_up_string, _down_string)
+	
+	return {"x":x_sum, "y":y_sum}.duplicate()
 	
 func _state_tick():
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
@@ -129,8 +143,6 @@ func _state_tick():
 			# need to put in a clause here for states are transitioning. Theorhetically, that data should be loaded in already, maybe as a 2D array, or something.
 	
 func _move_tick(attempted_move = Vector2.ZERO):
-	var x_sum = Input.get_axis(_left_string, _right_string)
-	var y_sum = Input.get_axis(_up_string, _down_string)
 	
 	_calc_bottom_y()
 	
@@ -138,20 +150,20 @@ func _move_tick(attempted_move = Vector2.ZERO):
 		$Collision_Box.disable(false)
 		_debug_message("move" + str(_state), 2)
 		#X movement
-		directional_input.x = x_sum
+		directional_input.x = _cur_input.x
 		directional_input.x *= horizontal_speed
 		
 		#Y movement
 		directional_input.y = 0
 		
 		
-		if (y_sum > 0):
+		if (_cur_input.y > 0):
 			self.scale.y = _base_scaley * .5
 			directional_input.x = 0
 			directional_input.y += self._base_scaley
 			
-		elif (y_sum < 0):
-			directional_input.y = y_sum * vertical_speed
+		elif (_cur_input.y < 0):
+			directional_input.y = _cur_input.y * vertical_speed
 	
 	elif(not _grounded):
 		$Collision_Box.disable(true)
