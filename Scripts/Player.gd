@@ -46,6 +46,7 @@ var gravity
 var terminal_speed 
 
 var _interactions = []
+var _state_queue = []
 
 func _ready():
 	_base_scaley = scale.y
@@ -114,7 +115,9 @@ func _input_tick():
 		
 	
 	if _state == State.FREE:
-		'BUSY|15'.split('|')
+		if Input.is_action_pressed("ui_p1a2"):
+			_debug_message('AHAHA', 3)
+			_parse_states(['BUSY|15'])
 		
 	
 	# todo	
@@ -132,8 +135,6 @@ func _read_input():
 	
 func _state_tick():
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
-	_debug_message("state" +str(_state==State.FREE), 2)
-	_debug_message(str(_state_frames_left),2)
 	if _state == State.FREE:
 		_state_frames_left = 1
 	else:
@@ -266,6 +267,9 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
 
-func parse_states(incoming: Array):
+func _parse_states(incoming: Array):
+	if _state_queue != []:
+		_debug_message('_parse_states() called when _state_queue not empty', 4)
 	for s in incoming:
-		s.split()
+		_state_queue.append(s.split('|'))
+		
