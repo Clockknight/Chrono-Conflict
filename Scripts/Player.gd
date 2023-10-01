@@ -1,7 +1,7 @@
 class_name player
 extends KinematicBody2D
 
-enum State {FREE, CURR, END, STUN}
+enum State {FREE, CNTR, CURR, OVER, STUN, BUSY,JUMP}
 
 
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
@@ -10,7 +10,7 @@ var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
 var sprites = [preload("res://sprites/pow.png")]
 var sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
 var _base_sprite = preload("res://sprites/icon.png")
-var _state_sprites = [_base_sprite,_base_sprite,_base_sprite, preload("res://sprites/stunned.png")]
+var _state_sprites = [_base_sprite,_base_sprite,_base_sprite,_base_sprite, preload("res://sprites/stunned.png"),_base_sprite,_base_sprite]
 
 var collision : CollisionShape2D 
 var SFx_Audio 
@@ -97,11 +97,9 @@ func tick():
 	_other._move_tick()
 	
 	
-	
 	# tick box lifespans, and spawn new ones as needed
 	_box_tick()
 	_other._box_tick()
-	
 	
 	# check box interactions
 	_interact_tick()
@@ -115,6 +113,9 @@ func _input_tick():
 	_cur_input = _read_input()
 		
 	
+	if _state == State.FREE:
+		'BUSY|15'.split('|')
+		
 	
 	# todo	
 	#	refactor other functions to use an input variable to figure out what to do
@@ -142,7 +143,7 @@ func _state_tick():
 			# TODO 
 			# need to put in a clause here for states are transitioning. Theorhetically, that data should be loaded in already, maybe as a 2D array, or something.
 	
-func _move_tick(attempted_move = Vector2.ZERO):
+func _move_tick():
 	
 	_calc_bottom_y()
 	
@@ -264,3 +265,7 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	self.add_child(newSprite)
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
+
+func parse_states(incoming: Array):
+	for s in incoming:
+		s.split()
