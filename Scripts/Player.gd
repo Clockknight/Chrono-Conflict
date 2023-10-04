@@ -35,7 +35,7 @@ var _state = State.FREE
 
 var _cur_input 
 
-var _state_frames_left
+var _state_frames_left =1
 var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
@@ -127,30 +127,32 @@ func _input_tick():
 	#TODO
 	#Later, this function can send the current input to a stack of inputs, so motions can be read there instead of here
 	
-func _read_input():
-	var x_sum = Input.get_axis(_left_string, _right_string)
-	var y_sum = Input.get_axis(_up_string, _down_string)
-	
-	return {"x":x_sum, "y":y_sum}.duplicate()
 	
 func _state_tick():
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
-	if _state == State.FREE:
+	if _state == State.FREE and _state_queue != []:
 		_state_frames_left = 1
 	else:
 		_state_frames_left -= 1
 		if _state_frames_left <= 0:
-			_state = State.FREE
-			# TODO 
-			# need to put in a clause here for states are transitioning. Theorhetically, that data should be loaded in already, maybe as a 2D array, or something.
-	
+			var new_state = _state_queue.pop_front()
+			_debug_message("new_state: " + str(new_state), 3)
+			_debug_message("_state_queue: " + str(_state_queue), 3)
+			if new_state == null:
+			
+				_state = State.FREE
+			else:
+				_state = State[new_state[0]]
+				_state_frames_left = int(new_state[1])
+				
+				
+			
 func _move_tick():
 	
 	_calc_bottom_y()
 	
 	if (_grounded and _state == State.FREE):		
 		$Collision_Box.disable(false)
-		_debug_message("move" + str(_state), 2)
 		#X movement
 		directional_input.x = _cur_input.x
 		directional_input.x *= horizontal_speed
@@ -229,11 +231,17 @@ func _process_tick():
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
-	_debug_message("_state value: " + str(_state), 3)
+	#_debug_message("_state value: " + str(_state), 3)
 	#if _state == State.FREE:
 	
 	#elif _state == State.STUN:
 	#	$Sprite.set_texture()
+	
+func _read_input():
+	var x_sum = Input.get_axis(_left_string, _right_string)
+	var y_sum = Input.get_axis(_up_string, _down_string)
+	
+	return {"x":x_sum, "y":y_sum}.duplicate()
 	
 
 	
