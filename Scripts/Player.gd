@@ -86,6 +86,7 @@ func _configure(other_player, bounds):
 		_a4_string = "ui_p2a4"
 
 func tick():
+	_debug_message('============ Tick Start ', 2)
 	# Read Inputs and save the input for this frame for later use
 	_input_tick()
 	_other._input_tick()
@@ -111,12 +112,12 @@ func tick():
 
 
 func _input_tick():
+	_debug_message('Input Tick', 2)
 	_cur_input = _read_input()
 		
 	
 	if _state == State.FREE:
 		if Input.is_action_pressed("ui_p1a2"):
-			_debug_message('AHAHA', 3)
 			_parse_states(['BUSY|15'])
 		
 	
@@ -129,8 +130,10 @@ func _input_tick():
 	
 	
 func _state_tick():
+	_debug_message('State Tick',2)
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
-	if _state == State.FREE and _state_queue != []:
+	_debug_message('empty _state_queue: ' + str(_state_queue != []), 2)
+	if _state == State.FREE and _state_queue == []:
 		_state_frames_left = 1
 	else:
 		_state_frames_left -= 1
@@ -139,15 +142,16 @@ func _state_tick():
 			_debug_message("new_state: " + str(new_state), 3)
 			_debug_message("_state_queue: " + str(_state_queue), 3)
 			if new_state == null:
-			
 				_state = State.FREE
 			else:
+				_debug_message(str(State[new_state[0]]), 3)
 				_state = State[new_state[0]]
 				_state_frames_left = int(new_state[1])
 				
 				
 			
 func _move_tick():
+	_debug_message('Move Tick', 2)
 	
 	_calc_bottom_y()
 	
@@ -207,6 +211,7 @@ func _move_tick():
 
 	
 func _box_tick():
+	_debug_message('Box Tick', 2)
 	if _state == State.FREE:
 		if Input.is_action_just_pressed(_a1_string):
 			spawn_box()
@@ -217,13 +222,14 @@ func _box_tick():
 
 
 func _interact_tick():
+	_debug_message('Interact Tick', 2)
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()
 			
 			
 func _process_tick():
-	_debug_message("Process Tick not Implemented!")
+	_debug_message('Process Tick', 2)
 	# look at list of interactions, compare highest priority value on list of interactions against other
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration

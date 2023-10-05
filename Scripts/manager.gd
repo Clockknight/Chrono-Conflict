@@ -11,7 +11,7 @@ var _camera_pos
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = 1
+var _min_level = 2
 
 var _observe_players = [true]
 
