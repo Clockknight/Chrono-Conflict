@@ -1,7 +1,6 @@
 class_name player
 extends KinematicBody2D
 
-enum State {FREE, CNTR, CURR, OVER, STUN, BUSY,JUMP}
 
 
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
@@ -10,7 +9,26 @@ var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
 var sprites = [preload("res://sprites/pow.png")]
 var sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
 var _base_sprite = preload("res://sprites/icon.png")
-var _state_sprites = [_base_sprite,_base_sprite,_base_sprite,_base_sprite, preload("res://sprites/stunned.png"),_base_sprite,_base_sprite]
+var _state_sprites = [
+	_base_sprite,
+	_base_sprite,
+	_base_sprite,
+	_base_sprite, 
+	preload("res://sprites/stunned.png"),
+	_base_sprite,
+	_base_sprite,
+	_base_sprite]
+	
+	
+enum State {
+	FREE,
+	STRT,
+	CURR,
+	NEND,
+	STUN,
+	BUSY, 
+	JMPS, 
+	JMPC}
 
 var collision : CollisionShape2D 
 var SFx_Audio 
@@ -35,7 +53,7 @@ var _state = State.FREE
 
 var _cur_input 
 
-var _state_frames_left =1
+var _state_frames_left = 1
 var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
@@ -118,7 +136,7 @@ func _input_tick():
 	
 	if _state == State.FREE:
 		if Input.is_action_pressed("ui_p1a2"):
-			_parse_states(['BUSY|15'])
+			_parse_states(['JMPS|15', 'JMPC|1'])
 		
 	
 	# todo	
