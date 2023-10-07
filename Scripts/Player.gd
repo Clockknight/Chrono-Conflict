@@ -166,6 +166,12 @@ func _state_tick():
 				_state = State[new_state[0]]
 				_state_frames_left = int(new_state[1])
 				
+				if _state == State.JMPC:
+					_debug_message('jump started', 3)
+					directional_input.y = -1 * self.vertical_speed
+					
+					
+				
 				
 			
 func _move_tick():
