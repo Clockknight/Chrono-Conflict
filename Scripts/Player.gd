@@ -135,7 +135,7 @@ func _input_tick():
 		
 	
 	if _state == State.FREE:
-		if Input.is_action_pressed("ui_p1a2"):
+		if Input.is_action_pressed(_a2_string):
 			_parse_states(['JMPS|15', 'JMPC|1'])
 		
 	
