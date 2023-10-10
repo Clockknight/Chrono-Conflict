@@ -19,6 +19,7 @@ var _state_sprites = [
 	_base_sprite,
 	_base_sprite]
 	
+var _stored_x = 0
 	
 enum State {
 	FREE,
@@ -137,6 +138,8 @@ func _input_tick():
 	if _state == State.FREE:
 		if Input.is_action_pressed(_a2_string):
 			_parse_states(['JMPS|15', 'JMPC|1'])
+			_stored_x = _cur_input['x']
+			_debug_message('stored x: ' + str(_stored_x), 3)
 		
 	
 	# todo	
@@ -170,7 +173,6 @@ func _state_tick():
 					_debug_message('jump started', 3)
 					directional_input.y = -1 * self.vertical_speed
 					
-					
 				
 				
 			
@@ -203,6 +205,9 @@ func _move_tick():
 		directional_input.y += gravity
 		if (directional_input.y > terminal_speed):
 			directional_input.y = terminal_speed
+		
+		#todo fix double jumping
+		directional_input.x = _stored_x * self.horizontal_speed
 			
 			
 	else:
