@@ -19,7 +19,6 @@ var _state_sprites = [
 	_base_sprite,
 	_base_sprite]
 	
-var _stored_x = 0
 	
 enum State {
 	FREE,
@@ -58,6 +57,8 @@ var _state_frames_left = 1
 var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
+var _stored_x = 0
+var _cur_x = 0
 
 var horizontal_speed 
 var vertical_speed 
@@ -138,8 +139,8 @@ func _input_tick():
 	if _state == State.FREE:
 		if Input.is_action_pressed(_a2_string):
 			_parse_states(['JMPS|15', 'JMPC|1'])
+			_cur_x = _stored_x
 			_stored_x = _cur_input['x']
-			_debug_message('stored x: ' + str(_stored_x), 3)
 		
 	
 	# todo	
@@ -172,10 +173,8 @@ func _state_tick():
 				if _state == State.JMPC:
 					_debug_message('jump started', 3)
 					directional_input.y = -1 * self.vertical_speed
-					
-				
-				
-			
+					_cur_x = _stored_x
+
 func _move_tick():
 	_debug_message('Move Tick', 2)
 	
@@ -207,7 +206,7 @@ func _move_tick():
 			directional_input.y = terminal_speed
 		
 		#todo fix double jumping
-		directional_input.x = _stored_x * self.horizontal_speed
+		directional_input.x = _cur_x * self.horizontal_speed
 			
 			
 	else:
