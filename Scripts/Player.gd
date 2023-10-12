@@ -1,6 +1,7 @@
 class_name player
 extends KinematicBody2D
 
+var BUFFER_WINDOW = 3
 
 
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
@@ -136,9 +137,9 @@ func _input_tick():
 	_cur_input = _read_input()
 		
 	
-	if _state == State.FREE:
+	if _state == State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
 		if Input.is_action_pressed(_a2_string):
-			_parse_states(['JMPS|15', 'JMPC|1'])
+			_parse_states(['JMPS|5'])
 			_cur_x = _stored_x
 			_stored_x = _cur_input['x']
 		
@@ -164,16 +165,18 @@ func _state_tick():
 			_debug_message("new_state: " + str(new_state), 3)
 			_debug_message("_state_queue: " + str(_state_queue), 3)
 			if new_state == null:
+				_debug_message('state queue empty - returning to free', 3)
 				_state = State.FREE
 			else:
-				_debug_message(str(State[new_state[0]]), 3)
-				_state = State[new_state[0]]
-				_state_frames_left = int(new_state[1])
-				
-				if _state == State.JMPC:
+				if _state == State.JMPS:
 					_debug_message('jump started', 3)
 					directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
+					
+				
+				_state = State[new_state[0]]
+				_state_frames_left = int(new_state[1])
+				
 
 func _move_tick():
 	_debug_message('Move Tick', 2)
