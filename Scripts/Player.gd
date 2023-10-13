@@ -1,9 +1,10 @@
 class_name player
 extends KinematicBody2D
 
+# Constants
 var BUFFER_WINDOW = 3
 
-
+# Assets
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
@@ -20,7 +21,9 @@ var _state_sprites = [
 	_base_sprite,
 	_base_sprite]
 	
+
 	
+# enums
 enum State {
 	FREE,
 	STRT,
@@ -31,11 +34,15 @@ enum State {
 	JMPS, 
 	JMPC}
 
+
+# nodes
 var collision : CollisionShape2D 
 var SFx_Audio 
 
+# 2d Vectors
 var directional_input  = Vector2.ZERO
 
+# inputs
 var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
 var _left_string = "ui_p1left"
@@ -44,7 +51,9 @@ var _a1_string = "ui_p1a1"
 var _a2_string = "ui_p1a2"
 var _a3_string = "ui_p1a3"
 var _a4_string = "ui_p1a4"
+var _cur_input 
 
+# configurations 
 var _debug = false
 var _other
 var _p1_side = true
@@ -52,7 +61,6 @@ var _flipped = false
 var _grounded = false
 var _state = State.FREE
 
-var _cur_input 
 
 var _state_frames_left = 1
 var _bottom_pos = 0
@@ -61,11 +69,13 @@ var _stage_bounds
 var _stored_x = 0
 var _cur_x = 0
 
+# floats
 var horizontal_speed 
 var vertical_speed 
 var gravity 
 var terminal_speed 
 
+# queues
 var _interactions = []
 var _state_queue = []
 
@@ -87,7 +97,7 @@ func _sidecheck():
 		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
 			self.scale.x *= -1
 			self._flipped = not _flipped
-#		$Sprite.set_flip_h(true)
+
 
 func _configure(other_player, bounds):
 	# player object assumes it's player 1 until otherwise stated
@@ -156,27 +166,40 @@ func _state_tick():
 	_debug_message('State Tick',2)
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	_debug_message('empty _state_queue: ' + str(_state_queue != []), 2)
-	if _state == State.FREE and _state_queue == []:
-		_state_frames_left = 1
-	else:
-		_state_frames_left -= 1
-		if _state_frames_left <= 0:
-			var new_state = _state_queue.pop_front()
-			_debug_message("new_state: " + str(new_state), 3)
-			_debug_message("_state_queue: " + str(_state_queue), 3)
-			if new_state == null:
-				_debug_message('state queue empty - returning to free', 3)
-				_state = State.FREE
-			else:
-				if _state == State.JMPS:
-					_debug_message('jump started', 3)
-					directional_input.y = -1 * self.vertical_speed
-					_cur_x = _stored_x
+	if _interactions == []:
+	
+		if _state == State.FREE and _state_queue == []:
+			_state_frames_left = 1
+		else:
+			_state_frames_left -= 1
+			if _state_frames_left <= 0:
+				var new_state = _state_queue.pop_front()
+				_debug_message("new_state: " + str(new_state), 3)
+				_debug_message("_state_queue: " + str(_state_queue), 3)
+				if new_state == null:
+					_debug_message('state queue empty - returning to free', 3)
+					_state = State.FREE
+				else:
+					if _state == State.JMPS:
+						_debug_message('jump started', 3)
+						directional_input.y = -1 * self.vertical_speed
+						_cur_x = _stored_x
+						
 					
+					_state = State[new_state[0]]
+					_state_frames_left = int(new_state[1])
+					
+	else:
+		_debug_message("Processing interaction... " + str(_interactions), 3)
+		var cur_interaction = [-1]
+		
+		while _interactions != []:
+			if cur_interaction[0] < _interactions[0][0]:
+				cur_interaction = _interactions.pop_front()
 				
-				_state = State[new_state[0]]
-				_state_frames_left = int(new_state[1])
-				
+		
+		_debug_message("Damage incoming: " + str(cur_interaction[1]), 3)
+		
 
 func _move_tick():
 	_debug_message('Move Tick', 2)
@@ -236,11 +259,7 @@ func _move_tick():
 	_sidecheck()
 	
 	return directional_input
-		
-		
 
-
-	
 func _box_tick():
 	_debug_message('Box Tick', 2)
 	if _state == State.FREE:
@@ -248,8 +267,6 @@ func _box_tick():
 			spawn_box()
 			_state_frames_left = 15
 			_state = State.CURR
-			
-		
 
 
 func _interact_tick():
@@ -257,8 +274,7 @@ func _interact_tick():
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()
-			
-			
+
 func _process_tick():
 	_debug_message('Process Tick', 2)
 	# look at list of interactions, compare highest priority value on list of interactions against other
@@ -273,30 +289,28 @@ func _process_tick():
 	
 	#elif _state == State.STUN:
 	#	$Sprite.set_texture()
-	
+
 func _read_input():
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
 	return {"x":x_sum, "y":y_sum}.duplicate()
-	
 
-	
 func damage(priority:int, amount: int, hit_location: Vector2, duration:int):
 	_interactions.append([priority, amount, hit_location, duration])
-	
+
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
 		_debug_message("Clash detected", 1)
-	
+
 func _debug_message(msg: String, level:int=0):
 	self.get_parent()._debug_message(msg, level, _p1_side)
-	
-	
+
+
 # func spawn_boxes(framedata: 2dArray):
 # take in 2d array and repeatedly call below box spawning func
 
-	
+
 func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 	#spawn box given array of variables describing it
 	var newBox : Box = preloadHitBox.instance()
