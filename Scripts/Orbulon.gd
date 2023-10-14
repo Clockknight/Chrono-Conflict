@@ -6,5 +6,5 @@ func _ready():
 	self.vertical_speed = 80.0
 	self.gravity = 5.0
 	self.terminal_speed = 100.0
-	
+	self._health = 10
 

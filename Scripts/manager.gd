@@ -1,5 +1,6 @@
 extends Node
 
+enum LEVEL {STEP, TICK, FRAME, EVENT}
 
 var p1 = false
 var p2
@@ -11,7 +12,7 @@ var _camera_pos
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = 2
+var _min_level = LEVEL.EVENT
 
 var _observe_players = [true]
 
@@ -88,5 +89,5 @@ func _tick_camera():
 	self.get_parent().get_node("Camera2D").position = _camera_pos
 	
 func _debug_message(msg:String, level:int, p1:bool):
-	if (level > _min_level and p1 in _observe_players):
+	if (level >= _min_level and p1 in _observe_players):
 		print(msg)

@@ -61,13 +61,14 @@ var _flipped = false
 var _grounded = false
 var _state = State.FREE
 
-
+# integers
 var _state_frames_left = 1
 var _bottom_pos = 0
 var _base_scaley
 var _stage_bounds 
 var _stored_x = 0
 var _cur_x = 0
+var _health
 
 # floats
 var horizontal_speed 
@@ -167,7 +168,6 @@ func _state_tick():
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	_debug_message('empty _state_queue: ' + str(_state_queue != []), 2)
 	if _interactions == []:
-	
 		if _state == State.FREE and _state_queue == []:
 			_state_frames_left = 1
 		else:
@@ -190,12 +190,19 @@ func _state_tick():
 					_state_frames_left = int(new_state[1])
 					
 	else:
-		_debug_message("Processing interaction... " + str(_interactions), 3)
+		_debug_message("Processing interaction... " + str(_interactions), 4)
 		var cur_interaction = [-1]
 		
 		while _interactions != []:
 			if cur_interaction[0] < _interactions[0][0]:
 				cur_interaction = _interactions.pop_front()
+		
+		
+		self._health -= cur_interaction[0]
+		if self._health <= 0:
+			self._health = 0
+			self.die()
+		
 				
 		
 		_debug_message("Damage incoming: " + str(cur_interaction[1]), 3)
@@ -332,3 +339,5 @@ func _parse_states(incoming: Array):
 	for s in incoming:
 		_state_queue.append(s.split('|'))
 		
+func die():
+	_debug_message('Time to die I guess.', 4)
