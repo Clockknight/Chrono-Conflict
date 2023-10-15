@@ -333,11 +333,15 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
 
-func _parse_states(incoming: Array):
+func _parse_states(incoming: Array = [], incoming_state: int = State.FREE, incoming_duration: int = 0):
+	if incoming == [] and incoming_state == 0 and incoming_duration == 0:
+		_debug_message('Empty state passed to parse_states', get_parent().Level.ERROR)
+		return
 	if _state_queue != []:
 		_debug_message('_parse_states() called when _state_queue not empty', 4)
 	for s in incoming:
 		_state_queue.append(s.split('|'))
+		
 		
 func die():
 	_debug_message('Time to die I guess.', 4)

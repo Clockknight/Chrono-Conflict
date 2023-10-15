@@ -1,6 +1,6 @@
 extends Node
 
-enum LEVEL {STEP, TICK, FRAME, EVENT}
+enum Level {STEP, TICK, FRAME, EVENT, ERROR}
 
 var p1 = false
 var p2
@@ -12,7 +12,7 @@ var _camera_pos
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = LEVEL.EVENT
+var _min_level = Level.EVENT
 
 var _observe_players = [true]
 
