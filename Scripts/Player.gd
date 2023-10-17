@@ -194,18 +194,19 @@ func _state_tick():
 		var cur_interaction = [-1]
 		
 		while _interactions != []:
+			
 			if cur_interaction[0] < _interactions[0][0]:
 				cur_interaction = _interactions.pop_front()
 		
 		
-		self._health -= cur_interaction[0]
+		_debug_message("Damage incoming: " + str(cur_interaction[1]), 3)
+		self._health -= cur_interaction[1]
 		if self._health <= 0:
 			self._health = 0
 			self.die()
 		
 				
 		
-		_debug_message("Damage incoming: " + str(cur_interaction[1]), 3)
 		
 
 func _move_tick():
