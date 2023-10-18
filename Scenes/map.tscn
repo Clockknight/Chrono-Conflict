@@ -24,3 +24,5 @@ position = Vector2( -298, 175 )
 
 [node name="Character_Orbulon2" parent="manager" instance=ExtResource( 1 )]
 position = Vector2( 293, -47 )
+
+[node name="Node" type="Node" parent="."]

@@ -1,6 +1,9 @@
 class_name Hit_Box
 extends Box
 
+const Move_Data = preload('../data/Move_Data.gd')
+const e = preload('../data/Enums.gd')
+
 var overlaps = []
 var hit_boxes = []
 var hurt_boxes = []
@@ -26,7 +29,7 @@ func tick():
 
 		if hurt_boxes != []:
 			for e in hurt_boxes:
-				e.get_parent().damage(0, 5, self.position,10 )
+				e.get_parent().damage(Move_Data.new(0, 5, 30, 1,Vector2(5.0,0.0), self.position))
 				queue_free()
 		elif hit_boxes != []:
 			for e in hit_boxes:

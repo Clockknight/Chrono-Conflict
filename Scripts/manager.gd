@@ -1,6 +1,6 @@
 extends Node
 
-enum Level {STEP, TICK, FRAME, EVENT, ERROR}
+const e = preload('./data/Enums.gd')
 
 var p1 = false
 var p2
@@ -12,7 +12,7 @@ var _camera_pos
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = Level.EVENT
+var _min_level = e.Level.EVENT
 
 var _observe_players = [true]
 

@@ -1,8 +1,12 @@
 class_name player
 extends KinematicBody2D
 
+# external classes
+const Move_Data = preload('./data/Move_Data.gd')
+const e = preload('./data/Enums.gd')
+
 # Constants
-var BUFFER_WINDOW = 3
+const BUFFER_WINDOW = 3
 
 # Assets
 var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
@@ -24,15 +28,6 @@ var _state_sprites = [
 
 	
 # enums
-enum State {
-	FREE,
-	STRT,
-	CURR,
-	NEND,
-	STUN,
-	BUSY, 
-	JMPS, 
-	JMPC}
 
 
 # nodes
@@ -59,7 +54,7 @@ var _other
 var _p1_side = true
 var _flipped = false
 var _grounded = false
-var _state = State.FREE
+var _state = e.State.FREE
 
 # integers
 var _state_frames_left = 1
@@ -148,7 +143,7 @@ func _input_tick():
 	_cur_input = _read_input()
 		
 	
-	if _state == State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
+	if _state == e.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
 		if Input.is_action_pressed(_a2_string):
 			_parse_states(['JMPS|5'])
 			_cur_x = _stored_x
@@ -167,43 +162,48 @@ func _state_tick():
 	_debug_message('State Tick',2)
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	_debug_message('empty _state_queue: ' + str(_state_queue != []), 2)
-	if _interactions == []:
-		if _state == State.FREE and _state_queue == []:
-			_state_frames_left = 1
-		else:
-			_state_frames_left -= 1
-			if _state_frames_left <= 0:
-				var new_state = _state_queue.pop_front()
-				_debug_message("new_state: " + str(new_state), 3)
-				_debug_message("_state_queue: " + str(_state_queue), 3)
-				if new_state == null:
-					_debug_message('state queue empty - returning to free', 3)
-					_state = State.FREE
-				else:
-					if _state == State.JMPS:
-						_debug_message('jump started', 3)
-						directional_input.y = -1 * self.vertical_speed
-						_cur_x = _stored_x
-						
-					
-					_state = State[new_state[0]]
-					_state_frames_left = int(new_state[1])
-					
-	else:
-		_debug_message("Processing interaction... " + str(_interactions), 4)
-		var cur_interaction = [-1]
+	if _interactions != []:
+		_debug_message("Interactions: " + str(_interactions),4)
+		_debug_message("Processing interaction... " + str(_interactions[0]), 4)
+		var cur_interaction = _interactions.pop_front()
 		
 		while _interactions != []:
-			
-			if cur_interaction[0] < _interactions[0][0]:
+			if cur_interaction.priority < _interactions[0].priority:
 				cur_interaction = _interactions.pop_front()
 		
 		
-		_debug_message("Damage incoming: " + str(cur_interaction[1]), 3)
-		self._health -= cur_interaction[1]
+		_debug_message("Damage incoming: " + str(cur_interaction.damage), 3)
+		self._health -= cur_interaction.damage
 		if self._health <= 0:
 			self._health = 0
 			self.die()
+		
+		self._state = cur_interaction.state
+			
+			
+	if _state == e.State.FREE and _state_queue == []:
+		_state_frames_left = 1
+		
+		
+	else:
+		_state_frames_left -= 1
+		if _state_frames_left <= 0:
+			var new_state = _state_queue.pop_front()
+			_debug_message("new_state: " + str(new_state), 3)
+			_debug_message("_state_queue: " + str(_state_queue), 3)
+			if new_state == null:
+				_debug_message('state queue empty - returning to free', 3)
+				_state = e.State.FREE
+			else:
+				if _state == e.State.JMPS:
+					_debug_message('jump started', 3)
+					directional_input.y = -1 * self.vertical_speed
+					_cur_x = _stored_x
+					
+				
+				_state = e.State[new_state[0]]
+				_state_frames_left = int(new_state[1])
+					
 		
 				
 		
@@ -214,7 +214,7 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
-	if (_grounded and _state == State.FREE):		
+	if (_grounded and _state == e.State.FREE):		
 		$Collision_Box.disable(false)
 		#X movement
 		directional_input.x = _cur_input.x
@@ -270,11 +270,11 @@ func _move_tick():
 
 func _box_tick():
 	_debug_message('Box Tick', 2)
-	if _state == State.FREE:
+	if _state == e.State.FREE:
 		if Input.is_action_just_pressed(_a1_string):
 			spawn_box()
 			_state_frames_left = 15
-			_state = State.CURR
+			_state = e.State.CURR
 
 
 func _interact_tick():
@@ -293,9 +293,9 @@ func _process_tick():
 	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
 	#_debug_message("_state value: " + str(_state), 3)
-	#if _state == State.FREE:
+	#if _state == e.State.FREE:
 	
-	#elif _state == State.STUN:
+	#elif _state == e.State.STUN:
 	#	$Sprite.set_texture()
 
 func _read_input():
@@ -304,8 +304,8 @@ func _read_input():
 	
 	return {"x":x_sum, "y":y_sum}.duplicate()
 
-func damage(priority:int, amount: int, hit_location: Vector2, duration:int):
-	_interactions.append([priority, amount, hit_location, duration])
+func damage(incoming_move: Move_Data):
+	_interactions.append(incoming_move)
 
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
@@ -334,7 +334,7 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
 
-func _parse_states(incoming: Array = [], incoming_state: int = State.FREE, incoming_duration: int = 0):
+func _parse_states(incoming: Array = [], incoming_state: int = e.State.FREE, incoming_duration: int = 0):
 	if incoming == [] and incoming_state == 0 and incoming_duration == 0:
 		_debug_message('Empty state passed to parse_states', get_parent().Level.ERROR)
 		return
@@ -345,4 +345,4 @@ func _parse_states(incoming: Array = [], incoming_state: int = State.FREE, incom
 		
 		
 func die():
-	_debug_message('Time to die I guess.', 4)
+	_debug_message('I am Defeated!.', 4)
