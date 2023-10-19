@@ -29,7 +29,7 @@ func tick():
 
 		if hurt_boxes != []:
 			for e in hurt_boxes:
-				e.get_parent().damage(Move_Data.new(0, 5, 30, 1,Vector2(5.0,0.0), self.position))
+				e.get_parent().damage(Move_Data.new(0, 5, 30, e.State.BUSY, Vector2(5.0,0.0), self.position))
 				queue_free()
 		elif hit_boxes != []:
 			for e in hit_boxes:
