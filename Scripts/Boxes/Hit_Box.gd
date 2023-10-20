@@ -28,12 +28,12 @@ func tick():
 					hit_boxes.append(e)
 
 		if hurt_boxes != []:
-			for e in hurt_boxes:
-				e.get_parent().damage(Move_Data.new(0, 5, 30, e.State.BUSY, Vector2(5.0,0.0), self.position))
+			for box in hurt_boxes:
+				box.get_parent().damage(Move_Data.new(0, 5, 30, e.State.STUN, Vector2(500.0,0.0), self.position))
 				queue_free()
 		elif hit_boxes != []:
-			for e in hit_boxes:
-				e.get_parent().clash(self, e)
+			for box in hit_boxes:
+				box.get_parent().clash(self, box)
 			
 		#damag/clash function shouldnt immediately make player take damage, but instead set itself up with some variables, which can be passsed on to the manager or other functions in another tick step
 		#if its p2, and the hitbox's owner is clear of these, then check for projectiles

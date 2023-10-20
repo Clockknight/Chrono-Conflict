@@ -70,6 +70,8 @@ var horizontal_speed
 var vertical_speed 
 var gravity 
 var terminal_speed 
+var _friction
+var _deceleration_max
 
 # queues
 var _interactions = []
@@ -77,6 +79,8 @@ var _state_queue = []
 
 func _ready():
 	_base_scaley = scale.y
+	_friction = .05
+	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
 	SFx_Audio = self.get_node("SFx_Audio")
 
@@ -179,8 +183,8 @@ func _state_tick():
 			self.die()
 		
 		self._state = cur_interaction.state
-			
-			
+		directional_input = cur_interaction.influence
+		
 	if _state == e.State.FREE and _state_queue == []:
 		_state_frames_left = 1
 		
@@ -232,19 +236,17 @@ func _move_tick():
 		elif (_cur_input.y < 0):
 			directional_input.y = _cur_input.y * vertical_speed
 	
-	elif(not _grounded):
+	if(not _grounded):
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
-		directional_input.y += gravity
-		if (directional_input.y > terminal_speed):
-			directional_input.y = terminal_speed
+		directional_input.y = min(gravity + directional_input.y , terminal_speed)
 		
 		#todo fix double jumping
 		directional_input.x = _cur_x * self.horizontal_speed
 			
-			
-	else:
-		directional_input.x = 0
+	if(_state == e.State.STUN):
+		directional_input -= max(directional_input*_friction, _deceleration_max) * int(_p1_side)
+		
 
 	if (_bottom_pos > 0):
 		directional_input.y = -1 * _bottom_pos
