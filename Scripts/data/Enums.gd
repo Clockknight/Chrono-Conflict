@@ -14,4 +14,9 @@ enum State {
 
 
 
-enum Level {STEP, TICK, FRAME, EVENT, ERROR}
+enum Level {
+	STEP, 
+	TICK, 
+	FRAME, 
+	EVENT, 
+	ERROR}

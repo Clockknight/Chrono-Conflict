@@ -239,7 +239,8 @@ func _move_tick():
 	if(not _grounded):
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
-		directional_input.y = min(gravity + directional_input.y , terminal_speed)
+		directional_input.y = min(min(gravity + directional_input.y , terminal_speed), -1 * _bottom_pos)
+			
 		
 		#todo fix double jumping
 		directional_input.x = _cur_x * self.horizontal_speed
@@ -249,6 +250,7 @@ func _move_tick():
 		
 
 	if (_bottom_pos > 0):
+		_debug_message("Player's position is below the floor! Adjusting...", e.Level.ERROR)
 		directional_input.y = -1 * _bottom_pos
 
 
