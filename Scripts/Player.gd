@@ -232,9 +232,6 @@ func _move_tick():
 			self.scale.y = _base_scaley * .5
 			directional_input.x = 0
 			directional_input.y += self._base_scaley
-			
-		elif (_cur_input.y < 0):
-			directional_input.y = _cur_input.y * vertical_speed
 	
 	if(not _grounded):
 		$Collision_Box.disable(true)
