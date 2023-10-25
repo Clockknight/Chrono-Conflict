@@ -19,4 +19,5 @@ enum Level {
 	TICK, 
 	FRAME, 
 	EVENT, 
-	ERROR}
+	ERROR, 
+	EXCEPTION}

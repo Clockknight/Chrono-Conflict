@@ -90,4 +90,5 @@ func _tick_camera():
 	
 func _debug_message(msg:String, level:int, p1:bool):
 	if (level >= _min_level and p1 in _observe_players):
+		msg = '==> '.repeat(level) + msg
 		print(msg)
