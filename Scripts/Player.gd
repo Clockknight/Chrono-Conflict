@@ -74,12 +74,12 @@ var _friction
 var _deceleration_max
 
 # queues
-var _interactions = []
+var _move_queue = []
 var _state_queue = []
 
 func _ready():
 	_base_scaley = scale.y
-	_friction = .01
+	_friction = .1
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
 	SFx_Audio = self.get_node("SFx_Audio")
@@ -166,28 +166,28 @@ func _state_tick():
 	_debug_message('State Tick',e.Level.TICK)
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	_debug_message('empty _state_queue: ' + str(_state_queue != []), e.Level.FRAME)
-	if _interactions != []:
-		_debug_message("Interactions: " + str(_interactions),e.Level.FRAME)
-		_debug_message("Processing interaction... " + str(_interactions[0]), e.Level.FRAME)
-		var cur_interaction = _interactions.pop_front()
+	if _move_queue != []:
+		_debug_message("Interactions: " + str(_move_queue),e.Level.FRAME)
+		_debug_message("Processing interaction... " + str(_move_queue[0]), e.Level.FRAME)
+		var cur_move = _move_queue.pop_front()
 		
-		while _interactions != []:
-			if cur_interaction.priority < _interactions[0].priority:
-				cur_interaction = _interactions.pop_front()
+		while _move_queue != []:
+			if cur_move.priority < _move_queue[0].priority:
+				cur_move = _move_queue.pop_front()
 		
 		
-		_debug_message("Damage incoming: " + str(cur_interaction.damage), e.Level.FRAME)
-		self._health -= cur_interaction.damage
+		_debug_message("Damage incoming: " + str(cur_move.damage), e.Level.FRAME)
+		self._health -= cur_move.damage
 		if self._health <= 0:
 			self._health = 0
 			self.die()
 		
-		self._state = cur_interaction.state
+		self._state = cur_move.state
 		_debug_message(str(directional_input))
-		directional_input = cur_interaction.influence
+		directional_input = cur_move.influence
 		_debug_message(str(directional_input))
 		
-		_parse_states([], e.State.STUN, 10)
+		_parse_states([], cur_move.state, cur_move.duration)
 		
 		
 		
@@ -250,7 +250,7 @@ func _move_tick():
 			
 	if(_state == e.State.STUN):
 		_debug_message(str(directional_input))
-		directional_input.x = max(directional_input.x*_friction, _deceleration_max) * -1 * int(_p1_side)
+		directional_input.x = directional_input.x*_friction * -1 * int(_p1_side)
 		
 
 	if (_bottom_pos > 0):
@@ -313,7 +313,7 @@ func _read_input():
 	return {"x":x_sum, "y":y_sum}.duplicate()
 
 func damage(incoming_move: Move_Data):
-	_interactions.append(incoming_move)
+	_move_queue.append(incoming_move)
 
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
