@@ -2,6 +2,8 @@ extends Node
 
 const e = preload('./data/Enums.gd')
 
+var _camera
+
 var p1 = false
 var p2
 var _timer
@@ -9,6 +11,7 @@ var _fps
 
 var _camera_pos
 
+var _view_width 
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
@@ -17,6 +20,10 @@ var _min_level = e.Level.EVENT
 var _observe_players = [true]
 
 func _ready():
+	_camera = self.get_parent().get_node("Camera2D")
+	#For setting ground borders
+	self.get_parent().get_node('groundline').scale.x = _stage_boundaries / 31
+	_view_width = 350 * _camera.zoom.x
 	# find all children (there should be 2)
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
@@ -31,6 +38,7 @@ func _ready():
 		# run config function on each, setting their control strings as needed depending on which is p1/p2
 		p1._configure(p2, _stage_boundaries)
 		p2._configure(p1, _stage_boundaries)
+		
 
 	#Creat timer
 	_timer = Timer.new()
@@ -79,14 +87,22 @@ func _tick_players():
 func _tick_camera():
 
 	_camera_pos = p1.position + p2.position
-	
 	_camera_pos.x /= 2
-	#	if(_cameraPosX >)
+	
+	
+	var _left_max = _stage_boundaries - _view_width
+	var _right_max = -1 *_stage_boundaries + _view_width
+	
+	if(_camera_pos.x > _left_max):
+		_camera_pos.x = _left_max
+	elif(_camera_pos.x < _right_max):
+		_camera_pos.x = _right_max
 	
 	_camera_pos.y = 0
 	# if (_camera_pos_y > 0)
 
-	self.get_parent().get_node("Camera2D").position = _camera_pos
+	_camera.position = _camera_pos
+	 
 	
 func _debug_message(msg:String, level:int, p1:bool):
 	if (level >= _min_level and p1 in _observe_players):

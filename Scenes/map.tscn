@@ -12,7 +12,7 @@ current = true
 zoom = Vector2( 3, 3 )
 editor_draw_drag_margin = true
 
-[node name="test_Groundline" type="Sprite" parent="."]
+[node name="groundline" type="Sprite" parent="."]
 scale = Vector2( 98, 0.2 )
 texture = ExtResource( 2 )
 
