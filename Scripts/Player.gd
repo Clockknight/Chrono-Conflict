@@ -183,9 +183,7 @@ func _state_tick():
 			self.die()
 		
 		self._state = cur_move.state
-		_debug_message(str(directional_input))
-		directional_input = cur_move.influence
-		_debug_message(str(directional_input))
+		directional_input = cur_move.influence * -1 if _p1_side else 1
 		
 		_parse_states([], cur_move.state, cur_move.duration)
 		
@@ -249,8 +247,7 @@ func _move_tick():
 		directional_input.x = _cur_x * self.horizontal_speed
 			
 	if(_state == e.State.STUN):
-		_debug_message(str(directional_input))
-		directional_input.x = directional_input.x*_friction * -1 * int(_p1_side)
+		directional_input.x = directional_input.x * (1-_friction) 
 		
 
 	if (_bottom_pos > 0):
@@ -260,12 +257,6 @@ func _move_tick():
 
 	if(abs(directional_input.x + self.position.x) > _stage_bounds):
 		directional_input.x -= (abs(directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
-	
-		
-#	else:
-		
-	# downbacking is irrelevant, just dont move camera if they dont agree on a move
-
 
 
 	var collision_report = move_and_collide(directional_input)
@@ -319,7 +310,7 @@ func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
 		_debug_message("Clash detected", e.Level.EVENT)
 
-func _debug_message(msg: String, level:int=e.Level.EXCEPTION):
+func _debug_message(msg: String, level:int=e.Level.DEBUG):
 	self.get_parent()._debug_message(msg, level, _p1_side)
 
 

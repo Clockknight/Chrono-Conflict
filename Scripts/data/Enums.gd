@@ -15,9 +15,13 @@ enum State {
 
 
 enum Level {
-	STEP, 
+	# For reports that occur once per sub-tick (eg movement_tick)
 	TICK, 
+	# For reports that occur once per frame (eg Tick)
 	FRAME, 
+	# For reports that occur ocassionally (eg player dying/taking damage)
 	EVENT, 
+	# For reports on something that shouldnt happen
 	ERROR, 
-	EXCEPTION}
+	# For unspecified events, for debugging
+	DEBUG}
