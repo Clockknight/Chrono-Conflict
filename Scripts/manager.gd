@@ -17,6 +17,11 @@ var _stage_boundaries = 3000
 var frames = 0
 var _min_level = e.Level.EVENT
 
+var diff_x_max= 1000
+var diff_x_min=400
+var diff_y_max = 300
+var diff_y_min = 100
+
 var _observe_players = [true]
 
 func _ready():
@@ -87,19 +92,26 @@ func _tick_players():
 func _tick_camera():
 
 	_camera_pos = p1.position + p2.position
-	_camera_pos.x /= 2
+
+	
+	# codeblock for camera zooming
+	var diff_vector = p1.position - p2.position
+	diff_vector.x = clamp(diff_vector.x, diff_x_min, diff_x_max)
+	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
 	
 	
+		
+	# codeblock for camera position
 	var _left_max = _stage_boundaries - _view_width
 	var _right_max = -1 *_stage_boundaries + _view_width
+	
+	_camera_pos.x /= 2
+	_camera_pos.y /= 4
 	
 	if(_camera_pos.x > _left_max):
 		_camera_pos.x = _left_max
 	elif(_camera_pos.x < _right_max):
 		_camera_pos.x = _right_max
-	
-	_camera_pos.y = 0
-	# if (_camera_pos_y > 0)
 
 	_camera.position = _camera_pos
 	 
