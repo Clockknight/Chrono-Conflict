@@ -11,16 +11,20 @@ var _fps
 
 var _camera_pos
 
-var _view_width 
+var _view_width = 350
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = e.Level.EVENT
+var _min_level = e.Level.ERROR
 
-var diff_x_max= 1000
-var diff_x_min=400
-var diff_y_max = 300
-var diff_y_min = 100
+var diff_vector
+
+var _left_max
+var _right_max
+const diff_x_max = 1000
+const diff_x_min = 400
+const diff_y_max = 300
+const diff_y_min = 100
 
 var _observe_players = [true]
 
@@ -28,7 +32,6 @@ func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
 	#For setting ground borders
 	self.get_parent().get_node('groundline').scale.x = _stage_boundaries / 31
-	_view_width = 350 * _camera.zoom.x
 	# find all children (there should be 2)
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
@@ -91,27 +94,28 @@ func _tick_players():
 
 func _tick_camera():
 
-	_camera_pos = p1.position + p2.position
 
 	
 	# codeblock for camera zooming
-	var diff_vector = p1.position - p2.position
+	diff_vector = p1.position - p2.position
 	diff_vector.x = clamp(diff_vector.x, diff_x_min, diff_x_max)
 	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
+	
+	_camera.zoom.x = abs(diff_vector.x) / 160
+	_camera.zoom.y = _camera.zoom.x
+	_view_width = 350 * _camera.zoom.x
 	
 	
 		
 	# codeblock for camera position
-	var _left_max = _stage_boundaries - _view_width
-	var _right_max = -1 *_stage_boundaries + _view_width
+	_camera_pos = p1.position + p2.position	
+	_left_max = _stage_boundaries - _view_width
+	_right_max = -1 *_stage_boundaries + _view_width
 	
 	_camera_pos.x /= 2
-	_camera_pos.y /= 4
+	_camera_pos.y /= 8
 	
-	if(_camera_pos.x > _left_max):
-		_camera_pos.x = _left_max
-	elif(_camera_pos.x < _right_max):
-		_camera_pos.x = _right_max
+	_camera_pos.x = clamp(_camera_pos.x,  _right_max, _left_max)
 
 	_camera.position = _camera_pos
 	 
