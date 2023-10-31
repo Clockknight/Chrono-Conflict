@@ -60,6 +60,7 @@ var _state = e.State.FREE
 var _state_frames_left = 1
 var _bottom_pos = 0
 var _base_scaley
+var _base_scalex 
 var _stage_bounds 
 var _stored_x = 0
 var _cur_x = 0
@@ -79,6 +80,7 @@ var _state_queue = []
 
 func _ready():
 	_base_scaley = scale.y
+	_base_scalex = scale.x
 	_friction = .1
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
@@ -240,7 +242,13 @@ func _move_tick():
 	if(not _grounded):
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
-		directional_input.y = min(min(gravity + directional_input.y , terminal_speed), -1 * _bottom_pos)
+		directional_input.y = min(gravity + directional_input.y , terminal_speed)
+		
+		# clause for landing
+		if directional_input.y >= -1 * _bottom_pos:
+			directional_input.y = -1 * _bottom_pos
+			directional_input.x =  100 
+		
 			
 		
 		#todo fix double jumping
