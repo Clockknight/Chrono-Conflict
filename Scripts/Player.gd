@@ -24,6 +24,7 @@ var _state_sprites = [
 	_base_sprite,
 	_base_sprite,
 	_base_sprite]
+var _input_queue = []
 	
 
 	
@@ -85,20 +86,11 @@ func _ready():
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
 	SFx_Audio = self.get_node("SFx_Audio")
-
-## Calls the collision box's method to figure out the bottom most pixel of this object
-func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
-	_grounded = _bottom_pos >= 0
-
-func _sidecheck():
-	if _p1_side != (self.position.x < _other.position.x):
-		_p1_side = not _p1_side
 	
-	if _grounded:
-		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
-			self.scale.x *= -1
-			self._flipped = not _flipped
+func _unhandled_input(event):
+	if event is InputEventKey:
+		_input_queue.append([event.scancode, event.pressed])
+
 
 
 func _configure(other_player, bounds):
@@ -163,7 +155,14 @@ func _input_tick():
 	#TODO
 	#Later, this function can send the current input to a stack of inputs, so motions can be read there instead of here
 	
+
+func _read_input():
+	var x_sum = Input.get_axis(_left_string, _right_string)
+	var y_sum = Input.get_axis(_up_string, _down_string)
 	
+	return {"x":x_sum, "y":y_sum}.duplicate()
+	
+		
 func _state_tick():
 	_debug_message('State Tick',e.Level.TICK)
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
@@ -283,7 +282,20 @@ func _box_tick():
 			_state_frames_left = 15
 			_state = e.State.CURR
 
+## Calls the collision box's method to figure out the bottom most pixel of this object
+func _calc_bottom_y():
+	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
+	_grounded = _bottom_pos >= 0
 
+func _sidecheck():
+	if _p1_side != (self.position.x < _other.position.x):
+		_p1_side = not _p1_side
+	
+	if _grounded:
+		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
+			self.scale.x *= -1
+			self._flipped = not _flipped
+			
 func _interact_tick():
 	_debug_message('Interact Tick', 2)
 	for _i in self.get_children():
@@ -305,11 +317,6 @@ func _process_tick():
 	#elif _state == e.State.STUN:
 	#	$Sprite.set_texture()
 
-func _read_input():
-	var x_sum = Input.get_axis(_left_string, _right_string)
-	var y_sum = Input.get_axis(_up_string, _down_string)
-	
-	return {"x":x_sum, "y":y_sum}.duplicate()
 
 func damage(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
