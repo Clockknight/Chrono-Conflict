@@ -24,7 +24,6 @@ var _state_sprites = [
 	_base_sprite,
 	_base_sprite,
 	_base_sprite]
-var _input_queue = []
 	
 
 	
@@ -47,6 +46,7 @@ var _a1_string = "ui_p1a1"
 var _a2_string = "ui_p1a2"
 var _a3_string = "ui_p1a3"
 var _a4_string = "ui_p1a4"
+
 var _cur_input 
 
 # configurations 
@@ -78,19 +78,18 @@ var _deceleration_max
 # queues
 var _move_queue = []
 var _state_queue = []
+var _input_queue = []
+var _input_history = []
 
 func _ready():
 	_base_scaley = scale.y
 	_base_scalex = scale.x
+	_cur_input = _read_input(true)
 	_friction = .1
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
 	SFx_Audio = self.get_node("SFx_Audio")
 	
-func _unhandled_input(event):
-	if event is InputEventKey:
-		_input_queue.append([event.scancode, event.pressed])
-
 
 
 func _configure(other_player, bounds):
@@ -109,6 +108,13 @@ func _configure(other_player, bounds):
 		_a2_string = "ui_p2a2"
 		_a3_string = "ui_p2a3"
 		_a4_string = "ui_p2a4"
+
+
+func _unhandled_input(event):
+	if event is InputEventKey:
+		_input_queue.append([OS.get_scancode_string(event.scancode), event.pressed])
+		_debug_message(str(_input_queue[-1]))
+
 
 func tick():
 	_debug_message('============ Tick Start ', 2)
@@ -139,29 +145,45 @@ func tick():
 func _input_tick():
 	_debug_message('Input Tick', e.Level.TICK)
 	_cur_input = _read_input()
+
+	_interpret_inputs(_cur_input)
+	# todo	
+	#	refactor other functions to use an input variable to figure out what to do
+	
+	
+
+func _read_input(new:bool = false):
+	var x_sum = Input.get_axis(_left_string, _right_string)
+	var y_sum = Input.get_axis(_up_string, _down_string)
+	
+	var a = 0
+	var b = 0 
+	var c = 0
+	var d = 0
+	if not new: 
+		
+		
+		_debug_message(str(event.is_action("ui_p1a1")))
+		
+		a = _cur_input.a
+		b= _cur_input.b
+		c= _cur_input.c
+		d = _cur_input.d
+		
 		
 	
+	
+	return {"x":x_sum, "y":y_sum, "a":a, "b":b, "c":c, "d":d}.duplicate()
+
+func _interpret_inputs(values:Dictionary):
+	
 	if _state == e.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
-		if Input.is_action_pressed(_a2_string):
+		if Input.is_action_pressed(_up_string):
 			_parse_states(['JMPS|5'])
 			_cur_x = _stored_x
 			_stored_x = _cur_input['x']
 		
-	
-	# todo	
-	#	refactor other functions to use an input variable to figure out what to do
-	
-		
-	#TODO
-	#Later, this function can send the current input to a stack of inputs, so motions can be read there instead of here
-	
 
-func _read_input():
-	var x_sum = Input.get_axis(_left_string, _right_string)
-	var y_sum = Input.get_axis(_up_string, _down_string)
-	
-	return {"x":x_sum, "y":y_sum}.duplicate()
-	
 		
 func _state_tick():
 	_debug_message('State Tick',e.Level.TICK)
