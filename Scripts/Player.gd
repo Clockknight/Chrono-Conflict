@@ -108,14 +108,15 @@ func _configure(other_player, bounds):
 		_a2_string = "ui_p2a2"
 		_a3_string = "ui_p2a3"
 		_a4_string = "ui_p2a4"
+		
 
 
 func _unhandled_input(event):
 	if event is InputEventKey:
-		_input_queue.append([OS.get_scancode_string(event.scancode), event.pressed])
+		_input_queue.append([event, event.pressed])
 		_debug_message(str(_input_queue[-1]))
-
-
+		
+		
 func tick():
 	_debug_message('============ Tick Start ', 2)
 	# Read Inputs and save the input for this frame for later use
@@ -156,19 +157,31 @@ func _read_input(new:bool = false):
 	var x_sum = Input.get_axis(_left_string, _right_string)
 	var y_sum = Input.get_axis(_up_string, _down_string)
 	
-	var a = 0
-	var b = 0 
-	var c = 0
-	var d = 0
+	var a = false
+	var b = false
+	var c = false
+	var d = false
 	if not new: 
-		
-		
-		_debug_message(str(event.is_action("ui_p1a1")))
+		var _new_input
+		var _ninput_event
+		var _ninput_state
 		
 		a = _cur_input.a
 		b= _cur_input.b
 		c= _cur_input.c
 		d = _cur_input.d
+		if _input_queue != []:
+			_debug_message("Processing input queue...", e.Level.TICK)
+			
+		
+		while _input_queue != []:
+			_new_input = _input_queue.pop_front()
+			_ninput_event = _new_input[0]
+			_ninput_state = _new_input[1]
+			
+			_ninput_event.is_action(_a1_string)
+			
+			_debug_message(str(_new_input))
 		
 		
 	
