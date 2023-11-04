@@ -12,7 +12,7 @@ var _fps
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 60
+var _framerate = 3
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = e.Level.ERROR
@@ -98,10 +98,14 @@ func _tick_camera():
 	
 	# codeblock for camera zooming
 	diff_vector = p1.position - p2.position
-	diff_vector.x = clamp(diff_vector.x, diff_x_min, diff_x_max)
+	
+	_debug_message(str(diff_vector.x), e.Level.DEBUG, true)
+	diff_vector.x = clamp(abs(diff_vector.x), diff_x_min, diff_x_max)
+	_debug_message(str(diff_vector.x), e.Level.DEBUG, true)
 	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
 	
-	_camera.zoom.x = abs(diff_vector.x) / 160
+	
+	_camera.zoom.x = diff_vector.x/ 160
 	_camera.zoom.y = _camera.zoom.x
 	_view_width = 350 * _camera.zoom.x
 	
@@ -116,9 +120,9 @@ func _tick_camera():
 	_camera_pos.y /= 8
 	
 	_camera_pos.x = clamp(_camera_pos.x,  _right_max, _left_max)
-
+	
 	_camera.position = _camera_pos
-	 
+	
 	
 func _debug_message(msg:String, level:int, p1:bool):
 	if (level >= _min_level and p1 in _observe_players):

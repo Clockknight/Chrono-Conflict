@@ -114,11 +114,11 @@ func _configure(other_player, bounds):
 func _unhandled_input(event):
 	if event is InputEventKey:
 		_input_queue.append([event, event.pressed])
-		_debug_message(str(_input_queue[-1]))
+		#_debug_message(str(_input_queue[-1]))
 		
 		
 func tick():
-	_debug_message('============ Tick Start ', 2)
+	_debug_message('Tick Start ============', e.Level.TICK)
 	# Read Inputs and save the input for this frame for later use
 	_input_tick()
 	_other._input_tick()
@@ -181,7 +181,7 @@ func _read_input(new:bool = false):
 			
 			_ninput_event.is_action(_a1_string)
 			
-			_debug_message(str(_new_input))
+			#_debug_message(str(_new_input))
 		
 		
 	
