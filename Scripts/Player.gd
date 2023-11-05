@@ -66,6 +66,8 @@ var _stage_bounds
 var _stored_x = 0
 var _cur_x = 0
 var _health
+var _jumps_max =2 
+var _jumps
 
 # floats
 var horizontal_speed 
@@ -95,6 +97,7 @@ func _ready():
 func _configure(other_player, bounds):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
+	_jumps = _jumps_max
 	self._stage_bounds = bounds
 
 	_sidecheck()
@@ -239,10 +242,11 @@ func _state_tick():
 				_debug_message('state queue empty - returning to free', e.Level.FRAME)
 				_state = e.State.FREE
 			else:
-				if _state == e.State.JMPS:
+				if _state == e.State.JMPS and _jumps > 0:
 					_debug_message('jump started', e.Level.FRAME)
 					directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
+					_jumps -= 1
 					
 				
 				_state = new_state[0]
@@ -258,14 +262,19 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
-	if (_grounded and _state == e.State.FREE):		
-		$Collision_Box.disable(false)
-		#X movement
-		directional_input.x = _cur_input.x
-		directional_input.x *= horizontal_speed
+	if _grounded:
+		if _state != e.State.JMPS:
+			_jumps = _jumps_max
 		
-		#Y movement
-		directional_input.y = 0
+		if _state == e.State.FREE:
+			$Collision_Box.disable(false)
+			#X movement
+			directional_input.x = _cur_input.x
+			directional_input.x *= horizontal_speed
+			
+			
+			#Y movement
+			directional_input.y = 0
 		
 		
 		if (_cur_input.y > 0):
