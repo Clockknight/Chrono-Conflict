@@ -99,9 +99,7 @@ func _tick_camera():
 	# codeblock for camera zooming
 	diff_vector = p1.position - p2.position
 	
-	_debug_message(str(diff_vector.x), e.Level.DEBUG, true)
 	diff_vector.x = clamp(abs(diff_vector.x), diff_x_min, diff_x_max)
-	_debug_message(str(diff_vector.x), e.Level.DEBUG, true)
 	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
 	
 	
@@ -124,7 +122,7 @@ func _tick_camera():
 	_camera.position = _camera_pos
 	
 	
-func _debug_message(msg:String, level:int, p1:bool):
+func _debug_message(level:int, msg:String, p1:bool):
 	if (level >= _min_level and p1 in _observe_players):
 		msg = '==> '.repeat(level+1) + msg
 		print(msg)

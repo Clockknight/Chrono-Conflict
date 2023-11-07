@@ -121,7 +121,7 @@ func _unhandled_input(event):
 		
 		
 func tick():
-	_debug_message('Tick Start ============', e.Level.TICK)
+	_debug_message(e.Level.FRAME, 'Tick Start ============')
 	# Read Inputs and save the input for this frame for later use
 	_input_tick()
 	_other._input_tick()
@@ -147,7 +147,7 @@ func tick():
 
 
 func _input_tick():
-	_debug_message('Input Tick', e.Level.TICK)
+	_debug_message(e.Level.FRAME, 'Input Tick' )
 	_cur_input = _read_input()
 
 	_interpret_inputs(_cur_input)
@@ -174,7 +174,7 @@ func _read_input(new:bool = false):
 		c= _cur_input.c
 		d = _cur_input.d
 		if _input_queue != []:
-			_debug_message("Processing input queue...", e.Level.TICK)
+			_debug_message(e.Level.FRAME, "Processing input queue...")
 			
 		
 		while _input_queue != []:
@@ -202,12 +202,12 @@ func _interpret_inputs(values:Dictionary):
 
 		
 func _state_tick():
-	_debug_message('State Tick',e.Level.TICK)
+	_debug_message(e.Level.FRAME, 'State Tick')
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
-	_debug_message('empty _state_queue: ' + str(_state_queue != []), e.Level.FRAME)
+	_debug_message(e.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
 	if _move_queue != []:
-		_debug_message("Interactions: " + str(_move_queue),e.Level.FRAME)
-		_debug_message("Processing interaction... " + str(_move_queue[0]), e.Level.FRAME)
+		_debug_message(e.Level.FRAME, "Interactions: " + str(_move_queue))
+		_debug_message(e.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
 		var cur_move = _move_queue.pop_front()
 		
 		while _move_queue != []:
@@ -215,7 +215,7 @@ func _state_tick():
 				cur_move = _move_queue.pop_front()
 		
 		
-		_debug_message("Damage incoming: " + str(cur_move.damage), e.Level.FRAME)
+		_debug_message(e.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 		self._health -= cur_move.damage
 		if self._health <= 0:
 			self._health = 0
@@ -236,14 +236,14 @@ func _state_tick():
 		_state_frames_left -= 1
 		if _state_frames_left <= 0:
 			var new_state = _state_queue.pop_front()
-			_debug_message("new_state: " + str(new_state), e.Level.FRAME)
-			_debug_message("_state_queue: " + str(_state_queue), e.Level.FRAME)
+			_debug_message( e.Level.FRAME, "new_state: " + str(new_state))
+			_debug_message(e.Level.FRAME, "_state_queue: " + str(_state_queue))
 			if new_state == null:
-				_debug_message('state queue empty - returning to free', e.Level.FRAME)
+				_debug_message(e.Level.FRAME, 'state queue empty - returning to free')
 				_state = e.State.FREE
 			else:
 				if _state == e.State.JMPS and _jumps > 0:
-					_debug_message('jump started', e.Level.FRAME)
+					_debug_message(e.Level.FRAME, 'jump started')
 					directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
 					_jumps -= 1
@@ -258,7 +258,7 @@ func _state_tick():
 		
 
 func _move_tick():
-	_debug_message('Move Tick', 2)
+	_debug_message(e.Level.FRAME, 'Move Tick')
 	
 	_calc_bottom_y()
 	
@@ -302,7 +302,7 @@ func _move_tick():
 		
 
 	if (_bottom_pos > 0):
-		_debug_message("Player's position is below the floor! Adjusting...", e.Level.ERROR)
+		_debug_message( e.Level.ERROR, "Player's position is below the floor! Adjusting...")
 		directional_input.y = -1 * _bottom_pos
 
 
@@ -319,7 +319,7 @@ func _move_tick():
 	return directional_input
 
 func _box_tick():
-	_debug_message('Box Tick', 2)
+	_debug_message(e.Level.FRAME, 'Box Tick')
 	if _state == e.State.FREE:
 		if Input.is_action_just_pressed(_a1_string):
 			spawn_box()
@@ -341,13 +341,13 @@ func _sidecheck():
 			self._flipped = not _flipped
 			
 func _interact_tick():
-	_debug_message('Interact Tick', 2)
+	_debug_message(e.Level.FRAME, 'Interact Tick')
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()
 
 func _process_tick():
-	_debug_message('Process Tick', 2)
+	_debug_message(e.Level.FRAME, 'Process Tick')
 	# look at list of interactions, compare highest priority value on list of interactions against other
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
@@ -355,7 +355,7 @@ func _process_tick():
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
-	#_debug_message("_state value: " + str(_state), 3)
+	#_debug_message(e.Level.EVENT, "_state value: " + str(_state))
 	#if _state == e.State.FREE:
 	
 	#elif _state == e.State.STUN:
@@ -367,10 +367,13 @@ func damage(incoming_move: Move_Data):
 
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
-		_debug_message("Clash detected", e.Level.EVENT)
+		_debug_message(e.Level.EVENT, "Clash detected")
 
-func _debug_message(msg: String, level:int=e.Level.DEBUG):
-	self.get_parent()._debug_message(msg, level, _p1_side)
+func _debug_message(level, msg:String=""):
+	if level is String:
+		msg= level
+		level = e.Level.DEBUG
+	self.get_parent()._debug_message( level, msg, _p1_side)
 
 
 # func spawn_boxes(framedata: 2dArray):
@@ -395,7 +398,7 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incoming_duration: int = 0):
 	
 	#if _state_queue != []:
-		#_debug_message('_parse_states() called when _state_queue not empty', e.Level.EVENT)
+		#_debug_message(e.Level.EVENT, '_parse_states() called when _state_queue not empty')
 	if incoming != []:
 		for s in incoming:
 			_debug_message('State being parsed!!')
@@ -407,12 +410,12 @@ func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incom
 	_debug_message(str(incoming_duration))
 	if incoming_state != e.State.FREE and incoming_duration >= 0:
 		if(incoming_duration) <= 0:
-			_debug_message('State with duration of 0 passed in!', e.Level.ERROR)
+			_debug_message( e.Level.ERROR, 'State with duration of 0 passed in!')
 		_state_queue.append([incoming_state, incoming_duration])
 			
-	_debug_message('Empty state passed to parse_states', e.Level.ERROR)
+	_debug_message(e.Level.ERROR, 'Empty state passed to parse_states')
 	return
 		
 		
 func die():
-	_debug_message('I am Defeated!.',  e.Level.EVENT)
+	_debug_message(e.Level.EVENT, 'I am Defeated!.')
