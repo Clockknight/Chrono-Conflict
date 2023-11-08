@@ -91,7 +91,6 @@ func _ready():
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
 	SFx_Audio = self.get_node("SFx_Audio")
-	
 
 
 func _configure(other_player, bounds):
@@ -112,12 +111,16 @@ func _configure(other_player, bounds):
 		_a3_string = "ui_p2a3"
 		_a4_string = "ui_p2a4"
 		
+	
+	_debug_message(str(InputMap.get_action_list("ui_p1up")[0].scancode))
+	_debug_message(str(InputMap.get_action_list("ui_p1down")[0].scancode))
 
 
 func _unhandled_input(event):
 	if event is InputEventKey:
 		_input_queue.append([event, event.pressed])
-		#_debug_message(str(_input_queue[-1]))
+		_debug_message(str(_input_queue[-1]))
+		_debug_message(str(event.scancode))
 		
 		
 func tick():
@@ -147,7 +150,7 @@ func tick():
 
 
 func _input_tick():
-	_debug_message(e.Level.FRAME, 'Input Tick' )
+	_debug_message(e.Level.FRAME, 'Input Tick')
 	_cur_input = _read_input()
 
 	_interpret_inputs(_cur_input)
@@ -373,6 +376,9 @@ func _debug_message(level, msg:String=""):
 	if level is String:
 		msg= level
 		level = e.Level.DEBUG
+	elif 2 != typeof(level):
+		msg = "Misconfigured _Debug String..." + str(level)
+		level = e.Level.DEBUG
 	self.get_parent()._debug_message( level, msg, _p1_side)
 
 
@@ -401,13 +407,13 @@ func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incom
 		#_debug_message(e.Level.EVENT, '_parse_states() called when _state_queue not empty')
 	if incoming != []:
 		for s in incoming:
-			_debug_message('State being parsed!!')
+#			_debug_message('State being parsed!!')
 			s = s.split('|')
 			s = [e.State[s[0]], int(s[1])]
 			_state_queue.append(s)
 			
-	_debug_message(str(incoming_state))
-	_debug_message(str(incoming_duration))
+#	_debug_message(str(incoming_state))
+#	_debug_message(str(incoming_duration))
 	if incoming_state != e.State.FREE and incoming_duration >= 0:
 		if(incoming_duration) <= 0:
 			_debug_message( e.Level.ERROR, 'State with duration of 0 passed in!')
