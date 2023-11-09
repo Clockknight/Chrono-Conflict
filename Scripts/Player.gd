@@ -42,11 +42,11 @@ var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
 var _left_string = "ui_p1left"
 var _right_string = "ui_p1right"
-var _a1_string = "ui_p1a1"
-var _a2_string = "ui_p1a2"
-var _a3_string = "ui_p1a3"
-var _a4_string = "ui_p1a4"
-
+var _a_string = "ui_p1a1"
+var _b_string = "ui_p1a2"
+var _c_string = "ui_p1a3"
+var _d_string = "ui_p1a4"
+var _input_dict
 var _cur_input 
 
 # configurations 
@@ -101,20 +101,24 @@ func _configure(other_player, bounds):
 
 	_sidecheck()
 	
-	if not _p1_side:
-		_up_string = "ui_p2up"
-		_down_string = "ui_p2down"
-		_left_string = "ui_p2left"
-		_right_string = "ui_p2right"
-		_a1_string = "ui_p2a1"
-		_a2_string = "ui_p2a2"
-		_a3_string = "ui_p2a3"
-		_a4_string = "ui_p2a4"
+	_up_string = update_dictionary(_up_string, "ui_p2up")
+	_down_string= update_dictionary(_down_string, "ui_p2down")
+	_left_string =update_dictionary(_left_string, "ui_p2left")
+	_right_string=update_dictionary(_right_string, "ui_p2right")
+	_a_string=update_dictionary(_a_string, "ui_p2a")
+	_b_string=update_dictionary(_b_string, "ui_p2b")
+	_c_string=update_dictionary(_c_string,  "ui_p2c")
+	_d_string=update_dictionary(_d_string, "ui_p2d")
 		
 	
 	_debug_message(str(InputMap.get_action_list("ui_p1up")[0].scancode))
 	_debug_message(str(InputMap.get_action_list("ui_p1down")[0].scancode))
 
+func update_dictionary(player1_option:String, player2_option:String):
+	if _p1_side:
+		return player1_option
+	else:
+		return player2_option
 
 func _unhandled_input(event):
 	if event is InputEventKey:
@@ -154,8 +158,8 @@ func _input_tick():
 	_cur_input = _read_input()
 
 	_interpret_inputs(_cur_input)
-	# todo	
-	#	refactor other functions to use an input variable to figure out what to do
+#		todo
+#		refactor other functions to use an input variable to figure out what to do
 	
 	
 
@@ -185,7 +189,7 @@ func _read_input(new:bool = false):
 			_ninput_event = _new_input[0]
 			_ninput_state = _new_input[1]
 			
-			_ninput_event.is_action(_a1_string)
+			_ninput_event.is_action(_a_string)
 			
 			#_debug_message(str(_new_input))
 		
@@ -324,7 +328,7 @@ func _move_tick():
 func _box_tick():
 	_debug_message(e.Level.FRAME, 'Box Tick')
 	if _state == e.State.FREE:
-		if Input.is_action_just_pressed(_a1_string):
+		if Input.is_action_just_pressed(_a_string):
 			spawn_box()
 			_state_frames_left = 15
 			_state = e.State.CURR

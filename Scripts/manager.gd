@@ -93,10 +93,7 @@ func _tick_players():
 
 
 func _tick_camera():
-
-
-	
-	# codeblock for camera zooming
+#	codeblock for camera zooming
 	diff_vector = p1.position - p2.position
 	
 	diff_vector.x = clamp(abs(diff_vector.x), diff_x_min, diff_x_max)
