@@ -42,11 +42,11 @@ var _up_string = "ui_p1up"
 var _down_string = "ui_p1down"
 var _left_string = "ui_p1left"
 var _right_string = "ui_p1right"
-var _a_string = "ui_p1a1"
-var _b_string = "ui_p1a2"
-var _c_string = "ui_p1a3"
-var _d_string = "ui_p1a4"
-var _input_dict
+var _a_string = "ui_p1a"
+var _b_string = "ui_p1b"
+var _c_string = "ui_p1c"
+var _d_string = "ui_p1d"
+var _input_dict = {}
 var _cur_input 
 
 # configurations 
@@ -110,23 +110,31 @@ func _configure(other_player, bounds):
 	_c_string=update_dictionary(_c_string,  "ui_p2c")
 	_d_string=update_dictionary(_d_string, "ui_p2d")
 		
-	
+	_debug_message(str(_input_dict))
 	_debug_message(str(InputMap.get_action_list("ui_p1up")[0].scancode))
 	_debug_message(str(InputMap.get_action_list("ui_p1down")[0].scancode))
-
-func update_dictionary(player1_option:String, player2_option:String):
-	if _p1_side:
-		return player1_option
-	else:
-		return player2_option
 
 func _unhandled_input(event):
 	if event is InputEventKey:
 		_input_queue.append([event, event.pressed])
 		_debug_message(str(_input_queue[-1]))
 		_debug_message(str(event.scancode))
-		
-		
+
+func update_dictionary(player1_option:String, player2_option:String):
+	var res
+	
+	if _p1_side:
+		res = player1_option
+	
+	else:
+		res = player2_option
+	
+#	_debug_message(res)
+#	_debug_message(str(InputMap.get_action_list(res)))
+	_input_dict[InputMap.get_action_list(res).pop_front().scancode] = res
+	
+	return res
+	
 func tick():
 	_debug_message(e.Level.FRAME, 'Tick Start ============')
 	# Read Inputs and save the input for this frame for later use
