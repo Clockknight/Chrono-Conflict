@@ -131,7 +131,12 @@ func update_dictionary(player1_option:String, player2_option:String):
 	
 #	_debug_message(res)
 #	_debug_message(str(InputMap.get_action_list(res)))
-	_input_dict[InputMap.get_action_list(res).pop_front().scancode] = res
+#	_debug_message(str(InputMap.get_action_list(res)[0]))
+#	_debug_message(str(InputMap.get_action_list(res)[0].get_scancode()))
+	if InputMap.get_action_list(res).pop_front().physical_scancode == 0:
+		_input_dict[InputMap.get_action_list(res).pop_front().scancode] = res
+	else:
+		_input_dict[InputMap.get_action_list(res).pop_front().physical_scancode] = res
 	
 	return res
 	
