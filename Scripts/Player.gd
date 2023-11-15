@@ -111,14 +111,11 @@ func _configure(other_player, bounds):
 	_d_string=update_dictionary(_d_string, "ui_p2d")
 		
 	_debug_message(str(_input_dict))
-	_debug_message(str(InputMap.get_action_list("ui_p1up")[0].scancode))
-	_debug_message(str(InputMap.get_action_list("ui_p1down")[0].scancode))
 
 func _unhandled_input(event):
 	if event is InputEventKey:
-		_input_queue.append([event, event.pressed])
-		_debug_message(str(_input_queue[-1]))
-		_debug_message(str(event.scancode))
+		if event.scancode in _input_dict:
+			_input_queue.append([event, event.pressed])
 
 func update_dictionary(player1_option:String, player2_option:String):
 	var res
