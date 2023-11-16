@@ -3,8 +3,8 @@ extends KinematicBody2D
 
 # external classes
 const Move_Data = preload('./data/Move_Data.gd')
+const i = preload('./data/Input_Data.gd')
 const e = preload('./data/Enums.gd')
-
 # Constants
 const BUFFER_WINDOW = 3
 
@@ -110,7 +110,7 @@ func _configure(other_player, bounds):
 	_c_string=update_dictionary(_c_string,  "ui_p2c")
 	_d_string=update_dictionary(_d_string, "ui_p2d")
 		
-	_debug_message(str(_input_dict))
+	_debug_message( e.Level.EVENT, str(_input_dict))
 
 func _unhandled_input(event):
 	if event is InputEventKey:
@@ -167,9 +167,12 @@ func _input_tick():
 	_debug_message(e.Level.FRAME, 'Input Tick')
 	_cur_input = _read_input()
 
+	_debug_message(_input_queue)
 	_interpret_inputs(_cur_input)
 #		todo
 #		refactor other functions to use an input variable to figure out what to do
+
+	_debug_message(_input_queue)
 	
 	
 
@@ -390,9 +393,12 @@ func _debug_message(level, msg:String=""):
 	if level is String:
 		msg= level
 		level = e.Level.DEBUG
-	elif 2 != typeof(level):
+	elif typeof(level) != TYPE_INT:
 		msg = "Misconfigured _Debug String..." + str(level)
+		print(typeof(level) != TYPE_INT)
+		
 		level = e.Level.DEBUG
+	
 	self.get_parent()._debug_message( level, msg, _p1_side)
 
 
