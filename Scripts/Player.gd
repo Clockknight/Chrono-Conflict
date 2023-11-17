@@ -24,11 +24,6 @@ var _state_sprites = [
 	_base_sprite,
 	_base_sprite,
 	_base_sprite]
-	
-
-	
-# enums
-
 
 # nodes
 var collision : CollisionShape2D 
@@ -167,12 +162,12 @@ func _input_tick():
 	_debug_message(e.Level.FRAME, 'Input Tick')
 	_cur_input = _read_input()
 
-	_debug_message(_input_queue)
+#	_debug_message(_input_queue)
 	_interpret_inputs(_cur_input)
 #		todo
 #		refactor other functions to use an input variable to figure out what to do
 
-	_debug_message(_input_queue)
+#	_debug_message(_input_queue)
 	
 	
 
@@ -205,6 +200,10 @@ func _read_input(new:bool = false):
 			_ninput_event.is_action(_a_string)
 			
 			#_debug_message(str(_new_input))
+	
+	_cur_input = i.new(x_sum, y_sum, a,b,c,d)
+	_debug_message(_cur_input.report())
+
 		
 		
 	
