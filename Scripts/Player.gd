@@ -171,38 +171,49 @@ func _input_tick():
 	
 	
 
-func _read_input(new:bool = false):
-	var x_sum = Input.get_axis(_left_string, _right_string)
-	var y_sum = Input.get_axis(_up_string, _down_string)
+func _read_input(first:bool = false):
+	# Process all the queued inputs, and pass the resulting input to cur innput next
+	
+	var x_sum = 0
+	var y_sum = 0
 	
 	var a = false
 	var b = false
 	var c = false
 	var d = false
-	if not new: 
-		var _new_input
-		var _ninput_event
-		var _ninput_state
-		
-		a = _cur_input.a
-		b= _cur_input.b
-		c= _cur_input.c
-		d = _cur_input.d
-		if _input_queue != []:
-			_debug_message(e.Level.FRAME, "Processing input queue...")
-			
-		
-		while _input_queue != []:
-			_new_input = _input_queue.pop_front()
-			_ninput_event = _new_input[0]
-			_ninput_state = _new_input[1]
-			
-			_ninput_event.is_action(_a_string)
-			
-			#_debug_message(str(_new_input))
 	
-	_cur_input = i.new(x_sum, y_sum, a,b,c,d)
-	_debug_message(_cur_input.report())
+	var new_input
+	var _ninput_event
+	var _ninput_state
+
+	if not first:
+		x_sum = _cur_input.horiz
+		y_sum = _cur_input.vert
+		a = _cur_input.a
+		b = _cur_input.b
+		c = _cur_input.c
+		d = _cur_input.d
+		
+	if _input_queue != []:
+		_debug_message(e.Level.FRAME, "Processing input queue...")
+		
+	
+	while _input_queue != []:
+		new_input = _input_queue.pop_front()
+		_ninput_event = new_input[0].scancode
+		_ninput_state = new_input[1]
+		
+		_debug_message(str(new_input))
+		_debug_message(str(new_input[0].scancode))
+		_debug_message(_input_dict[new_input[0].scancode])
+		_debug_message(str(_ninput_event.is_action(_a_string)))
+		
+		match _input_dict[_ninput_event]:
+			'ui_p1up', 'uip2up':
+				y_sum += 1 * (_ninput_state * -1 + 1)
+	
+	new_input = i.new(x_sum, y_sum, a,b,c,d)
+#	_debug_message(_cur_input.report())
 
 		
 		
