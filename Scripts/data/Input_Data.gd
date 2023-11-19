@@ -22,6 +22,7 @@ func _init( left=0,up=0,a=false,b=false,c=false,d=false,older_data=null):
 	if older_data != null:
 		if compare(older_data):
 			older_data.duration += 1
+			queue_free()
 		else:
 			older_data.next = self
 			
