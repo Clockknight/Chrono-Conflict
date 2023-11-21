@@ -208,12 +208,15 @@ func _read_input(first:bool = false):
 		_debug_message(_input_dict[new_input[0].scancode])
 		_debug_message(str(_ninput_event.is_action(_a_string)))
 		
+		
+		# TODO add if so we only go in here if it is the correct player
 		match _input_dict[_ninput_event]:
-			'ui_p1up', 'uip2up':
+			'ui_p1up', 'ui_p2up':
 				y_sum += 1 * (_ninput_state * -1 + 1)
+			'ui_'
 	
 	new_input = i.new(x_sum, y_sum, a,b,c,d)
-#	_debug_message(_cur_input.report())
+	_debug_message(_cur_input.report())
 
 		
 		
