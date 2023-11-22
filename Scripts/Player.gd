@@ -186,6 +186,8 @@ func _read_input(first:bool = false):
 	var _ninput_event
 	var _ninput_state
 
+	_debug_message("Test")
+	_debug_message(str(_cur_input))
 	if not first:
 		x_sum = _cur_input.horiz
 		y_sum = _cur_input.vert
@@ -211,11 +213,25 @@ func _read_input(first:bool = false):
 		
 		# TODO add if so we only go in here if it is the correct player
 		match _input_dict[_ninput_event]:
-			'ui_p1up', 'ui_p2up':
+			_up_string:
 				y_sum += 1 * (_ninput_state * -1 + 1)
-			'ui_'
+			_down_string:
+				y_sum -= 1 * (_ninput_state * -1 + 1)
+			_left_string:
+				x_sum += 1 * (_ninput_state * -1 + 1)
+			_right_string:
+				x_sum -= 1 * (_ninput_state * -1 + 1)
+			_a_string:
+				a = _ninput_state
+			_b_string:
+				b = _ninput_state
+			_c_string:
+				c = _ninput_state
+			_d_string:
+				d = _ninput_state
 	
 	new_input = i.new(x_sum, y_sum, a,b,c,d)
+	_cur_input = new_input
 	_debug_message(_cur_input.report())
 
 		
