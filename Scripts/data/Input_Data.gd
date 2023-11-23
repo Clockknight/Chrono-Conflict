@@ -1,9 +1,9 @@
 extends Node
 
-var duration = 0
+var duration 
 
-var horiz 
-var vert 
+var x 
+var y 
 
 var a 
 var b 
@@ -12,16 +12,22 @@ var d
 
 var next = null
 
+var test 
+
 func _init( left=0,up=0,a=false,b=false,c=false,d=false,older_data=null):
-	self.horiz = left
-	self.vert = up
+	self.duration = 0
+	
+	self.x = left
+	self.y = up
 	self.a = a
 	self.b = b
 	self.c = c
 	self.d = d 
+	self.test = older_data
+	
 	if older_data != null:
 		if compare(older_data):
-			older_data.duration += 1
+			older_data.duration = older_data.duration + 1
 			queue_free()
 		else:
 			older_data.next = self
@@ -30,19 +36,19 @@ func _init( left=0,up=0,a=false,b=false,c=false,d=false,older_data=null):
 			
 
 func compare(o):
-	return a == o.a and b==o.b and c==o.c and d==o.d and horiz==o.horiz and vert==o.vert
+	return a == o.a and b==o.b and c==o.c and d==o.d and x==o.x and y==o.y
 	
 
 func report(first = true):
 	var report = ""
 	
-	if horiz == -1:
+	if x == -1:
 		report+="L"
-	elif horiz == 1:
+	elif x == 1:
 		report+= "R"
-	if vert == 1:
+	if y == 1:
 		report+="D"
-	elif vert ==-1:
+	elif y ==-1:
 		report +="U"
 	
 	if report != "":

@@ -186,11 +186,9 @@ func _read_input(first:bool = false):
 	var _ninput_event
 	var _ninput_state
 
-	_debug_message("Test")
-	_debug_message(str(_cur_input))
 	if not first:
-		x_sum = _cur_input.horiz
-		y_sum = _cur_input.vert
+		x_sum = _cur_input.x
+		y_sum = _cur_input.y
 		a = _cur_input.a
 		b = _cur_input.b
 		c = _cur_input.c
@@ -230,8 +228,11 @@ func _read_input(first:bool = false):
 			_d_string:
 				d = _ninput_state
 	
-	new_input = i.new(x_sum, y_sum, a,b,c,d)
+	_debug_message("Test")
+	new_input = i.new(x_sum, y_sum, a,b,c,d,_cur_input)
+	_debug_message(str(new_input))
 	_cur_input = new_input
+	_debug_message(str(_cur_input))
 	_debug_message(_cur_input.report())
 
 		
