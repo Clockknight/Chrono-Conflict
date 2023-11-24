@@ -206,19 +206,18 @@ func _read_input(first:bool = false):
 		_debug_message(str(new_input))
 		_debug_message(str(new_input[0].scancode))
 		_debug_message(_input_dict[new_input[0].scancode])
-		_debug_message(str(_ninput_event.is_action(_a_string)))
 		
 		
 		# TODO add if so we only go in here if it is the correct player
 		match _input_dict[_ninput_event]:
 			_up_string:
-				y_sum += 1 * (_ninput_state * -1 + 1)
+				y_sum += 1 * (int(_ninput_state) * -1 + 1)
 			_down_string:
-				y_sum -= 1 * (_ninput_state * -1 + 1)
+				y_sum -= 1 * (int(_ninput_state) * -1 + 1)
 			_left_string:
-				x_sum += 1 * (_ninput_state * -1 + 1)
+				x_sum += 1 * (int(_ninput_state) * -1 + 1)
 			_right_string:
-				x_sum -= 1 * (_ninput_state * -1 + 1)
+				x_sum -= 1 * (int(_ninput_state) * -1 + 1)
 			_a_string:
 				a = _ninput_state
 			_b_string:
@@ -229,11 +228,9 @@ func _read_input(first:bool = false):
 				d = _ninput_state
 	
 	_debug_message("Test")
-	new_input = i.new(x_sum, y_sum, a,b,c,d,_cur_input)
-	_debug_message(str(new_input))
+	new_input = i.new(self, x_sum, y_sum, a,b,c,d,_cur_input)
 	_cur_input = new_input
-	_debug_message(str(_cur_input))
-	_debug_message(_cur_input.report())
+	_cur_input.report()
 
 		
 		

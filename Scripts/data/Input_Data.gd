@@ -1,5 +1,7 @@
 extends Node
 
+const e = preload('./Enums.gd')
+
 var duration 
 
 var x 
@@ -11,10 +13,10 @@ var c
 var d 
 
 var next = null
+var older
+var player 
 
-var test 
-
-func _init( left=0,up=0,a=false,b=false,c=false,d=false,older_data=null):
+func _init(player, left=0,up=0,a=false,b=false,c=false,d=false,older_data=null ):
 	self.duration = 0
 	
 	self.x = left
@@ -23,11 +25,12 @@ func _init( left=0,up=0,a=false,b=false,c=false,d=false,older_data=null):
 	self.b = b
 	self.c = c
 	self.d = d 
-	self.test = older_data
+	self.older = older_data 
+	self.player = player
 	
 	if older_data != null:
 		if compare(older_data):
-			older_data.duration = older_data.duration + 1
+			older_data.duration = 1
 			queue_free()
 		else:
 			older_data.next = self
@@ -66,9 +69,10 @@ func report(first = true):
 		
 	report =  str(duration) + " " + report
 		
+	report += str(older)
+		
 	if not first:
 		report = "| " + report
 		
 		
-		
-	return report
+	self.player._debug_message(e.Level.FRAME, report)
