@@ -19,8 +19,8 @@ var player
 func _init(player, left=0,up=0,a=false,b=false,c=false,d=false,older_data=null ):
 	self.duration = 0
 	
-	self.x = left
-	self.y = up
+	self.x = clamp(left, -1, 1) 
+	self.y = clamp(up, -1, 1)
 	self.a = a
 	self.b = b
 	self.c = c
@@ -75,4 +75,8 @@ func report(first = true):
 		report = "| " + report
 		
 		
-	self.player._debug_message(e.Level.FRAME, report)
+	_debug_message(report)
+	
+	
+func _debug_message(message):
+	self.player._debug_message(e.Level.FRAME, message)

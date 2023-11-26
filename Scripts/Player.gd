@@ -203,22 +203,19 @@ func _read_input(first:bool = false):
 		_ninput_event = new_input[0].scancode
 		_ninput_state = new_input[1]
 		
-		_debug_message(str(new_input))
-		_debug_message(str(new_input[0].scancode))
-		_debug_message(_input_dict[new_input[0].scancode])
 		
 		
 		# TODO add if so we only go in here if it is the correct player
-		_debug_message(str(_ninput_state))
+		# TODO add check for simultaneous l/R input
 		match _input_dict[_ninput_event]:
 			_up_string:
-				y_sum += 1 * (int(_ninput_state) * -2+1)
+				y_sum -=  int(_ninput_state) *2-1
 			_down_string:
-				y_sum -= 1 * (int(_ninput_state) * -2+1)
+				y_sum +=  int(_ninput_state)*2-1
 			_left_string:
-				x_sum += 1 * (int(_ninput_state) * -2+1)
+				x_sum -=  int(_ninput_state) *2-1
 			_right_string:
-				x_sum -= 1 * (int(_ninput_state) * -2+1)
+				x_sum +=  int(_ninput_state) *2-1
 			_a_string:
 				a = _ninput_state
 			_b_string:
@@ -229,6 +226,7 @@ func _read_input(first:bool = false):
 				d = _ninput_state
 	
 	new_input = i.new(self, x_sum, y_sum, a,b,c,d,_cur_input)
+	
 	_cur_input = new_input
 	_cur_input.report()
 
