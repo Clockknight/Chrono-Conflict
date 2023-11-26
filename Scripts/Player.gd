@@ -174,8 +174,8 @@ func _input_tick():
 func _read_input(first:bool = false):
 	# Process all the queued inputs, and pass the resulting input to cur innput next
 	
-	var x_sum = 0
-	var y_sum = 0
+	var x = 0
+	var y = 0
 	
 	var a = false
 	var b = false
@@ -187,8 +187,8 @@ func _read_input(first:bool = false):
 	var _ninput_state
 
 	if not first:
-		x_sum = _cur_input.x
-		y_sum = _cur_input.y
+		x = _cur_input.x
+		y = _cur_input.y
 		a = _cur_input.a
 		b = _cur_input.b
 		c = _cur_input.c
@@ -209,13 +209,13 @@ func _read_input(first:bool = false):
 		# TODO add check for simultaneous l/R input
 		match _input_dict[_ninput_event]:
 			_up_string:
-				y_sum -=  int(_ninput_state) *2-1
+				y -=  int(_ninput_state) *2-1
 			_down_string:
-				y_sum +=  int(_ninput_state)*2-1
+				y +=  int(_ninput_state)*2-1
 			_left_string:
-				x_sum -=  int(_ninput_state) *2-1
+				x -=  int(_ninput_state) *2-1
 			_right_string:
-				x_sum +=  int(_ninput_state) *2-1
+				x +=  int(_ninput_state) *2-1
 			_a_string:
 				a = _ninput_state
 			_b_string:
@@ -225,7 +225,10 @@ func _read_input(first:bool = false):
 			_d_string:
 				d = _ninput_state
 	
-	new_input = i.new(self, x_sum, y_sum, a,b,c,d,_cur_input)
+	x = clamp(x, -1, 1)
+	y = clamp(y, -1, 1)
+	
+	new_input = i.new(self, x, y, a,b,c,d,_cur_input)
 	
 	_cur_input = new_input
 	_cur_input.report()
@@ -234,7 +237,7 @@ func _read_input(first:bool = false):
 		
 	
 	
-	return {"x":x_sum, "y":y_sum, "a":a, "b":b, "c":c, "d":d}.duplicate()
+	return {"x":x, "y":y, "a":a, "b":b, "c":c, "d":d}.duplicate()
 
 func _interpret_inputs(values:Dictionary):
 	
