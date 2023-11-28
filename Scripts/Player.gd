@@ -305,8 +305,12 @@ func _state_tick():
 		
 		
 
+#todo player locks into horiz movement when attacking
+#this is cause it thinks its free still
+
 func _move_tick():
 	_debug_message(e.Level.FRAME, 'Move Tick')
+	
 	
 	_calc_bottom_y()
 	
@@ -319,6 +323,7 @@ func _move_tick():
 			#X movement
 			directional_input.x = _cur_input.x
 			directional_input.x *= horizontal_speed
+			
 			
 			
 			#Y movement
@@ -347,6 +352,8 @@ func _move_tick():
 			
 	if(_state == e.State.STUN):
 		directional_input.x = directional_input.x * (1-_friction) 
+		
+		
 		
 
 	if (_bottom_pos > 0):
