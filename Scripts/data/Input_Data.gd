@@ -13,7 +13,7 @@ var c
 var d 
 
 var next = null
-var older
+var older 
 var player 
 
 func _init(player, left=0,up=0,a=false,b=false,c=false,d=false,older_data=null ):
@@ -42,9 +42,11 @@ func compare(o):
 	return a == o.a and b==o.b and c==o.c and d==o.d and x==o.x and y==o.y
 	
 
-func report(first = true):
+func report(data, full=true, history=30):
 	var report = ""
 	
+	report = "\n" + report
+		
 	if x == -1:
 		report+="L"
 	elif x == 1:
@@ -71,9 +73,8 @@ func report(first = true):
 		
 	report += str(older)
 		
-	if not first:
-		report = "| " + report
-		
+	if((full or history - duration > 0) and older != null):
+		report +=  older.report(full, history-duration)
 		
 	_debug_message(report)
 	
