@@ -81,7 +81,6 @@ var _input_history = []
 func _ready():
 	_base_scaley = scale.y
 	_base_scalex = scale.x
-	_cur_input = _read_input(true)
 	_friction = .1
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
@@ -104,8 +103,6 @@ func _configure(other_player, bounds):
 	_b_string=update_dictionary(_b_string, "ui_p2b")
 	_c_string=update_dictionary(_c_string,  "ui_p2c")
 	_d_string=update_dictionary(_d_string, "ui_p2d")
-		
-	_debug_message( e.Level.EVENT, str(_input_dict))
 
 func _unhandled_input(event):
 	if event is InputEventKey:
@@ -164,7 +161,6 @@ func _input_tick():
 	_cur_input = _read_input()
 
 #	_debug_message(_input_queue)
-	_interpret_inputs(_cur_input)
 #		todo
 #		refactor other functions to use an input variable to figure out what to do
 
@@ -172,9 +168,8 @@ func _input_tick():
 	
 	
 
-func _read_input(first:bool = false):
+func _read_input():
 	# Process all the queued inputs, and pass the resulting input to cur innput next
-	
 	var x = 0
 	var y = 0
 	
@@ -187,7 +182,7 @@ func _read_input(first:bool = false):
 	var _ninput_event
 	var _ninput_state
 
-	if not first:
+	if is_instance_valid(_cur_input):
 		x = _cur_input.x
 		y = _cur_input.y
 		a = _cur_input.a
@@ -197,16 +192,11 @@ func _read_input(first:bool = false):
 		
 	if _input_queue != []:
 		_debug_message(e.Level.FRAME, "Processing input queue...")
-		
-	
 	while _input_queue != []:
 		new_input = _input_queue.pop_front()
 		_ninput_event = new_input[0].scancode
 		_ninput_state = new_input[1]
 		
-		
-		
-		# TODO add if so we only go in here if it is the correct player
 		# TODO add check for simultaneous l/R input
 		match _input_dict[_ninput_event]:
 			_up_string:
@@ -230,15 +220,12 @@ func _read_input(first:bool = false):
 	y = clamp(y, -1, 1)
 	
 	new_input = i.new(self, x, y, a,b,c,d,_cur_input)
-	
-	_cur_input = new_input
-	_cur_input.report()
+	if is_instance_valid(new_input):
+		print("!")
+		_cur_input = new_input
+	_debug_message(_cur_input.report())
 
-		
-		
-	
-	
-	return {"x":x, "y":y, "a":a, "b":b, "c":c, "d":d}.duplicate()
+	return _cur_input
 
 func _interpret_inputs(values:Dictionary):
 	

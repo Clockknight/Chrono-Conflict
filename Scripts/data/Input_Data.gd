@@ -1,3 +1,4 @@
+class_name Input_Data
 extends Node
 
 const e = preload('./Enums.gd')
@@ -16,7 +17,7 @@ var next = null
 var older 
 var player 
 
-func _init(player, left=0,up=0,a=false,b=false,c=false,d=false,older_data=null ):
+func _init(player, left=0,up=0,a=false,b=false,c=false,d=false, older_data=null ):
 	self.duration = 0
 	
 	self.x = left
@@ -28,12 +29,13 @@ func _init(player, left=0,up=0,a=false,b=false,c=false,d=false,older_data=null )
 	self.older = older_data 
 	self.player = player
 	
-	if older_data != null:
+	if next != null:
 		if compare(older_data):
 			older_data.duration = 1
 			queue_free()
 		else:
 			older_data.next = self
+			return self
 			
 			
 			
@@ -42,11 +44,9 @@ func compare(o):
 	return a == o.a and b==o.b and c==o.c and d==o.d and x==o.x and y==o.y
 	
 
-func report(data, full=true, history=30):
-	var report = ""
-	
-	report = "\n" + report
-		
+func report(full=true, history=30):
+	var report = "\n\n" + str(duration)
+			
 	if x == -1:
 		report+="L"
 	elif x == 1:
@@ -68,16 +68,11 @@ func report(data, full=true, history=30):
 	if d:
 		report+="d"
 		
-		
-	report =  str(duration) + " " + report
-		
-	report += str(older)
+	report += str(history-duration)
 		
 	if((full or history - duration > 0) and older != null):
-		report +=  older.report(full, history-duration)
-		
-	_debug_message(report)
+		return report + older.report(full, history-duration)
+	else:
+		return report
 	
 	
-func _debug_message(message):
-	self.player._debug_message(e.Level.FRAME, message)
