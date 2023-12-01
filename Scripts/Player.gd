@@ -219,10 +219,8 @@ func _read_input():
 	x = clamp(x, -1, 1)
 	y = clamp(y, -1, 1)
 	
-	new_input = i.new(self, x, y, a,b,c,d,_cur_input)
-	if is_instance_valid(new_input):
-		print("!")
-		_cur_input = new_input
+	new_input = i.new(self, x, y, a,b,c,d)
+	_cur_input = new_input.compare(_cur_input)
 	_debug_message(_cur_input.report())
 
 	return _cur_input

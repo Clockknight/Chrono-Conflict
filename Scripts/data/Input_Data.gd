@@ -12,13 +12,14 @@ var a
 var b 
 var c 
 var d 
+var repeat
 
-var next = null
-var older 
+var older
+
 var player 
 
-func _init(player, left=0,up=0,a=false,b=false,c=false,d=false, older_data=null ):
-	self.duration = 0
+func _init(player, left=0,up=0,a=false,b=false,c=false,d=false):
+	self.duration = 1
 	
 	self.x = left
 	self.y = up
@@ -26,22 +27,17 @@ func _init(player, left=0,up=0,a=false,b=false,c=false,d=false, older_data=null 
 	self.b = b
 	self.c = c
 	self.d = d 
-	self.older = older_data 
 	self.player = player
 	
-	if next != null:
-		if compare(older_data):
-			older_data.duration = 1
-			queue_free()
-		else:
-			older_data.next = self
-			return self
-			
-			
-			
 
 func compare(o):
-	return a == o.a and b==o.b and c==o.c and d==o.d and x==o.x and y==o.y
+	if o != null and a == o.a and b==o.b and c==o.c and d==o.d and x==o.x and y==o.y:
+		o.duration += 1
+		return o
+	else:
+		self.older = o
+		return self
+		
 	
 
 func report(full=true, history=30):
@@ -70,8 +66,8 @@ func report(full=true, history=30):
 		
 	report += str(history-duration)
 		
-	if((full or history - duration > 0) and older != null):
-		return report + older.report(full, history-duration)
+	if((full or history - duration > 0) and self.older != null):
+		return self.older.report(full, history-duration) + report
 	else:
 		return report
 	
