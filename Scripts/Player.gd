@@ -197,6 +197,7 @@ func _read_input():
 		_ninput_event = new_input[0].scancode
 		_ninput_state = new_input[1]
 		
+		
 		# TODO add check for simultaneous l/R input
 		match _input_dict[_ninput_event]:
 			_up_string:
@@ -215,9 +216,9 @@ func _read_input():
 				c = _ninput_state
 			_d_string:
 				d = _ninput_state
-	
-	x = clamp(x, -1, 1)
-	y = clamp(y, -1, 1)
+		
+		x = clamp(x, -1, 1)
+		y = clamp(y, -1, 1)
 	
 	new_input = i.new(self, x, y, a,b,c,d)
 	_cur_input = new_input.compare(_cur_input)
