@@ -26,7 +26,7 @@ const diff_x_min = 400
 const diff_y_max = 300
 const diff_y_min = 100
 
-var _observe_players = [true]
+var _observe_players = [true, false]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")

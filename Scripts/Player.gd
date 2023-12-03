@@ -222,8 +222,7 @@ func _read_input():
 	
 	new_input = i.new(self, x, y, a,b,c,d)
 	_cur_input = new_input.compare(_cur_input)
-	_debug_message(_cur_input.report())
-
+	
 	return _cur_input
 
 func _interpret_inputs(values:Dictionary):
@@ -338,7 +337,10 @@ func _move_tick():
 		directional_input.x = _cur_x * self.horizontal_speed
 			
 	if(_state == e.State.STUN):
+		
+		_debug_message(directional_input)
 		directional_input.x = directional_input.x * (1-_friction) 
+		
 		
 		
 		
