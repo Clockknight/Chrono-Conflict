@@ -256,8 +256,7 @@ func _state_tick():
 			self.die()
 		
 		self._state = cur_move.state
-		directional_input = cur_move.influence * -1 if _p1_side else 1
-		
+		self.directional_input = cur_move.influence * -1 if _p1_side else 1
 		_parse_states([], cur_move.state, cur_move.duration)
 		
 		
@@ -278,7 +277,7 @@ func _state_tick():
 			else:
 				if _state == e.State.JMPS and _jumps > 0:
 					_debug_message(e.Level.FRAME, 'jump started')
-					directional_input.y = -1 * self.vertical_speed
+					self.directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
 					_jumps -= 1
 					
@@ -301,45 +300,52 @@ func _move_tick():
 	_calc_bottom_y()
 	
 	if _grounded:
+		if(_state == e.State.STUN):
+			_debug_message('grounded check')
+			_debug_message(str(self.directional_input))
 		if _state != e.State.JMPS:
 			_jumps = _jumps_max
 		
 		if _state == e.State.FREE:
 			$Collision_Box.disable(false)
 			#X movement
-			directional_input.x = _cur_input.x
-			directional_input.x *= horizontal_speed
+			self.directional_input.x = _cur_input.x
+			self.directional_input.x *= horizontal_speed
 			
 			
 			
 			#Y movement
-			directional_input.y = 0
+			self.directional_input.y = 0
 		
 		
 		if (_cur_input.y > 0):
 			self.scale.y = _base_scaley * .5
-			directional_input.x = 0
-			directional_input.y += self._base_scaley
+			self.directional_input.x = 0
+			self.directional_input.y += self._base_scaley
 	
 	if(not _grounded):
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
-		directional_input.y = min(gravity + directional_input.y , terminal_speed)
+		self.directional_input.y = min(gravity + self.directional_input.y , terminal_speed)
 		
 		# clause for landing
-		if directional_input.y >= -1 * _bottom_pos:
-			directional_input.y = -1 * _bottom_pos
-			directional_input.x =  100 
+		if self.directional_input.y >= -1 * _bottom_pos:
+			self.directional_input.y = -1 * _bottom_pos
+			self.directional_input.x =  100 
 		
-			
+	
+	if(_state == e.State.STUN):
+		
+		_debug_message(str(self.directional_input))
 		
 		#todo fix double jumping
-		directional_input.x = _cur_x * self.horizontal_speed
+		self.directional_input.x = _cur_x * self.horizontal_speed
 			
 	if(_state == e.State.STUN):
 		
-		_debug_message(directional_input)
-		directional_input.x = directional_input.x * (1-_friction) 
+		_debug_message(str(self.directional_input))
+		_debug_message(_p1_side)
+		self.directional_input.x = self.directional_input.x * (1-_friction) 
 		
 		
 		
@@ -347,20 +353,20 @@ func _move_tick():
 
 	if (_bottom_pos > 0):
 		_debug_message( e.Level.ERROR, "Player's position is below the floor! Adjusting...")
-		directional_input.y = -1 * _bottom_pos
+		self.directional_input.y = -1 * _bottom_pos
 
 
-	if(abs(directional_input.x + self.position.x) > _stage_bounds):
-		directional_input.x -= (abs(directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
+	if(abs(self.directional_input.x + self.position.x) > _stage_bounds):
+		self.directional_input.x -= (abs(self.directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 
 
-	var collision_report = move_and_collide(directional_input)
+	var collision_report = move_and_collide(self.directional_input)
 #	if collision_report:
 #		print_debug("collided with: "+ str(collision.collider.name))
 	
 	_sidecheck()
 	
-	return directional_input
+	return self.directional_input
 
 func _box_tick():
 	_debug_message(e.Level.FRAME, 'Box Tick')
