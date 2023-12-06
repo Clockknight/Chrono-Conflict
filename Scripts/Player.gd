@@ -159,6 +159,7 @@ func tick():
 func _input_tick():
 	_debug_message(e.Level.FRAME, 'Input Tick')
 	_cur_input = _read_input()
+	_interpret_inputs(_cur_input)
 
 #	_debug_message(_input_queue)
 #		todo
@@ -225,14 +226,17 @@ func _read_input():
 	
 	return _cur_input
 
-func _interpret_inputs(values:Dictionary):
+func _interpret_inputs(values:Input_Data):
 	
 	if _state == e.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
 		if Input.is_action_pressed(_up_string):
 			_parse_states(['JMPS|5'])
 			_cur_x = _stored_x
 			_stored_x = _cur_input['x']
-		
+		if Input.is_action_just_pressed(_a_string):
+			spawn_box()
+			_parse_states(['CURR|15'])
+			
 
 		
 func _state_tick():
@@ -289,13 +293,40 @@ func _state_tick():
 				
 		
 		
+		
+		
+func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incoming_duration: int = 0):
+	
+	#if _state_queue != []:
+		#_debug_message(e.Level.EVENT, '_parse_states() called when _state_queue not empty')
+	if incoming != []:
+		for s in incoming:
+#			_debug_message('State being parsed!!')
+			s = s.split('|')
+			s = [e.State[s[0]], int(s[1])]
+			_state_queue.append(s)
+		return
+			
+#	_debug_message(str(incoming_state))
+#	_debug_message(str(incoming_duration))
+	if incoming_state != e.State.FREE and incoming_duration >= 0:
+		if(incoming_duration) <= 0:
+			_debug_message( e.Level.ERROR, 'State with duration of 0 passed in!')
+		_state_queue.append([incoming_state, incoming_duration])
+		return
+			
+	_debug_message(e.Level.ERROR, 'Empty state passed to parse_states')
+	
+	return
+		
 
 #todo player locks into horiz movement when attacking
-#this is cause it thinks its free still
-
 func _move_tick():
-	_debug_message(e.Level.FRAME, 'Move Tick')
 	
+	_debug_message(e.Level.FRAME, 'Move Tick')
+	_debug_message("=====")
+	_debug_message(str(self._state))
+	_debug_message(str(self._state_frames_left))
 	
 	_calc_bottom_y()
 	
@@ -303,6 +334,7 @@ func _move_tick():
 		if(_state == e.State.STUN):
 			_debug_message('grounded check')
 			_debug_message(str(self.directional_input))
+			
 		if _state != e.State.JMPS:
 			_jumps = _jumps_max
 		
@@ -312,10 +344,11 @@ func _move_tick():
 			self.directional_input.x = _cur_input.x
 			self.directional_input.x *= horizontal_speed
 			
-			
-			
 			#Y movement
 			self.directional_input.y = 0
+			
+		if _state == e.State.CURR:
+			self.directional_input.x = 0
 		
 		
 		if (_cur_input.y > 0):
@@ -355,7 +388,8 @@ func _move_tick():
 		_debug_message( e.Level.ERROR, "Player's position is below the floor! Adjusting...")
 		self.directional_input.y = -1 * _bottom_pos
 
-
+	
+	#clause to stay in stage bounds
 	if(abs(self.directional_input.x + self.position.x) > _stage_bounds):
 		self.directional_input.x -= (abs(self.directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 
@@ -370,11 +404,6 @@ func _move_tick():
 
 func _box_tick():
 	_debug_message(e.Level.FRAME, 'Box Tick')
-	if _state == e.State.FREE:
-		if Input.is_action_just_pressed(_a_string):
-			spawn_box()
-			_state_frames_left = 15
-			_state = e.State.CURR
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
@@ -451,27 +480,6 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
 
-func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incoming_duration: int = 0):
-	
-	#if _state_queue != []:
-		#_debug_message(e.Level.EVENT, '_parse_states() called when _state_queue not empty')
-	if incoming != []:
-		for s in incoming:
-#			_debug_message('State being parsed!!')
-			s = s.split('|')
-			s = [e.State[s[0]], int(s[1])]
-			_state_queue.append(s)
-			
-#	_debug_message(str(incoming_state))
-#	_debug_message(str(incoming_duration))
-	if incoming_state != e.State.FREE and incoming_duration >= 0:
-		if(incoming_duration) <= 0:
-			_debug_message( e.Level.ERROR, 'State with duration of 0 passed in!')
-		_state_queue.append([incoming_state, incoming_duration])
-			
-	_debug_message(e.Level.ERROR, 'Empty state passed to parse_states')
-	return
-		
 		
 func die():
 	_debug_message(e.Level.EVENT, 'I am Defeated!.')

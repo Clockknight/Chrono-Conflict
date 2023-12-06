@@ -12,10 +12,10 @@ var _fps
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 60
+var _framerate = 3
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = e.Level.DEBUG
+var _min_level = e.Level.ERROR
 
 var diff_vector
 
@@ -26,7 +26,7 @@ const diff_x_min = 400
 const diff_y_max = 300
 const diff_y_min = 100
 
-var _observe_players = [true, false]
+var _observe_player_status = [true]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
@@ -120,6 +120,6 @@ func _tick_camera():
 	
 	
 func _debug_message(level:int, msg:String, p1:bool):
-	if (level >= _min_level and p1 in _observe_players):
+	if (level >= _min_level and p1 in _observe_player_status):
 		msg = '==> '.repeat(level+1) + msg
 		print(msg)
