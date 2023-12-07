@@ -61,7 +61,7 @@ var _stage_bounds
 var _stored_x = 0
 var _cur_x = 0
 var _health
-var _jumps_max =2 
+var _jumps_max = 2 
 var _jumps
 
 # floats
@@ -227,7 +227,6 @@ func _read_input():
 	return _cur_input
 
 func _interpret_inputs(values:Input_Data):
-	
 	if _state == e.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
 		if Input.is_action_pressed(_up_string):
 			_parse_states(['JMPS|5'])
@@ -248,6 +247,7 @@ func _state_tick():
 		_debug_message(e.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
 		var cur_move = _move_queue.pop_front()
 		
+		
 		while _move_queue != []:
 			if cur_move.priority < _move_queue[0].priority:
 				cur_move = _move_queue.pop_front()
@@ -259,11 +259,14 @@ func _state_tick():
 			self._health = 0
 			self.die()
 		
+		# TODO fix game crashing
+		# Cause is below codeblock
+		
 		self._state = cur_move.state
 		self.directional_input = cur_move.influence * -1 if _p1_side else 1
 		_parse_states([], cur_move.state, cur_move.duration)
 		
-		
+	
 		
 	if _state == e.State.FREE and _state_queue == []:
 		_state_frames_left = 1
@@ -284,19 +287,10 @@ func _state_tick():
 					self.directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
 					_jumps -= 1
-					
-				
 				_state = new_state[0]
 				_state_frames_left = new_state[1]
 					
-		
-				
-		
-		
-		
-		
 func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incoming_duration: int = 0):
-	
 	#if _state_queue != []:
 		#_debug_message(e.Level.EVENT, '_parse_states() called when _state_queue not empty')
 	if incoming != []:
@@ -324,16 +318,10 @@ func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incom
 func _move_tick():
 	
 	_debug_message(e.Level.FRAME, 'Move Tick')
-	_debug_message("=====")
-	_debug_message(str(self._state))
-	_debug_message(str(self._state_frames_left))
 	
 	_calc_bottom_y()
 	
 	if _grounded:
-		if(_state == e.State.STUN):
-			_debug_message('grounded check')
-			_debug_message(str(self.directional_input))
 			
 		if _state != e.State.JMPS:
 			_jumps = _jumps_max
@@ -346,16 +334,17 @@ func _move_tick():
 			
 			#Y movement
 			self.directional_input.y = 0
-			
-		if _state == e.State.CURR:
-			self.directional_input.x = 0
 		
 		
 		if (_cur_input.y > 0):
 			self.scale.y = _base_scaley * .5
 			self.directional_input.x = 0
 			self.directional_input.y += self._base_scaley
+			
+		if _state == e.State.CURR:
+			self.directional_input.x = 0
 	
+		
 	if(not _grounded):
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
@@ -367,23 +356,11 @@ func _move_tick():
 			self.directional_input.x =  100 
 		
 	
-	if(_state == e.State.STUN):
-		
-		_debug_message(str(self.directional_input))
-		
-		#todo fix double jumping
-		self.directional_input.x = _cur_x * self.horizontal_speed
 			
 	if(_state == e.State.STUN):
-		
 		_debug_message(str(self.directional_input))
-		_debug_message(_p1_side)
 		self.directional_input.x = self.directional_input.x * (1-_friction) 
 		
-		
-		
-		
-
 	if (_bottom_pos > 0):
 		_debug_message( e.Level.ERROR, "Player's position is below the floor! Adjusting...")
 		self.directional_input.y = -1 * _bottom_pos
