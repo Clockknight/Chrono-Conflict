@@ -118,10 +118,6 @@ func update_dictionary(player1_option:String, player2_option:String):
 	else:
 		res = player2_option
 	
-#	_debug_message(res)
-#	_debug_message(str(InputMap.get_action_list(res)))
-#	_debug_message(str(InputMap.get_action_list(res)[0]))
-#	_debug_message(str(InputMap.get_action_list(res)[0].get_scancode()))
 	if InputMap.get_action_list(res).pop_front().physical_scancode == 0:
 		_input_dict[InputMap.get_action_list(res).pop_front().scancode] = res
 	else:
@@ -234,7 +230,7 @@ func _interpret_inputs(values:Input_Data):
 			_stored_x = _cur_input['x']
 		if Input.is_action_just_pressed(_a_string):
 			spawn_box()
-			_parse_states(['CURR|15'])
+			_parse_states(['ACTV|15'])
 			
 
 		
@@ -259,12 +255,10 @@ func _state_tick():
 			self._health = 0
 			self.die()
 		
-		# TODO fix game crashing
-		# Cause is below codeblock
-		
 		self._state = cur_move.state
-		self.directional_input = cur_move.influence * -1 if _p1_side else 1
+		self.directional_input = cur_move.influence * (-1 if _p1_side else 1)
 		_parse_states([], cur_move.state, cur_move.duration)
+		
 		
 	
 		
@@ -301,8 +295,6 @@ func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incom
 			_state_queue.append(s)
 		return
 			
-#	_debug_message(str(incoming_state))
-#	_debug_message(str(incoming_duration))
 	if incoming_state != e.State.FREE and incoming_duration >= 0:
 		if(incoming_duration) <= 0:
 			_debug_message( e.Level.ERROR, 'State with duration of 0 passed in!')
@@ -341,7 +333,7 @@ func _move_tick():
 			self.directional_input.x = 0
 			self.directional_input.y += self._base_scaley
 			
-		if _state == e.State.CURR:
+		if _state == e.State.ACTV:
 			self.directional_input.x = 0
 	
 		
@@ -358,7 +350,6 @@ func _move_tick():
 	
 			
 	if(_state == e.State.STUN):
-		_debug_message(str(self.directional_input))
 		self.directional_input.x = self.directional_input.x * (1-_friction) 
 		
 	if (_bottom_pos > 0):
