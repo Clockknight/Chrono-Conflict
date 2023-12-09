@@ -2,15 +2,16 @@ extends Node
 
 
 enum State {
-	FREE,
-	STRT,
-	CURR,
-	NEND,
-	STUN,
-	BUSY, 
-	JMPS, 
-	JMPC}
-
+	FREE, # Non-active
+	STRT, # Startup 
+	ACTV, # Active
+	RECV, # Recovery
+	STUN, # Stun/ Histun
+	BLCK, # Blockstun
+	JMPS, # Jumpsquat
+	JMPB, # Jump begin
+	JMPR} # Jump Recovery
+ 
 
 
 
