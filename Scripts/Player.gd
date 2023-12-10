@@ -435,7 +435,7 @@ func _debug_message(level, msg:String=""):
 
 func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 	#spawn box given array of variables describing it
-	var newBox : Box = preloadHitBox.instance()
+	var newBox  = preloadHitBox.new()
 	self.add_child(newBox)
 	SFx_Audio.stream = sfxs[0]
 	newBox.set_box(posx, posy, scalex,scaley, lifetime)

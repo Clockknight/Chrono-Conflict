@@ -8,7 +8,14 @@ var overlaps = []
 var hit_boxes = []
 var hurt_boxes = []
 
+var data
 	
+	
+func _init(inc_data:Move_Data = null):
+	self.data = inc_data
+	if data==null:
+		self.data = (Move_Data.new(0, 5, 30, e.State.STUN, Vector2(500.0,0.0), self.position))
+
 
 func _ready():
 	connect("area_entered", self, "_on_area_entered")
