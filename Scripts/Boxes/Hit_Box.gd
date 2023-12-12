@@ -14,7 +14,7 @@ var data
 func _init(inc_data:Move_Data = null):
 	self.data = inc_data
 	if data==null:
-		self.data = (Move_Data.new(0, 5, 30, e.State.STUN, Vector2(500.0,0.0), self.position))
+		self.data = (Move_Data.new(0, 5, 30, e.State.STUN, Vector2(500.0,0.0), self.position, 0, 1, 2))
 
 
 func _ready():
@@ -36,7 +36,7 @@ func tick():
 
 		if hurt_boxes != []:
 			for box in hurt_boxes:
-				box.get_parent().damage(Move_Data.new(0, 5, 30, e.State.STUN, Vector2(500.0,0.0), self.position))
+				box.get_parent().damage(self.data)
 				queue_free()
 		elif hit_boxes != []:
 			for box in hit_boxes:

@@ -18,8 +18,6 @@ z_index = -2
 texture = ExtResource( 5 )
 region_rect = Rect2( 10, 10, 10, 0 )
 
-[node name="SFx_Audio" type="AudioStreamPlayer2D" parent="."]
-
 [node name="Hurt_Box" parent="." instance=ExtResource( 3 )]
 position = Vector2( 35, 15 )
 scale = Vector2( 2, 4 )

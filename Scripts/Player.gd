@@ -2,20 +2,21 @@ class_name player
 extends KinematicBody2D
 
 # external classes
-const Move_Data = preload('./data/Move_Data.gd')
-const i = preload('./data/Input_Data.gd')
-const e = preload('./data/Enums.gd')
+const Move_Data = preload('res://Scripts/data/Move_Data.gd')
+const i = preload('res://Scripts/data/Input_Data.gd')
+const e = preload('res://Scripts/data/Enums.gd')
 # Constants
 const BUFFER_WINDOW = 3
 
 # Assets
-var preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
-var preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
-var preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
-var sprites = [preload("res://sprites/pow.png")]
-var sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
-var _base_sprite = preload("res://sprites/icon.png")
-var _state_sprites = [
+const SFx_Audio  =preload('res://Scenes/Assets/SFx_Audio.tscn')
+const preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
+const preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
+const preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
+const sprites = [preload("res://sprites/pow.png")]
+const sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
+const _base_sprite = preload("res://sprites/icon.png")
+const _state_sprites = [
 	_base_sprite,
 	_base_sprite,
 	_base_sprite,
@@ -27,7 +28,6 @@ var _state_sprites = [
 
 # nodes
 var collision : CollisionShape2D 
-var SFx_Audio 
 
 # 2d Vectors
 var directional_input  = Vector2.ZERO
@@ -84,7 +84,6 @@ func _ready():
 	_friction = .1
 	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
-	SFx_Audio = self.get_node("SFx_Audio")
 
 
 func _configure(other_player, bounds):
@@ -249,6 +248,7 @@ func _state_tick():
 				cur_move = _move_queue.pop_front()
 		
 		
+		self._other.play_sound(cur_move.hit)
 		_debug_message(e.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 		self._health -= cur_move.damage
 		if self._health <= 0:
@@ -416,6 +416,45 @@ func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
 		_debug_message(e.Level.EVENT, "Clash detected")
 
+
+# func spawn_boxes(framedata: 2dArray):
+# take in 2d array and repeatedly call below box spawning func
+
+
+func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+	#spawn box given array of variables describing it
+	var newBox  = preloadHitBox.instance()
+	self.add_child(newBox)
+	self.play_sound(0)
+	newBox.set_box(posx, posy, scalex,scaley, lifetime)
+
+func play_sound(sound_id:int, duration:int = 1):
+	var newSFX = SFx_Audio.instance(sound_id)
+	newSFX.stream = sfxs[sound_id]
+	self.add_child(newSFX)
+	
+	var t = Timer.new()
+	t.set_wait_time(duration)
+	t.set_one_shot(true)
+	self.add_child(t)
+	t.start()
+	
+	newSFX.play()
+	yield(t, "timeout")
+	newSFX.queue_free()
+	t.queue_free()
+
+	
+func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
+	var newSprite : Sprite_Box = preloadSprite.instance()
+	self.add_child(newSprite)
+	newSprite.set_sprite(displacement, duration, sprites[asset_index])
+
+
+func die():
+	_debug_message(e.Level.EVENT, 'I am Defeated!.')
+		
+
 func _debug_message(level, msg:String=""):
 	if level is String:
 		msg= level
@@ -427,27 +466,3 @@ func _debug_message(level, msg:String=""):
 		level = e.Level.DEBUG
 	
 	self.get_parent()._debug_message( level, msg, _p1_side)
-
-
-# func spawn_boxes(framedata: 2dArray):
-# take in 2d array and repeatedly call below box spawning func
-
-
-func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-	#spawn box given array of variables describing it
-	var newBox  = preloadHitBox.new()
-	self.add_child(newBox)
-	SFx_Audio.stream = sfxs[0]
-	newBox.set_box(posx, posy, scalex,scaley, lifetime)
-	SFx_Audio.play()
-
-	
-func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
-	var newSprite : Sprite_Box = preloadSprite.instance()
-	self.add_child(newSprite)
-	newSprite.set_sprite(displacement, duration, sprites[asset_index])
-
-
-		
-func die():
-	_debug_message(e.Level.EVENT, 'I am Defeated!.')
