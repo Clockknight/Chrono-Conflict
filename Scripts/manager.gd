@@ -1,6 +1,6 @@
 extends Node
 
-const e = preload('./data/Enums.gd')
+const e = preload('res://Scripts/Data/Enums.gd')
 
 var _camera
 
@@ -26,7 +26,7 @@ const diff_x_min = 400
 const diff_y_max = 300
 const diff_y_min = 100
 
-var _observe_player_statuses = [false]
+var _observe_player_statuses = [true]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")

@@ -10,7 +10,8 @@ enum State {
 	BLCK, # Blockstun
 	JMPS, # Jumpsquat
 	JMPB, # Jump begin
-	JMPR} # Jump Recovery
+	JMPR  # Jump Recovery
+	}
  
 
 

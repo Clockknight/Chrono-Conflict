@@ -2,9 +2,9 @@ class_name player
 extends KinematicBody2D
 
 # external classes
-const Move_Data = preload('res://Scripts/data/Move_Data.gd')
-const i = preload('res://Scripts/data/Input_Data.gd')
-const e = preload('res://Scripts/data/Enums.gd')
+const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
+const i = preload('res://Scripts/Data/Input_Data.gd')
+const e = preload('res://Scripts/Data/Enums.gd')
 # Constants
 const BUFFER_WINDOW = 3
 
@@ -65,12 +65,12 @@ var _jumps_max = 2
 var _jumps
 
 # floats
+const _friction = .1
+const _deceleration_max = .05
 var horizontal_speed 
 var vertical_speed 
 var gravity 
 var terminal_speed 
-var _friction
-var _deceleration_max
 
 # queues
 var _move_queue = []
@@ -81,8 +81,6 @@ var _input_history = []
 func _ready():
 	_base_scaley = scale.y
 	_base_scalex = scale.x
-	_friction = .1
-	_deceleration_max = .05
 	collision = self.get_node("Collision_Box")
 
 
@@ -128,6 +126,7 @@ func update_dictionary(player1_option:String, player2_option:String):
 func tick():
 	_debug_message(e.Level.FRAME, 'Tick Start ============')
 	# Read Inputs and save the input for this frame for later use
+	
 	_input_tick()
 	_other._input_tick()
 	
@@ -248,7 +247,7 @@ func _state_tick():
 			self.die()
 		
 		self._state = cur_move.state
-		self.directional_input = cur_move.influence * (-1 if _p1_side else 1)
+		self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
 		_parse_states([], cur_move.state, cur_move.duration)
 		
 		

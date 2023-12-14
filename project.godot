@@ -32,7 +32,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Input_Data",
 "language": "GDScript",
-"path": "res://Scripts/data/Input_Data.gd"
+"path": "res://Scripts/Data/Input_Data.gd"
 }, {
 "base": "Box",
 "class": "Sprite_Box",

@@ -1,8 +1,8 @@
 class_name Hit_Box
 extends Box
 
-const Move_Data = preload('../data/Move_Data.gd')
-const e = preload('../data/Enums.gd')
+const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
+const e = preload('res://Scripts/Data/Enums.gd')
 
 var overlaps = []
 var hit_boxes = []
@@ -11,17 +11,17 @@ var hurt_boxes = []
 var data
 	
 	
-func _init(inc_data:Move_Data = null):
-	self.data = inc_data
-	if data==null:
-		self.data = (Move_Data.new(0, 5, 30, e.State.STUN, Vector2(500.0,0.0), self.position, 0, 1, 2))
-
-
 func _ready():
 	connect("area_entered", self, "_on_area_entered")
 
 #func _on_area_entered(object: Hit_Box) -> void:
 #	if (object != null):
+
+func set_box(a,b,c,d,e, inc_data:Move_Data=null):
+	.set_box(a,b,c,d,e)
+	self.data = inc_data
+	if data==null:
+		self.data = (Move_Data.new(0, 5, 30, 50,0, 10,0,  0, 2, 1))
 
 func tick():
 	#check for hurt boxes	

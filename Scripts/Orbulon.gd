@@ -18,4 +18,4 @@ func _interpret_inputs(values:Input_Data):
 			_stored_x = _cur_input['x']
 		if Input.is_action_just_pressed(_a_string):
 			spawn_box()
-			_parse_states(['ACTV|15'])
+			_parse_states(['ACTV|15','RECV|5'])
