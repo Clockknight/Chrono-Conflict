@@ -61,7 +61,7 @@ var _stage_bounds
 var _stored_x = 0
 var _cur_x = 0
 var _health
-var _jumps_max = 2 
+var _jumps_max = 80
 var _jumps
 
 # floats
