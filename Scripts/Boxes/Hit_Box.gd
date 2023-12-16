@@ -36,6 +36,8 @@ func tick():
 
 		if hurt_boxes != []:
 			for box in hurt_boxes:
+				print("!!!")
+				print(_block_check(box.get_parent()))
 				box.get_parent().damage(self.data)
 				queue_free()
 		elif hit_boxes != []:
@@ -50,6 +52,9 @@ func tick():
 			
 	.tick()
 	
+func _block_check(t):
+	# returns 1 if t is holding back
+	return int(t._cur_input.x) *   (1 - 2 * int(t._p1_side))
 	
 func box_check():
 	return "Hit_Box"
