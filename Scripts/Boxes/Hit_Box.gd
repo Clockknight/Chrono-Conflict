@@ -21,10 +21,10 @@ func set_box(a,b,c,d,e, inc_data:Move_Data=null):
 	.set_box(a,b,c,d,e)
 	self.data = inc_data
 	if data==null:
-		self.data = (Move_Data.new(0, 5, 30, 50,0, 10,0,  0, 2, 1))
+		self.data = (Move_Data.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, e.Type.MID))
 
 func tick():
-	#check for hurt boxes	
+	#check for hurt boxes
 	overlaps = get_overlapping_areas()
 	if overlaps != []:
 		for e in overlaps:
@@ -36,8 +36,6 @@ func tick():
 
 		if hurt_boxes != []:
 			for box in hurt_boxes:
-				print("!!!")
-				print(_block_check(box.get_parent()))
 				box.get_parent().damage(self.data)
 				queue_free()
 		elif hit_boxes != []:
@@ -53,8 +51,13 @@ func tick():
 	.tick()
 	
 func _block_check(t):
-	# returns 1 if t is holding back
-	return int(t._cur_input.x) *   (1 - 2 * int(t._p1_side))
+	# returns 1 if t is holding back, -1 if not
+	return int(t._cur_input.x) *   (1 - 2 * int(t._p1_side)) * _low_check(t)
+	
+func _low_check(t):
+	if data.type == e.Type.LOW:
+		return int(t._cur_input.y)
+	return 1
 	
 func box_check():
 	return "Hit_Box"

@@ -27,3 +27,11 @@ enum Level {
 	ERROR, 
 	# For unspecified events, for debugging
 	DEBUG}
+	
+enum Type{
+	LOW,
+	MID,
+	HIG,
+	GRB,
+	UNB
+}
