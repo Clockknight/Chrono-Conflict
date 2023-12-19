@@ -60,6 +60,10 @@ config/name="Chronal Combat"
 run/main_scene="res://Scenes/map.tscn"
 config/icon="res://sprites/icon.png"
 
+[autoload]
+
+en="*res://Scripts/Data/Enums.gd"
+
 [debug]
 
 settings/fps/force_fps=60

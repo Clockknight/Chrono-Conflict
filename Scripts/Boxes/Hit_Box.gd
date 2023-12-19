@@ -2,7 +2,6 @@ class_name Hit_Box
 extends Box
 
 const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
-const e = preload('res://Scripts/Data/Enums.gd')
 
 var overlaps = []
 var hit_boxes = []
@@ -21,7 +20,7 @@ func set_box(a,b,c,d,e, inc_data:Move_Data=null):
 	.set_box(a,b,c,d,e)
 	self.data = inc_data
 	if data==null:
-		self.data = (Move_Data.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, e.Type.MID))
+		self.data = (Move_Data.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, en.Type.MID))
 
 func tick():
 	#check for hurt boxes
@@ -31,7 +30,7 @@ func tick():
 			if e.get_parent() != self.get_parent():
 				if (e.box_check() == "Hurt_Box"):
 					hurt_boxes.append(e)
-				elif e.box_check() == "Hit_Box":
+				elif en.box_check() == "Hit_Box":
 					hit_boxes.append(e)
 
 		if hurt_boxes != []:
@@ -44,7 +43,7 @@ func tick():
 			
 		#damag/clash function shouldnt immediately make player take damage, but instead set itself up with some variables, which can be passsed on to the manager or other functions in another tick step
 		#if its p2, and the hitbox's owner is clear of these, then check for projectiles
-		# if its p2, and the owner is being told to clash, then check if there's any hurtbox overlap. override if that's the case.
+		# if its p2, and the owner is being told to clash, then check if there's any hurtbox overlap. override if that's the casen.
 		# if its p2, and the owner is being told to hit, check for hurtboxes to look for a trade,
 		#if its p1, calc as normal
 			
@@ -55,7 +54,7 @@ func _block_check(t):
 	return int(t._cur_input.x) *   (1 - 2 * int(t._p1_side)) * _low_check(t)
 	
 func _low_check(t):
-	if data.type == e.Type.LOW:
+	if data.type == en.Type.LOW:
 		return int(t._cur_input.y)
 	return 1
 	

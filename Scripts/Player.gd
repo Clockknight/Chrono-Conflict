@@ -4,7 +4,6 @@ extends KinematicBody2D
 # external classes
 const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
 const i = preload('res://Scripts/Data/Input_Data.gd')
-const e = preload('res://Scripts/Data/Enums.gd')
 # Constants
 const BUFFER_WINDOW = 3
 
@@ -50,7 +49,7 @@ var _other
 var _p1_side = true
 var _flipped = false
 var _grounded = false
-var _state = e.State.FREE
+var _state = en.State.FREE
 
 # integers
 var _state_frames_left = 1
@@ -124,7 +123,7 @@ func update_dictionary(player1_option:String, player2_option:String):
 	
 
 func tick():
-	_debug_message(e.Level.FRAME, 'Tick Start ============')
+	_debug_message(en.Level.FRAME, 'Tick Start ============')
 	# Read Inputs and save the input for this frame for later use
 	
 	_input_tick()
@@ -151,7 +150,7 @@ func tick():
 
 
 func _input_tick():
-	_debug_message(e.Level.FRAME, 'Input Tick')
+	_debug_message(en.Level.FRAME, 'Input Tick')
 	_cur_input = _read_input()
 	_interpret_inputs(_cur_input)
 
@@ -186,7 +185,7 @@ func _read_input():
 		d = _cur_input.d
 		
 	if _input_queue != []:
-		_debug_message(e.Level.FRAME, "Processing input queue...")
+		_debug_message(en.Level.FRAME, "Processing input queue...")
 	while _input_queue != []:
 		new_input = _input_queue.pop_front()
 		_ninput_event = new_input[0].scancode
@@ -221,16 +220,16 @@ func _read_input():
 	return _cur_input
 
 func _interpret_inputs(values:Input_Data):
-	_debug_message("_Interpret_inputs Not Inherited!")
+	_debug_message(en.Level.ERROR, "_Interpret_inputs Not Inherited!")
 
 		
 func _state_tick():
-	_debug_message(e.Level.FRAME, 'State Tick')
+	_debug_message(en.Level.FRAME, 'State Tick')
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
-	_debug_message(e.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
+	_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
 	if _move_queue != []:
-		_debug_message(e.Level.FRAME, "Interactions: " + str(_move_queue))
-		_debug_message(e.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
+		_debug_message(en.Level.FRAME, "Interactions: " + str(_move_queue))
+		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
 		var cur_move = _move_queue.pop_front()
 		
 		
@@ -240,7 +239,7 @@ func _state_tick():
 		
 		
 		self._other.play_sound(cur_move.hit)
-		_debug_message(e.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
+		_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 		self._health -= cur_move.damage
 		if self._health <= 0:
 			self._health = 0
@@ -253,7 +252,7 @@ func _state_tick():
 		
 	
 		
-	if _state == e.State.FREE and _state_queue == []:
+	if _state == en.State.FREE and _state_queue == []:
 		_state_frames_left = 1
 		
 		
@@ -261,38 +260,37 @@ func _state_tick():
 		_state_frames_left -= 1
 		if _state_frames_left <= 0:
 			var new_state = _state_queue.pop_front()
-			_debug_message( e.Level.FRAME, "new_state: " + str(new_state))
-			_debug_message(e.Level.FRAME, "_state_queue: " + str(_state_queue))
+			_debug_message( en.Level.FRAME, "new_state: " + str(new_state))
+			_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
 			if new_state == null:
-				_debug_message(e.Level.FRAME, 'state queue empty - returning to free')
-				_state = e.State.FREE
+				_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
+				_state = en.State.FREE
 			else:
-				if _state == e.State.JMPS and _jumps > 0:
-					_debug_message(e.Level.FRAME, 'jump started')
+				if _state == en.State.JMPS and _jumps > 0:
+					_debug_message(en.Level.FRAME, 'jump started')
 					self.directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
 					_jumps -= 1
 				_state = new_state[0]
 				_state_frames_left = new_state[1]
 					
-func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incoming_duration: int = 0):
+func _parse_states(incoming: Array = [], incoming_state: int=en.State.FREE, incoming_duration: int = 0):
 	#if _state_queue != []:
-		#_debug_message(e.Level.EVENT, '_parse_states() called when _state_queue not empty')
+		#_debug_message(en.Level.EVENT, '_parse_states() called when _state_queue not empty')
 	if incoming != []:
 		for s in incoming:
-#			_debug_message('State being parsed!!')
 			s = s.split('|')
-			s = [e.State[s[0]], int(s[1])]
+			s = [en.State[s[0]], int(s[1])]
 			_state_queue.append(s)
 		return
 			
-	if incoming_state != e.State.FREE and incoming_duration >= 0:
+	if incoming_state != en.State.FREE and incoming_duration >= 0:
 		if(incoming_duration) <= 0:
-			_debug_message( e.Level.ERROR, 'State with duration of 0 passed in!')
+			_debug_message( en.Level.ERROR, 'State with duration of 0 passed in!')
 		_state_queue.append([incoming_state, incoming_duration])
 		return
 			
-	_debug_message(e.Level.ERROR, 'Empty state passed to parse_states')
+	_debug_message(en.Level.ERROR, 'Empty state passed to parse_states')
 	
 	return
 		
@@ -300,16 +298,16 @@ func _parse_states(incoming: Array = [], incoming_state: int=e.State.FREE, incom
 #todo player locks into horiz movement when attacking
 func _move_tick():
 	
-	_debug_message(e.Level.FRAME, 'Move Tick')
+	_debug_message(en.Level.FRAME, 'Move Tick')
 	
 	_calc_bottom_y()
 	
 	if _grounded:
 			
-		if _state != e.State.JMPS:
+		if _state != en.State.JMPS:
 			_jumps = _jumps_max
 		
-		if _state == e.State.FREE:
+		if _state == en.State.FREE:
 			$Collision_Box.disable(false)
 			#X movement
 			self.directional_input.x = _cur_input.x
@@ -324,7 +322,7 @@ func _move_tick():
 			self.directional_input.x = 0
 			self.directional_input.y += self._base_scaley
 			
-		if _state == e.State.ACTV:
+		if _state == en.State.ACTV:
 			self.directional_input.x = 0
 	
 		
@@ -340,11 +338,11 @@ func _move_tick():
 		
 	
 			
-	if(_state == e.State.STUN):
+	if(_state == en.State.STUN):
 		self.directional_input.x = self.directional_input.x * (1-_friction) 
 		
 	if (_bottom_pos > 0):
-		_debug_message( e.Level.ERROR, "Player's position is below the floor! Adjusting...")
+		_debug_message( en.Level.ERROR, "Player's position is below the floor! Adjusting...")
 		self.directional_input.y = -1 * _bottom_pos
 
 	
@@ -362,7 +360,7 @@ func _move_tick():
 	return self.directional_input
 
 func _box_tick():
-	_debug_message(e.Level.FRAME, 'Box Tick')
+	_debug_message(en.Level.FRAME, 'Box Tick')
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
@@ -379,13 +377,13 @@ func _sidecheck():
 			self._flipped = not _flipped
 			
 func _interact_tick():
-	_debug_message(e.Level.FRAME, 'Interact Tick')
+	_debug_message(en.Level.FRAME, 'Interact Tick')
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()
 
 func _process_tick():
-	_debug_message(e.Level.FRAME, 'Process Tick')
+	_debug_message(en.Level.FRAME, 'Process Tick')
 	# look at list of interactions, compare highest priority value on list of interactions against other
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
@@ -393,10 +391,10 @@ func _process_tick():
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
-	#_debug_message(e.Level.EVENT, "_state value: " + str(_state))
-	#if _state == e.State.FREE:
+	#_debug_messageen.Level.EVENT, "_state value: " + str(_state))
+	#if _state == en.State.FREE:
 	
-	#elif _state == e.State.STUN:
+	#elif _state == en.State.STUN:
 	#	$Sprite.set_texture()
 
 
@@ -405,7 +403,7 @@ func damage(incoming_move: Move_Data):
 
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
-		_debug_message(e.Level.EVENT, "Clash detected")
+		_debug_message(en.Level.EVENT, "Clash detected")
 
 
 # func spawn_boxes(framedata: 2dArray):
@@ -443,17 +441,17 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 
 
 func die():
-	_debug_message(e.Level.EVENT, 'I am Defeated!.')
+	_debug_message(en.Level.EVENT, 'I am Defeated!.')
 		
 
 func _debug_message(level, msg:String=""):
 	if level is String:
 		msg= level
-		level = e.Level.DEBUG
+		level = en.Level.DEBUG
 	elif typeof(level) != TYPE_INT:
 		msg = "Misconfigured _Debug String..." + str(level)
 		print(typeof(level) != TYPE_INT)
 		
-		level = e.Level.DEBUG
+		level = en.Level.DEBUG
 	
 	self.get_parent()._debug_message( level, msg, _p1_side)

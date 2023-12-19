@@ -11,11 +11,9 @@ func _ready():
 
 
 func _interpret_inputs(input:Input_Data):
-	if _state == e.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
+	if _state == en.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
 		
 		var frame_data = null
-		
-		_debug_message(str(input.report(false, 1)))
 		
 		# Movement block (lowest priority)		
 		if input.y < 0:

@@ -2,15 +2,15 @@ extends Node
 
 
 enum State {
-	FREE, # Non-active
-	STRT, # Startup 
-	ACTV, # Active
-	RECV, # Recovery
-	STUN, # Stun/ Histun
-	BLCK, # Blockstun
-	JMPS, # Jumpsquat
-	JMPB, # Jump begin
-	JMPR  # Jump Recovery
+	FREE=0, # Non-active
+	STRT=1, # Startup 
+	ACTV=2, # Active
+	RECV=3, # Recovery
+	STUN=4, # Stun/ Histun
+	BLCK=5, # Blockstun
+	JMPS=6, # Jumpsquat
+	JMPB=7, # Jump begin
+	JMPR=8  # Jump Recovery
 	}
  
 
@@ -29,9 +29,9 @@ enum Level {
 	DEBUG}
 	
 enum Type{
-	LOW,
-	MID,
-	HIG,
-	GRB,
-	UNB
+	LOW=0,
+	MID=1,
+	HIG=2,
+	GRB=3,
+	UNB=4
 }
