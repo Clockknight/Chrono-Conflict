@@ -16,14 +16,14 @@ const sprites = [preload("res://sprites/pow.png")]
 const sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
 const _base_sprite = preload("res://sprites/icon.png")
 const _state_sprites = [
-	_base_sprite,
-	_base_sprite,
-	_base_sprite,
-	_base_sprite, 
-	preload("res://sprites/stunned.png"),
-	_base_sprite,
-	_base_sprite,
-	_base_sprite]
+	_base_sprite, #0
+	_base_sprite, #1
+	_base_sprite, #2
+	_base_sprite, #3
+	preload("res://sprites/stunned.png"), #4
+	_base_sprite, #5
+	_base_sprite, #6
+	_base_sprite] #7
 
 # nodes
 var collision : CollisionShape2D 
@@ -236,17 +236,23 @@ func _state_tick():
 		while _move_queue != []:
 			if cur_move.priority < _move_queue[0].priority:
 				cur_move = _move_queue.pop_front()
+			else:
+				_move_queue.pop_front()
 		
-		
-		self._other.play_sound(cur_move.hit)
-		_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
-		self._health -= cur_move.damage
-		if self._health <= 0:
-			self._health = 0
-			self.die()
-		
-		self._state = cur_move.state
-		self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
+		# block for being hit
+		if true:
+			self._other.play_sound(cur_move.hit)
+			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
+			self._health -= cur_move.damage
+			if self._health <= 0:
+				self._health = 0
+				self.die()
+			
+			self._state = cur_move.state
+			self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
+		else:
+			#block for blocking
+			print('oops')
 		_parse_states([], cur_move.state, cur_move.duration)
 		
 		
@@ -260,7 +266,7 @@ func _state_tick():
 		_state_frames_left -= 1
 		if _state_frames_left <= 0:
 			var new_state = _state_queue.pop_front()
-			_debug_message( en.Level.FRAME, "new_state: " + str(new_state))
+			_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
 			_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
 			if new_state == null:
 				_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
@@ -398,7 +404,7 @@ func _process_tick():
 	#	$Sprite.set_texture()
 
 
-func damage(incoming_move: Move_Data):
+func hit(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
 
 func clash(e1: Hit_Box, e2:Hit_Box):
@@ -410,7 +416,7 @@ func clash(e1: Hit_Box, e2:Hit_Box):
 # take in 2d array and repeatedly call below box spawning func
 
 
-func spawn_box(framedata: Array =[], posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func spawn_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,framedata: Array =[]):
 	#spawn box given array of variables describing it
 	var newBox  = preloadHitBox.instance()
 	self.add_child(newBox)
@@ -451,7 +457,18 @@ func _debug_message(level, msg:String=""):
 	elif typeof(level) != TYPE_INT:
 		msg = "Misconfigured _Debug String..." + str(level)
 		print(typeof(level) != TYPE_INT)
-		
 		level = en.Level.DEBUG
 	
 	self.get_parent()._debug_message( level, msg, _p1_side)
+
+
+
+
+func _block_check(move):
+	# returns 1 if t is holding back, -1 if not
+	return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * _low_check(move)
+	
+func _low_check(move):
+	if move.data.type == en.Type.LOW:
+		return int(self._cur_input.y)
+	return 1

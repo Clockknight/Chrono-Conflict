@@ -29,7 +29,6 @@ func _interpret_inputs(input:Input_Data):
 		#Command Normal Block
 		if input.a == true and input.x *  int(_p1_side) > 0:
 			spawn_box()
-			spawn_box()
 			frame_data = ['ACTV|15','RECV|5']
 		
 		

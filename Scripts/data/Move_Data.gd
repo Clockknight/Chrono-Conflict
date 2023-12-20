@@ -23,7 +23,6 @@ hit_inf_x, hit_inf_y, blk_inf_x, blk_inf_y, whiff_id, block_id, hit_id, type:int
 	self.priority = priority
 	self.damage = damage
 	self.duration = duration
-	print(state)
 	self.state = state
 	
 	self.hit_influence = Vector2(hit_inf_x,hit_inf_y)
