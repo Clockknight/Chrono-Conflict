@@ -240,7 +240,7 @@ func _state_tick():
 				_move_queue.pop_front()
 		
 		# block for being hit
-		if true:
+		if bool(_block_check(cur_move)):
 			self._other.play_sound(cur_move.hit)
 			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 			self._health -= cur_move.damage
@@ -463,12 +463,11 @@ func _debug_message(level, msg:String=""):
 
 
 
-
-func _block_check(move):
+func _block_check(move:Move_Data):
 	# returns 1 if t is holding back, -1 if not
 	return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * _low_check(move)
 	
 func _low_check(move):
-	if move.data.type == en.Type.LOW:
+	if move.type == en.Type.LOW:
 		return int(self._cur_input.y)
 	return 1
