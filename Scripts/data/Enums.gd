@@ -9,7 +9,7 @@ enum State {
 	STUN=4, # Stun/ Histun
 	BLCK=5, # Blockstun
 	JMPS=6, # Jumpsquat
-	JMPB=7, # Jump begin
+	JMPA=7, # Jump Airborne
 	JMPR=8  # Jump Recovery
 	}
  

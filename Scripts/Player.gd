@@ -240,7 +240,7 @@ func _state_tick():
 				_move_queue.pop_front()
 		
 		# block for being hit
-		if bool(_block_check(cur_move)):
+		if _block_check(cur_move) == 0:
 			self._other.play_sound(cur_move.hit)
 			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 			self._health -= cur_move.damage
@@ -252,7 +252,8 @@ func _state_tick():
 			self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
 		else:
 			#block for blocking
-			print('oops')
+			_debug_message('oops')
+			self._other.play_sound(cur_move.block)
 		_parse_states([], cur_move.state, cur_move.duration)
 		
 		
@@ -464,10 +465,21 @@ func _debug_message(level, msg:String=""):
 
 
 func _block_check(move:Move_Data):
+	if _state != en.State.FREE and _state != en.State.JMPA:
+		return 0
+	if int(self._cur_input.x) == 0:
+		return 0
+	if int(self._cur_input.x) == int((int(_p1_side ) -.5 )*-2):
+		return 1
+	if int(self._cur_input.x) == int((int(_p1_side ) -.5 )*2):
+		return 0
 	# returns 1 if t is holding back, -1 if not
-	return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * _low_check(move)
+	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * _low_check(move)
+	#int(self._cur_input.x)
+#	 is -1, 0, or 1. If it's 0, then it's failed.
+#
 	
 func _low_check(move):
-	if move.type == en.Type.LOW:
-		return int(self._cur_input.y)
-	return 1
+	
+	return int(self._cur_input.y == -1)
+	
