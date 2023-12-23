@@ -2,7 +2,6 @@
 
 extends Node
 
-const e = preload('res://Scripts/Data/Enums.gd')
 
 var priority
 var damage
@@ -19,7 +18,7 @@ var type
 
 
 func _init(priority: int, damage: int, duration: int, 
-hit_inf_x, hit_inf_y, blk_inf_x, blk_inf_y, whiff_id, block_id, hit_id, type:int, state: int=e.State.STUN):
+hit_inf_x, hit_inf_y, blk_inf_x, blk_inf_y, whiff_id, block_id, hit_id, type:int, state: int=en.State.STUN):
 	self.priority = priority
 	self.damage = damage
 	self.duration = duration

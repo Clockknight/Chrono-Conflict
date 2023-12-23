@@ -240,20 +240,21 @@ func _state_tick():
 				_move_queue.pop_front()
 		
 		# block for being hit
-		if _block_check(cur_move) == 0:
-			self._other.play_sound(cur_move.hit)
-			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
-			self._health -= cur_move.damage
-			if self._health <= 0:
-				self._health = 0
-				self.die()
-			
-			self._state = cur_move.state
-			self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
-		else:
-			#block for blocking
-			_debug_message('oops')
-			self._other.play_sound(cur_move.block)
+		match _block_check(cur_move):
+			en.Hit.HURT:
+				self._other.play_sound(cur_move.hit)
+				_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
+				self._health -= cur_move.damage
+				if self._health <= 0:
+					self._health = 0
+					self.die()
+				
+				self._state = cur_move.state
+				self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
+			en.Hit.BLCK:
+				#block for blocking
+				_debug_message('oops')
+				self._other.play_sound(cur_move.block)
 		_parse_states([], cur_move.state, cur_move.duration)
 		
 		
@@ -341,12 +342,11 @@ func _move_tick():
 		# clause for landing
 		if self.directional_input.y >= -1 * _bottom_pos:
 			self.directional_input.y = -1 * _bottom_pos
-			self.directional_input.x =  100 
 		
 	
 			
 	if(_state == en.State.STUN):
-		self.directional_input.x = self.directional_input.x * (1-_friction) 
+		self.directional_input.x = self.directional_input.x * _friction
 		
 	if (_bottom_pos > 0):
 		_debug_message( en.Level.ERROR, "Player's position is below the floor! Adjusting...")
@@ -465,14 +465,29 @@ func _debug_message(level, msg:String=""):
 
 
 func _block_check(move:Move_Data):
+	var hit 
+	# if unblock hit = true
+	
 	if _state != en.State.FREE and _state != en.State.JMPA:
-		return 0
-	if int(self._cur_input.x) == 0:
-		return 0
-	if int(self._cur_input.x) == int((int(_p1_side ) -.5 )*-2):
-		return 1
-	if int(self._cur_input.x) == int((int(_p1_side ) -.5 )*2):
-		return 0
+		hit = true
+	elif int(self._cur_input.x) == 0:
+		hit = true
+	elif int(self._cur_input.x) == int((int(_p1_side ) -.5 )*-2):
+		hit = false
+	elif int(self._cur_input.x) == int((int(_p1_side ) -.5 )*2):
+		hit = true
+		
+	if hit == false:
+		if _low_check(move):
+			return en.Hit.BLCK
+		_debug_message("asd")
+		hit=true
+	if hit == true:
+		if _state == en.State.STRT or _state == en.State.ACTV:
+			return en.Hit.CNTR
+		if _state == en.State.JMPS and move.type==en.Type.GRB:
+			return en.Hit.BLCK
+		return en.Hit.HURT
 	# returns 1 if t is holding back, -1 if not
 	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * _low_check(move)
 	#int(self._cur_input.x)
@@ -480,6 +495,7 @@ func _block_check(move:Move_Data):
 #
 	
 func _low_check(move):
-	
-	return int(self._cur_input.y == -1)
+	if (move.type == en.Type.LOW and self._cur_input.y == 1) or (move.type == en.Type.HIG and self._cur_input.y == -1):
+		return false
+	return true
 	

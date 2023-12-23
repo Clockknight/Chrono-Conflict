@@ -35,3 +35,10 @@ enum Type{
 	GRB=3,
 	UNB=4
 }
+
+enum Hit{
+	BLCK=0,
+	HURT=1,
+	CNTR=2,
+	GRAB=3
+}
