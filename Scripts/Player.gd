@@ -62,9 +62,10 @@ var _cur_x = 0
 var _health
 var _jumps_max = 80
 var _jumps
+var _combo = 0
 
 # floats
-const _friction = .1
+const _friction = .5
 const _deceleration_max = .05
 var horizontal_speed 
 var vertical_speed 
@@ -240,11 +241,19 @@ func _state_tick():
 				_move_queue.pop_front()
 		
 		# block for being hit
+		# TODO this should be its own function
 		match _block_check(cur_move):
 			en.Hit.HURT:
 				self._other.play_sound(cur_move.hit)
 				_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
+				_debug_message(str(en.State.keys()[_other._state]))
+				if _other._state != en.State.STUN:					
+					_combo = 0
+				self._combo +=1
+				_debug_message(str(self._combo))
 				self._health -= cur_move.damage
+				
+				
 				if self._health <= 0:
 					self._health = 0
 					self.die()
@@ -253,7 +262,6 @@ func _state_tick():
 				self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
 			en.Hit.BLCK:
 				#block for blocking
-				_debug_message('oops')
 				self._other.play_sound(cur_move.block)
 		_parse_states([], cur_move.state, cur_move.duration)
 		
