@@ -37,11 +37,15 @@ func _ready():
 	# assign p1/p2 arbitrarily for now
 	if self.get_child_count() == 2:
 		for player in self.get_children():
-			if not p1:
-				p1 = player
-			else:
-				p2 = player
-				
+			_debug_message(en.Level.DEBUG, player.get_class(), true)
+			_debug_message(en.Level.DEBUG, "asdasdasd", false)
+			print('aspdojasdj')
+			if player.get_class() == "podod":
+				if not p1:
+					p1 = player
+				else:
+					p2 = player
+					
 		p1._debug = true
 		# run config function on each, setting their control strings as needed depending on which is p1/p2
 		p1._configure(p2, _stage_boundaries)
@@ -88,7 +92,9 @@ func _on_fps_timeout():
 func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
-	p1.tick()
+	print(str(p1.get_class()))
+	if p1.get_class() == "Player":
+		p1.tick()
 	
 
 
