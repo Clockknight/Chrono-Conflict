@@ -4,7 +4,7 @@ const e = preload('res://Scripts/Data/Enums.gd')
 
 var _camera
 
-var p1 = false
+var p1 = null
 var p2
 var _timer
 var _fps
@@ -26,7 +26,7 @@ const diff_x_min = 400
 const diff_y_max = 300
 const diff_y_min = 100
 
-var _observe_player_statuses = [true]
+var debug_state_for_p1n2 = [true, false]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
@@ -35,21 +35,18 @@ func _ready():
 	# find all children (there should be 2)
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
-	if self.get_child_count() == 2:
-		for player in self.get_children():
-			_debug_message(en.Level.DEBUG, player.get_class(), true)
-			_debug_message(en.Level.DEBUG, "asdasdasd", false)
-			print('aspdojasdj')
-			if player.get_class() == "podod":
-				if not p1:
-					p1 = player
-				else:
-					p2 = player
-					
-		p1._debug = true
-		# run config function on each, setting their control strings as needed depending on which is p1/p2
-		p1._configure(p2, _stage_boundaries)
-		p2._configure(p1, _stage_boundaries)
+	
+	for player in self.get_children():
+		if player.get_class() == 'KinematicBody2D':
+			if not p1:
+				p1 = player
+			else:
+				p2 = player
+				
+				
+	# run config function on each, setting their control strings as needed depending on which is p1/p2
+	p1._configure(p2, _stage_boundaries)
+	p2._configure(p1, _stage_boundaries)
 		
 
 	#Creat timer
@@ -78,6 +75,8 @@ func _ready():
 # jumping or whatever
 
 func _on_timer_timeout():
+	if p1 == null:
+		return
 	_tick_players()
 	_tick_camera()
 	
@@ -92,8 +91,8 @@ func _on_fps_timeout():
 func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
-	print(str(p1.get_class()))
-	if p1.get_class() == "Player":
+	
+	if p1 != null:
 		p1.tick()
 	
 
@@ -126,7 +125,9 @@ func _tick_camera():
 	
 	
 func _debug_message(level:int, msg:String, p1:bool):
-	if (level >= _min_level and p1 in _observe_player_statuses and _min_level != e.Level.DEBUG) or (level == e.Level.DEBUG and level == _min_level):
+	
+	
+	if ((p1 and debug_state_for_p1n2[0]) or (not p1 and debug_state_for_p1n2[1]))and (level >= _min_level and  _min_level != e.Level.DEBUG) or (level == e.Level.DEBUG and level == _min_level):
 		
 		msg = '==> '.repeat(level+1) + msg
 		
