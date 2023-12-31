@@ -6,6 +6,7 @@ var _camera
 
 var p1 = null
 var p2
+var UI 
 var _timer
 var _fps
 
@@ -30,6 +31,7 @@ var debug_state_for_p1n2 = [true, false]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
+	UI = _camera.get_node("UI")
 	#For setting ground borders
 	self.get_parent().get_node('groundline').scale.x = _stage_boundaries / 31
 	# find all children (there should be 2)
@@ -109,7 +111,7 @@ func _tick_camera():
 	_camera.zoom.y = _camera.zoom.x
 	_view_width = 350 * _camera.zoom.x
 	
-	
+	UI.scale = _camera.zoom
 		
 	# codeblock for camera position
 	_camera_pos = p1.position + p2.position	
@@ -122,7 +124,12 @@ func _tick_camera():
 	_camera_pos.x = clamp(_camera_pos.x,  _right_max, _left_max)
 	
 	_camera.position = _camera_pos
+	UI.position = _camera_pos
 	
+	
+func update_ui(p1, id, value):
+	UI.update(p1, id, value)
+		
 	
 func _debug_message(level:int, msg:String, p1:bool):
 	
