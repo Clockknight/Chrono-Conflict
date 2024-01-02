@@ -68,6 +68,14 @@ en="*res://Scripts/Data/Enums.gd"
 
 settings/fps/force_fps=60
 
+[display]
+
+window/size/width=1920
+window/size/height=1080
+window/size/resizable=false
+window/size/borderless=true
+window/size/fullscreen=true
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
