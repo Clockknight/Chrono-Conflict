@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/stunned.png-047c43d76fb31deeac9e9aa2dd21a2a9.stex"
+path="res://.import/stunned.png-57c6e661f420b4ea4e88ca85375eef3a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/stunned.png"
-dest_files=[ "res://.import/stunned.png-047c43d76fb31deeac9e9aa2dd21a2a9.stex" ]
+source_file="res://Sprites/stunned.png"
+dest_files=[ "res://.import/stunned.png-57c6e661f420b4ea4e88ca85375eef3a.stex" ]
 
 [params]
 

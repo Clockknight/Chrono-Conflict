@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HP_gone.jpg-0a6bdb83950397519dca5fd2343dbfa3.stex"
+path="res://.import/HP_gone.png-cc40bbb44ecd4dbc4806e2bbfacd72a2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/HP_gone.jpg"
-dest_files=[ "res://.import/HP_gone.jpg-0a6bdb83950397519dca5fd2343dbfa3.stex" ]
+source_file="res://Sprites/HP_gone.png"
+dest_files=[ "res://.import/HP_gone.png-cc40bbb44ecd4dbc4806e2bbfacd72a2.stex" ]
 
 [params]
 

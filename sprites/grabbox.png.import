@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/grabbox.png-d0a927a3939945ef527ff1b0fe907e40.stex"
+path="res://.import/grabbox.png-00b58d586608c530c8b98e4f77a5e458.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/grabbox.png"
-dest_files=[ "res://.import/grabbox.png-d0a927a3939945ef527ff1b0fe907e40.stex" ]
+source_file="res://Sprites/grabbox.png"
+dest_files=[ "res://.import/grabbox.png-00b58d586608c530c8b98e4f77a5e458.stex" ]
 
 [params]
 

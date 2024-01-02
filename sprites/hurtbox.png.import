@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hurtbox.png-cd50e2538775a5d65216bfafb66570cc.stex"
+path="res://.import/hurtbox.png-484e9570ed008b2fe870e58237e75d1d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/hurtbox.png"
-dest_files=[ "res://.import/hurtbox.png-cd50e2538775a5d65216bfafb66570cc.stex" ]
+source_file="res://Sprites/hurtbox.png"
+dest_files=[ "res://.import/hurtbox.png-484e9570ed008b2fe870e58237e75d1d.stex" ]
 
 [params]
 

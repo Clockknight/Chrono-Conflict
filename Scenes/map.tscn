@@ -4,7 +4,7 @@
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/manager.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Assets/UI.gd" type="Script" id=4]
-[ext_resource path="res://sprites/HP_have.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Assets/player_hp.tscn" type="PackedScene" id=5]
 
 [node name="Scene" type="Node2D"]
 
@@ -24,20 +24,10 @@ position = Vector2( 165, -47 )
 [node name="UI" type="CanvasLayer" parent="manager"]
 script = ExtResource( 4 )
 
-[node name="p1hp" type="Node2D" parent="manager/UI"]
-position = Vector2( 450, 50 )
-scale = Vector2( 2, 1 )
+[node name="p1hp" parent="manager/UI" instance=ExtResource( 5 )]
 
-[node name="have" type="Sprite" parent="manager/UI/p1hp"]
-texture = ExtResource( 5 )
-
-[node name="lose" type="Sprite" parent="manager/UI/p1hp"]
-
-[node name="gone" type="Sprite" parent="manager/UI/p1hp"]
-
-[node name="TextureProgress" type="TextureProgress" parent="manager/UI/p1hp"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="p2hp" parent="manager/UI" instance=ExtResource( 5 )]
+position = Vector2( 1470, 50 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 0, -599.872 )
