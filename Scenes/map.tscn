@@ -1,26 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/Character/Character_Orbulon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/manager.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Assets/UI.gd" type="Script" id=4]
+[ext_resource path="res://sprites/HP_have.png" type="Texture" id=5]
 
 [node name="Scene" type="Node2D"]
-
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2( 0, -599.872 )
-current = true
-zoom = Vector2( 3, 3 )
-editor_draw_drag_margin = true
-
-[node name="UI" type="Node2D" parent="Camera2D"]
-script = ExtResource( 4 )
-
-[node name="have" type="Sprite" parent="Camera2D/UI"]
-
-[node name="lose" type="Sprite" parent="Camera2D/UI"]
-
-[node name="gone" type="Sprite" parent="Camera2D/UI"]
 
 [node name="groundline" type="Sprite" parent="."]
 scale = Vector2( 98, 0.2 )
@@ -34,3 +20,27 @@ position = Vector2( -166, 81 )
 
 [node name="Character_Orbulon2" parent="manager" instance=ExtResource( 1 )]
 position = Vector2( 165, -47 )
+
+[node name="UI" type="CanvasLayer" parent="manager"]
+script = ExtResource( 4 )
+
+[node name="p1hp" type="Node2D" parent="manager/UI"]
+position = Vector2( 450, 50 )
+scale = Vector2( 2, 1 )
+
+[node name="have" type="Sprite" parent="manager/UI/p1hp"]
+texture = ExtResource( 5 )
+
+[node name="lose" type="Sprite" parent="manager/UI/p1hp"]
+
+[node name="gone" type="Sprite" parent="manager/UI/p1hp"]
+
+[node name="TextureProgress" type="TextureProgress" parent="manager/UI/p1hp"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 0, -599.872 )
+current = true
+zoom = Vector2( 3, 3 )
+editor_draw_drag_margin = true
