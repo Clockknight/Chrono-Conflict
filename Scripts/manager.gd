@@ -38,6 +38,8 @@ func _ready():
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
 	
+	UI.adjust(.95, "p1hp")
+	
 	for player in self.get_children():
 		if player.get_class() == 'KinematicBody2D':
 			if not p1:

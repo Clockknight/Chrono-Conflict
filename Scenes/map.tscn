@@ -27,7 +27,7 @@ script = ExtResource( 4 )
 [node name="p1hp" parent="manager/UI" instance=ExtResource( 5 )]
 
 [node name="p2hp" parent="manager/UI" instance=ExtResource( 5 )]
-position = Vector2( 1470, 50 )
+position = Vector2( 1070, 25 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 0, -599.872 )
