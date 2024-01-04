@@ -4,6 +4,7 @@ extends KinematicBody2D
 # external classes
 const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
 const i = preload('res://Scripts/Data/Input_Data.gd')
+
 # Constants
 const BUFFER_WINDOW = 3
 
@@ -11,19 +12,11 @@ const BUFFER_WINDOW = 3
 const SFx_Audio  =preload('res://Scenes/Assets/SFx_Audio.tscn')
 const preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
 const preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
-const preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
-const sprites = [preload("res://sprites/pow.png")]
-const sfxs = [preload("res://Sound/whiff.mp3"), preload("res://Sound/hit.mp3"), preload("res://Sound/block.mp3")]
-const _base_sprite = preload("res://sprites/icon.png")
-const _state_sprites = [
-	_base_sprite, #0
-	_base_sprite, #1
-	_base_sprite, #2
-	_base_sprite, #3
-	preload("res://sprites/stunned.png"), #4
-	_base_sprite, #5
-	_base_sprite, #6
-	_base_sprite] #7
+var preloadSprite
+var sprites 
+var _base_sprite 
+var sfxs 
+var _state_sprites
 
 # nodes
 var collision : CollisionShape2D 
@@ -59,6 +52,7 @@ var _base_scalex
 var _stage_bounds 
 var _stored_x = 0
 var _cur_x = 0
+var _max_health
 var _health
 var _jumps_max = 80
 var _jumps
@@ -82,6 +76,7 @@ func _ready():
 	_base_scaley = scale.y
 	_base_scalex = scale.x
 	collision = self.get_node("Collision_Box")
+	_health = _max_health
 
 
 func _configure(other_player, bounds):
@@ -242,28 +237,7 @@ func _state_tick():
 		
 		# block for being hit
 		# TODO this should be its own function
-		match _block_check(cur_move):
-			en.Hit.HURT:
-				self._other.play_sound(cur_move.hit)
-				_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
-				_debug_message(str(en.State.keys()[_other._state]))
-				if _other._state != en.State.STUN:					
-					_combo = 0
-				self._combo +=1
-				_debug_message(str(self._combo))
-				self._health -= cur_move.damage
-				
-				
-				if self._health <= 0:
-					self._health = 0
-					self.die()
-				
-				self._state = cur_move.state
-				self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
-			en.Hit.BLCK:
-				#block for blocking
-				self._other.play_sound(cur_move.block)
-		_parse_states([], cur_move.state, cur_move.duration)
+		test(cur_move)
 		
 		
 	
@@ -290,6 +264,35 @@ func _state_tick():
 				_state = new_state[0]
 				_state_frames_left = new_state[1]
 					
+					
+# todo rename test
+func test(cur_move):
+	match _block_check(cur_move):
+		en.Hit.HURT:
+			self._other.play_sound(cur_move.hit)
+			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
+			_debug_message(str(en.State.keys()[_other._state]))
+			if _other._state != en.State.STUN:					
+				_combo = 0
+			self._combo +=1
+			_debug_message(str(self._combo))
+			self._health -= cur_move.damage
+			
+			var pct = _health / _max_health
+			
+			self.get_parent().update_ui(self._p1_side, pct, "hp")
+			
+			if self._health <= 0:
+				self._health = 0
+				self.die()
+			
+			self._state = cur_move.state
+			self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
+		en.Hit.BLCK:
+			#block for blocking
+			self._other.play_sound(cur_move.block)
+	_parse_states([], cur_move.state, cur_move.duration)
+			
 func _parse_states(incoming: Array = [], incoming_state: int=en.State.FREE, incoming_duration: int = 0):
 	#if _state_queue != []:
 		#_debug_message(en.Level.EVENT, '_parse_states() called when _state_queue not empty')

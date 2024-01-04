@@ -6,7 +6,28 @@ func _ready():
 	self.vertical_speed = 80.0
 	self.gravity = 5.0
 	self.terminal_speed = 100.0
-	self._health = 10
+	
+	self._max_health = 10
+	
+	
+	preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
+	sprites = [preload("res://sprites/pow.png")]
+	_base_sprite = preload("res://sprites/icon.png")
+	sfxs = [
+		preload("res://Sound/whiff.mp3"), 
+		preload("res://Sound/hit.mp3"), 
+		preload("res://Sound/block.mp3")]
+	_state_sprites = [
+	_base_sprite, #0
+	_base_sprite, #1
+	_base_sprite, #2
+	_base_sprite, #3
+	preload("res://sprites/stunned.png"), #4
+	_base_sprite, #5
+	_base_sprite, #6
+	_base_sprite] #7
+	
+	._ready()
 
 
 

@@ -9,16 +9,22 @@ func _ready():
 	p1hp = get_node("p1hp")
 	p2hp = get_node("p2hp")
 
+
 func adjust(perc:float, node:String):
+
 	var adjust
 	
 	match node:
+		# hp bars are currently 800px long
 		"p1hp":
 			adjust = p1hp.get_node("have")
 			adjust.scale.x -= perc
 			
 	
 	
+	
+# func decompose(node:String)
+# func to make lose shrink to have's size
 	
 	
 

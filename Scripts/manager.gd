@@ -37,8 +37,7 @@ func _ready():
 	# find all children (there should be 2)
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
-	
-	UI.adjust(.95, "p1hp")
+
 	
 	for player in self.get_children():
 		if player.get_class() == 'KinematicBody2D':
@@ -126,9 +125,10 @@ func _tick_camera():
 	_camera.position = _camera_pos
 	
 	
-func update_ui(p1, id, value):
-	UI.update(p1, id, value)
-		
+func update_ui(p1, change_pct:float, id:String ):
+	id = ("p1" if p1 else "p2") + id
+	UI.adjust(change_pct, id)	
+
 	
 func _debug_message(level:int, msg:String, p1:bool):
 	
