@@ -18,6 +18,8 @@ var _stage_boundaries = 3000
 var frames = 0
 var _min_level = e.Level.ERROR
 
+var size
+
 var diff_vector
 
 var _left_max
@@ -32,11 +34,17 @@ var debug_state_for_p1n2 = [true, false]
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
 	UI = self.get_node("UI")
+	size = get_viewport().size
+	print(size)
 	#For setting ground borders
 	self.get_parent().get_node('groundline').scale.x = _stage_boundaries / 31
 	# find all children (there should be 2)
 	# Find the two player objects
 	# assign p1/p2 arbitrarily for now
+	
+	
+	UI.scale.x = size[0]/1920
+	UI.scale.y = size[1]/1080
 
 	
 	for player in self.get_children():
@@ -123,6 +131,10 @@ func _tick_camera():
 	_camera_pos.x = clamp(_camera_pos.x,  _right_max, _left_max)
 	
 	_camera.position = _camera_pos
+	
+	
+	
+	
 	
 	
 func update_ui(p1, change_pct:float, id:String ):
