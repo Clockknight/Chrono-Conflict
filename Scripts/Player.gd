@@ -275,16 +275,9 @@ func test(cur_move):
 				combo = 0
 			_other.combo +=1
 			self._health -= cur_move.damage
-			
 			var pct = float( _health / _max_health)
-			_debug_message(str(_health))
-			_debug_message(str(_max_health))
-			_debug_message(str(9/10))
-			_debug_message(str(pct))
 			
-			
-			
-			self.get_parent().update_ui(self._p1_side, pct, "hp")
+			self.get_parent().update_ui(self._p1_side, pct)
 			
 			
 			if self._health <= 0:

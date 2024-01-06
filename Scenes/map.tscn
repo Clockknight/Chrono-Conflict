@@ -31,6 +31,15 @@ scale = Vector2( -2, 1 )
 [node name="p2hp" parent="manager/UI" instance=ExtResource( 5 )]
 position = Vector2( 1020, 25 )
 
+[node name="p1con" type="RichTextLabel" parent="manager/UI"]
+margin_left = 35.0
+margin_top = 114.0
+margin_right = 429.0
+margin_bottom = 323.0
+rect_scale = Vector2( 2, 1.5 )
+text = "Combo: 0
+State: FREE"
+
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 0, -599.872 )
 current = true

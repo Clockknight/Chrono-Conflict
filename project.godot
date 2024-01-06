@@ -70,9 +70,8 @@ settings/fps/force_fps=60
 
 [display]
 
-window/size/width=960
-window/size/height=720
-window/size/resizable=false
+window/size/width=1000
+window/size/height=700
 
 [gui]
 

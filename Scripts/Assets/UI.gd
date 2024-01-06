@@ -10,17 +10,13 @@ func _ready():
 	p2hp = get_node("p2hp")
 
 
-func adjust(perc:float, node:String):
+func adjust(p1:bool, perc:float):
 
-	print(node)
 	var adjust
 	
-	match node:
-		# hp bars are currently 800px long
-		
-		"p1hp":
-			adjust = p1hp.get_node("have")
-			adjust.scale.x =  perc
+	adjust = (p1hp if p1 else p2hp)
+	adjust = adjust.get_node("have")		
+	adjust.scale.x = max(0, perc)
 			
 	
 	
