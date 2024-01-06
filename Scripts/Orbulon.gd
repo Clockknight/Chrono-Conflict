@@ -7,8 +7,7 @@ func _ready():
 	self.gravity = 5.0
 	self.terminal_speed = 100.0
 	
-	self._max_health = 10
-	
+	self._max_health = 10.0
 	
 	preloadSprite = preload("res://Scenes/Boxes/Sprite_Box.tscn")
 	sprites = [preload("res://sprites/pow.png")]

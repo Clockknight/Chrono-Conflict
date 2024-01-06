@@ -137,9 +137,9 @@ func _tick_camera():
 	
 	
 	
-func update_ui(p1, change_pct:float, id:String ):
+func update_ui(p1, new_pct:float, id:String ):
 	id = ("p1" if p1 else "p2") + id
-	UI.adjust(change_pct, id)	
+	UI.adjust(new_pct, id)	
 
 	
 func _debug_message(level:int, msg:String, p1:bool):

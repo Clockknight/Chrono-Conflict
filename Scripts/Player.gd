@@ -56,7 +56,7 @@ var _max_health
 var _health
 var _jumps_max = 80
 var _jumps
-var _combo = 0
+var combo = 0
 
 # floats
 const _friction = .5
@@ -271,16 +271,21 @@ func test(cur_move):
 		en.Hit.HURT:
 			self._other.play_sound(cur_move.hit)
 			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
-			_debug_message(str(en.State.keys()[_other._state]))
-			if _other._state != en.State.STUN:					
-				_combo = 0
-			self._combo +=1
-			_debug_message(str(self._combo))
+			if _state != en.State.STUN:					
+				combo = 0
+			_other.combo +=1
 			self._health -= cur_move.damage
 			
-			var pct = _health / _max_health
+			var pct = float( _health / _max_health)
+			_debug_message(str(_health))
+			_debug_message(str(_max_health))
+			_debug_message(str(9/10))
+			_debug_message(str(pct))
+			
+			
 			
 			self.get_parent().update_ui(self._p1_side, pct, "hp")
+			
 			
 			if self._health <= 0:
 				self._health = 0

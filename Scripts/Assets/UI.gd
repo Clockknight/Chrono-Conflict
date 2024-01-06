@@ -12,13 +12,15 @@ func _ready():
 
 func adjust(perc:float, node:String):
 
+	print(node)
 	var adjust
 	
 	match node:
 		# hp bars are currently 800px long
+		
 		"p1hp":
 			adjust = p1hp.get_node("have")
-			adjust.scale.x -= perc
+			adjust.scale.x =  perc
 			
 	
 	
