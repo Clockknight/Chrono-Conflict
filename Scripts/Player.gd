@@ -237,7 +237,7 @@ func _state_tick():
 		
 		# block for being hit
 		# TODO this should be its own function
-		test(cur_move)
+		process_move(cur_move)
 		
 		
 	
@@ -266,18 +266,18 @@ func _state_tick():
 					
 					
 # todo rename test
-func test(cur_move):
+func process_move(cur_move):
 	match _block_check(cur_move):
 		en.Hit.HURT:
 			self._other.play_sound(cur_move.hit)
 			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
-			if _state != en.State.STUN:					
-				combo = 0
 			_other.combo +=1
+			
+			
 			self._health -= cur_move.damage
 			var pct = float( _health / _max_health)
 			
-			self.get_parent().update_ui(self._p1_side, pct)
+			_adjust_ui(pct, en.Elem.HEALTH)
 			
 			
 			if self._health <= 0:
@@ -412,7 +412,10 @@ func _process_tick():
 	
 	#elif _state == en.State.STUN:
 	#	$Sprite.set_texture()
-
+	if _state != en.State.STUN:
+		self.combo = 0
+	
+	self.get_parent().update_console(_p1_side, _other.combo, self._state)
 
 func hit(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
@@ -508,3 +511,5 @@ func _low_check(move):
 		return false
 	return true
 	
+func _adjust_ui(value, elem):
+	self.get_parent().adjust_ui(self._p1_side, value, elem)

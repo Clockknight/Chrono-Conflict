@@ -42,3 +42,8 @@ enum Hit{
 	CNTR=2,
 	GRAB=3
 }
+
+enum Elem{
+	HEALTH = 0
+	CONSOLE = 1
+}

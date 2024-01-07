@@ -1,23 +1,38 @@
 extends Node
 
 var width = 200
+
+var adjust
+
 var p1hp
+var p1con
+
 var p2hp
+var p2con
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	p1hp = get_node("p1hp")
-	p2hp = get_node("p2hp")
-
-
-func adjust(p1:bool, perc:float):
-
-	var adjust
+	p1con = get_node("p1con")
 	
-	adjust = (p1hp if p1 else p2hp)
-	adjust = adjust.get_node("have")		
+	
+	p2hp = get_node("p2hp")
+	p2con = get_node("p2con")
+
+func adjust_health(p1:bool, perc:float):
+
+	
+	adjust = (p1hp if p1 else p2hp).get_node("have")		
+	
 	adjust.scale.x = max(0, perc)
 			
+
+
+
+func update_console(p1:bool, combo, state):
+	var text = 'Combo: ' + str(combo) + '\nState: ' + str(en.State.keys()[state])
+	
+	(p1con if p1 else p2con).text = text
 	
 	
 	

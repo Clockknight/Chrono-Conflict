@@ -137,9 +137,16 @@ func _tick_camera():
 	
 	
 	
-func update_ui(p1, new_pct:float):
+func adjust_ui(p1, new_val, item:int):
 	
-	UI.adjust(p1, new_pct)	
+	match item:
+		en.Elem.HEALTH:	
+			UI.adjust_health(p1, new_val)	
+			
+			
+			
+func update_console(p1, combo, state):
+	UI.update_console(p1, combo, state)
 
 	
 func _debug_message(level:int, msg:String, p1:bool):
