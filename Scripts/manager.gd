@@ -3,10 +3,10 @@ extends Node
 const e = preload('res://Scripts/Data/Enums.gd')
 
 var _camera
-
 var p1 = null
 var p2
 var UI 
+var _background
 var _timer
 var _fps
 
@@ -33,6 +33,7 @@ var debug_state_for_p1n2 = [true, true]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
+	_background = _camera.get_node("Background")
 	UI = self.get_node("UI")
 	size = get_viewport().size
 	print(size)
@@ -113,6 +114,7 @@ func _tick_camera():
 #	codeblock for camera zooming
 	diff_vector = p1.position - p2.position
 	
+	
 	diff_vector.x = clamp(abs(diff_vector.x), diff_x_min, diff_x_max)
 	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
 	
@@ -131,8 +133,12 @@ func _tick_camera():
 	
 	_camera_pos.x = clamp(_camera_pos.x,  _right_max, _left_max)
 	
+	
+	_background.position.x = _camera.position.x *-.05
 	_camera.position = _camera_pos
 	
+	
+	_background.scale = _camera.zoom * 2
 	
 	
 	

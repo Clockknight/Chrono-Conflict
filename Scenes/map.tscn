@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Character/Character_Orbulon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
@@ -6,8 +6,20 @@
 [ext_resource path="res://Scripts/Assets/UI.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Assets/player_hp.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Assets/player_console.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Sprites/skyline.png" type="Texture" id=7]
 
 [node name="Scene" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2( 0, -599.872 )
+current = true
+zoom = Vector2( 3, 3 )
+editor_draw_drag_margin = true
+
+[node name="Background" type="Sprite" parent="Camera2D"]
+position = Vector2( 0, -500 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 7 )
 
 [node name="groundline" type="Sprite" parent="."]
 scale = Vector2( 98, 0.2 )
@@ -56,9 +68,3 @@ margin_bottom = 39.0
 rect_scale = Vector2( 3, 3 )
 text = "99"
 align = 1
-
-[node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2( 0, -599.872 )
-current = true
-zoom = Vector2( 3, 3 )
-editor_draw_drag_margin = true
