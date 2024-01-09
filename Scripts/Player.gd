@@ -142,6 +142,7 @@ func tick():
 	_other._interact_tick()
 	
 	_process_tick()
+	_other._process_tick()
 	
 
 
@@ -413,17 +414,21 @@ func _process_tick():
 	#elif _state == en.State.STUN:
 	#	$Sprite.set_texture()
 	
-	if _state != en.State.STUN:
+	
+	
+	if _other._state != en.State.STUN:
 		self.combo = 0
 		
 	
-	self.get_parent().update_console(_p1_side, _other.combo, self._state)
+	self.get_parent().update_console(self, self.combo, self._state)
 
 func hit(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
 
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
+		e1.queue_free()
+		e2.queue_free()
 		_debug_message(en.Level.EVENT, "Clash detected")
 
 
@@ -514,4 +519,4 @@ func _low_check(move):
 	return true
 	
 func _adjust_ui(value, elem):
-	self.get_parent().adjust_ui(self._p1_side, value, elem)
+	self.get_parent().adjust_ui(self, value, elem)

@@ -29,7 +29,7 @@ const diff_x_min = 400
 const diff_y_max = 300
 const diff_y_min = 100
 
-var debug_state_for_p1n2 = [true, false]
+var debug_state_for_p1n2 = [true, true]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
@@ -142,12 +142,12 @@ func adjust_ui(p1, new_val, item:int):
 	
 	match item:
 		en.Elem.HEALTH:	
-			UI.adjust_health(p1, new_val)	
+			UI.adjust_health(p1==self.p1, new_val)	
 			
 			
 			
 func update_console(p1, combo, state):
-	UI.update_console(p1, combo, state)
+	UI.update_console(p1==self.p1, combo, state)
 
 	
 func _debug_message(level:int, msg:String, p1:bool):
