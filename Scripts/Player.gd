@@ -270,7 +270,7 @@ func process_move(cur_move):
 	match _block_check(cur_move):
 		en.Hit.HURT:
 			self._other.play_sound(cur_move.hit)
-			_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
+			_other._debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 			_other.combo +=1
 			
 			
@@ -412,8 +412,10 @@ func _process_tick():
 	
 	#elif _state == en.State.STUN:
 	#	$Sprite.set_texture()
+	
 	if _state != en.State.STUN:
 		self.combo = 0
+		
 	
 	self.get_parent().update_console(_p1_side, _other.combo, self._state)
 

@@ -33,8 +33,29 @@ scale = Vector2( -2, 1 )
 position = Vector2( 1020, 25 )
 
 [node name="p1con" parent="manager/UI" instance=ExtResource( 6 )]
+margin_left = 50.0
+margin_top = 100.0
+margin_right = 50.0
+margin_bottom = 300.0
+rect_scale = Vector2( 1.5, 1 )
 
 [node name="p2con" parent="manager/UI" instance=ExtResource( 6 )]
+margin_left = 1820.0
+margin_top = 100.0
+margin_right = 1820.0
+margin_bottom = 200.0
+grow_horizontal = 0
+rect_scale = Vector2( 1.5, 1 )
+align = 2
+
+[node name="timer_temp" type="Label" parent="manager/UI"]
+margin_left = 925.0
+margin_top = 25.0
+margin_right = 949.0
+margin_bottom = 39.0
+rect_scale = Vector2( 3, 3 )
+text = "99"
+align = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2( 0, -599.872 )

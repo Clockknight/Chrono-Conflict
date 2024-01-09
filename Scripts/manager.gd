@@ -96,6 +96,7 @@ func _on_timer_timeout():
 	
 func _on_fps_timeout():
 #	print(frames)
+	UI.tick_timer()
 	frames = 0
 
 	
