@@ -358,9 +358,7 @@ func _move_tick():
 	if(_state == en.State.STUN):
 		self.directional_input.x = self.directional_input.x * _friction
 		
-	if (_bottom_pos > 0):
-		_debug_message( en.Level.ERROR, "Player's position is below the floor! Adjusting...")
-		self.directional_input.y = -1 * _bottom_pos
+		
 
 	
 	#clause to stay in stage bounds
@@ -368,16 +366,23 @@ func _move_tick():
 		self.directional_input.x -= (abs(self.directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 
 
-	var collision_report = move_and_collide(self.directional_input)
+	move_and_collide(self.directional_input)
 #	if collision_report:
 #		print_debug("collided with: "+ str(collision.collider.name))
+	
+	_check_floor()
 	
 	_sidecheck()
 	
 	return self.directional_input
+	
+func _check_floor():
+	if (_bottom_pos > 0):
+		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
+		self.position.y -= _bottom_pos
+		_calc_bottom_y()
+		_debug_message(en.Level.ERROR, "Player new position: "+str(_bottom_pos))
 
-func _box_tick():
-	_debug_message(en.Level.FRAME, 'Box Tick')
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
@@ -392,6 +397,9 @@ func _sidecheck():
 		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
 			self.scale.x *= -1
 			self._flipped = not _flipped
+
+func _box_tick():
+	_debug_message(en.Level.FRAME, 'Box Tick')
 			
 func _interact_tick():
 	_debug_message(en.Level.FRAME, 'Interact Tick')

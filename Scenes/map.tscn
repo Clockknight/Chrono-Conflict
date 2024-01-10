@@ -29,7 +29,7 @@ texture = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="Character_Orbulon" parent="manager" instance=ExtResource( 1 )]
-position = Vector2( -166, 81 )
+position = Vector2( 138, -207 )
 
 [node name="Character_Orbulon2" parent="manager" instance=ExtResource( 1 )]
 position = Vector2( 165, -47 )
@@ -66,5 +66,5 @@ margin_top = 25.0
 margin_right = 949.0
 margin_bottom = 39.0
 rect_scale = Vector2( 3, 3 )
-text = "99"
+text = "10"
 align = 1
