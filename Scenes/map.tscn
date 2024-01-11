@@ -17,6 +17,7 @@ zoom = Vector2( 3, 3 )
 editor_draw_drag_margin = true
 
 [node name="Background" type="Sprite" parent="Camera2D"]
+visible = false
 position = Vector2( 0, -500 )
 scale = Vector2( 5, 5 )
 texture = ExtResource( 7 )

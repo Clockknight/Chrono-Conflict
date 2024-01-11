@@ -258,10 +258,13 @@ func _state_tick():
 				_state = en.State.FREE
 			else:
 				if _state == en.State.JMPS and _jumps > 0:
+					$Collision_Box.disable(true)
+					_grounded = false
 					_debug_message(en.Level.FRAME, 'jump started')
 					self.directional_input.y = -1 * self.vertical_speed
 					_cur_x = _stored_x
 					_jumps -= 1
+					
 				_state = new_state[0]
 				_state_frames_left = new_state[1]
 					
@@ -321,12 +324,12 @@ func _move_tick():
 	_calc_bottom_y()
 	
 	if _grounded:
+		$Collision_Box.disable(false)
 			
 		if _state != en.State.JMPS:
 			_jumps = _jumps_max
 		
 		if _state == en.State.FREE:
-			$Collision_Box.disable(false)
 			#X movement
 			self.directional_input.x = _cur_input.x
 			self.directional_input.x *= horizontal_speed
@@ -366,9 +369,10 @@ func _move_tick():
 		self.directional_input.x -= (abs(self.directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 
 
-	move_and_collide(self.directional_input)
-#	if collision_report:
-#		print_debug("collided with: "+ str(collision.collider.name))
+	
+
+	var collision_report = move_and_collide(self.directional_input)
+	_check_overlap(collision_report)
 	
 	_check_floor()
 	
@@ -376,18 +380,33 @@ func _move_tick():
 	
 	return self.directional_input
 	
+	
+func _check_overlap(report):
+	if report and _grounded:
+		var width = -collision.scale.x/5
+		_ground()
+		if _p1_side:
+			self.position.x += width
+			_grounded = true
+			_check_overlap(move_and_collide(Vector2.ZERO))
+			
+	return
+			
+	
 func _check_floor():
 	if (_bottom_pos > 0):
-		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
-		self.position.y -= _bottom_pos
-		_calc_bottom_y()
-		_debug_message(en.Level.ERROR, "Player new position: "+str(_bottom_pos))
+#		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
+		_ground()
 
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
 	_grounded = _bottom_pos >= 0
+
+func _ground():
+	_calc_bottom_y()
+	self.position.y -= _bottom_pos
 
 func _sidecheck():
 	if _p1_side != (self.position.x < _other.position.x):
@@ -413,6 +432,7 @@ func _process_tick():
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
 	
+	
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
@@ -428,7 +448,7 @@ func _process_tick():
 		self.combo = 0
 		
 	
-	self.get_parent().update_console(self, self.combo, self._state)
+	self.get_parent().update_console(self, self.combo, self._state, self.directional_input)
 
 func hit(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
@@ -507,7 +527,6 @@ func _block_check(move:Move_Data):
 	if hit == false:
 		if _low_check(move):
 			return en.Hit.BLCK
-		_debug_message("asd")
 		hit=true
 	if hit == true:
 		if _state == en.State.STRT or _state == en.State.ACTV:

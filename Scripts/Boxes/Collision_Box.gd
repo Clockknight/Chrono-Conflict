@@ -20,3 +20,4 @@ func get_box():
 	
 func disable(disable_toggle):
 	self.disabled = disable_toggle
+	self.visible = not disable_toggle
