@@ -35,11 +35,7 @@ func _interpret_inputs(input:Input_Data):
 		
 		var frame_data = null
 		
-		# Movement block (lowest priority)		
-		if input.y < 0:
-			frame_data = ['JMPS|5']
-			_cur_x = _stored_x
-			_stored_x = _cur_input['x']
+		frame_data = ._interpret_inputs(input)
 			
 		# Normal Block
 		if input.a == true:

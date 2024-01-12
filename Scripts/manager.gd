@@ -13,7 +13,7 @@ var _fps
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 60
+var _framerate = 3
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = e.Level.ERROR
@@ -152,13 +152,11 @@ func adjust_ui(p1, new_val, item:int):
 			
 			
 			
-func update_console(p1, combo, state, direction, input):
-	UI.update_console(p1==self.p1, combo, state, direction, input)
+func update_console(p1, combo, state, direction, input, cx, sx):
+	UI.update_console(p1==self.p1, combo, state, direction, input, cx, sx)
 
 	
 func _debug_message(level:int, msg:String, p1:bool):
-	
-	
 	if ((p1 and debug_state_for_p1n2[0]) or (not p1 and debug_state_for_p1n2[1]))and (level >= _min_level and  _min_level != e.Level.DEBUG) or (level == e.Level.DEBUG and level == _min_level):
 		
 		msg = '==> '.repeat(level+1) + msg

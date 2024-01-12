@@ -216,14 +216,22 @@ func _read_input():
 	
 	return _cur_input
 
-func _interpret_inputs(values:Input_Data):
-	_debug_message(en.Level.ERROR, "_Interpret_inputs Not Inherited!")
+func _interpret_inputs(input:Input_Data):
+	var frame_data = null
+
+	# Movement block (lowest priority)		
+	if input.y < 0:
+		frame_data = ['JMPS|5']
+		_cur_x = _stored_x
+		_stored_x = _cur_input['x']
+	
+	return frame_data
 
 		
 func _state_tick():
 	_debug_message(en.Level.FRAME, 'State Tick')
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
-	_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
+	
 	if _move_queue != []:
 		_debug_message(en.Level.FRAME, "Interactions: " + str(_move_queue))
 		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
@@ -239,11 +247,13 @@ func _state_tick():
 		# block for being hit
 		# TODO this should be its own function
 		process_move(cur_move)
+	else:
+		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
 		
 		
 	
 		
-	if _state == en.State.FREE and _state_queue == []:
+	if (_state == en.State.FREE and _state_queue == []) or (_state ==en.State.JMPA):
 		_state_frames_left = 1
 		
 		
@@ -254,8 +264,12 @@ func _state_tick():
 			_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
 			_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
 			if new_state == null:
-				_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
-				_state = en.State.FREE
+				if _state == en.State.JMPS:
+					_parse_states([],en.State.JMPA, 1)
+					
+				else:
+					_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
+					_state = en.State.FREE
 			else:
 				if _state == en.State.JMPS and _jumps > 0:
 					$Collision_Box.disable(true)
@@ -323,17 +337,18 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
+	if _state == en.State.FREE:
+			#X movement
+			self.directional_input.x = _cur_input.x*horizontal_speed
+	
 	if _grounded:
 		$Collision_Box.disable(false)
 			
 		if _state != en.State.JMPS:
 			_jumps = _jumps_max
 		
+		
 		if _state == en.State.FREE:
-			#X movement
-			self.directional_input.x = _cur_input.x
-			self.directional_input.x *= horizontal_speed
-			
 			#Y movement
 			self.directional_input.y = 0
 		
@@ -351,6 +366,11 @@ func _move_tick():
 		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
 		self.directional_input.y = min(gravity + self.directional_input.y , terminal_speed)
+		
+		if self._state == en.State.JMPS:
+			self.directional_input.x = self._cur_x * self.horizontal_speed
+		elif self._state == en.State.FREE:
+			self.directional_input.x = self._stored_x * self.horizontal_speed
 		
 		# clause for landing
 		if self.directional_input.y >= -1 * _bottom_pos:
@@ -554,5 +574,7 @@ func _update_console():
 	var c=self._state
 	var d=self.directional_input
 	var e=self._cur_input
+	var f1=self._cur_x
+	var f2=self._stored_x
 	
-	self.get_parent().update_console(self, self.combo, self._state, self.directional_input, self._cur_input)
+	self.get_parent().update_console(a,b,c,d,e,f1,f2)

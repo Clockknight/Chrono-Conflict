@@ -39,10 +39,11 @@ func tick_timer():
 
 
 
-func update_console(p1:bool, combo, state, direction, input):
+func update_console(p1:bool, combo, state, direction, input, cx, sx):
 	var text = 'Combo: ' + str(combo) 
 	text +='\nState: ' + str(en.State.keys()[state]) 
 	text +='\nMovement: ' + str(direction)
+	text +='\nCur x: ' + str(cx) + ' Stored x: ' + str(sx)
 	text +='\nInput: ' + input.report(false,0)
 	
 	(p1con if p1 else p2con).text = text
