@@ -448,7 +448,7 @@ func _process_tick():
 		self.combo = 0
 		
 	
-	self.get_parent().update_console(self, self.combo, self._state, self.directional_input)
+	_update_console()
 
 func hit(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
@@ -547,3 +547,12 @@ func _low_check(move):
 	
 func _adjust_ui(value, elem):
 	self.get_parent().adjust_ui(self, value, elem)
+
+func _update_console():
+	var a= self
+	var b=self.combo
+	var c=self._state
+	var d=self.directional_input
+	var e=self._cur_input
+	
+	self.get_parent().update_console(self, self.combo, self._state, self.directional_input, self._cur_input)

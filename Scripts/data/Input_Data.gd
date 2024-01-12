@@ -41,7 +41,7 @@ func compare(o):
 	
 
 func report(full=true, history=30):
-	var report = "\n\n" + str(duration)
+	var report = "\n\n" + str(duration) 
 			
 	if x == -1:
 		report+="L"
@@ -64,7 +64,6 @@ func report(full=true, history=30):
 	if d:
 		report+="d"
 		
-	report += str(history-duration)
 		
 	if((full or history - duration > 0) and self.older != null):
 		return self.older.report(full, history-duration) + report
