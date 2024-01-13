@@ -414,19 +414,31 @@ func _check_overlap(report):
 			
 	
 func _check_floor():
+	
 	if (_bottom_pos > 0):
 #		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
 		_ground()
+	
+
+	_calc_bottom_y()
 
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
 	_grounded = _bottom_pos >= 0
+	
+	if _state != en.State.JMPS:
+		$Collision_Box.disable(!_grounded)
+		
+	_debug_message(str(_grounded))
 
 func _ground():
 	_calc_bottom_y()
 	self.position.y -= _bottom_pos
+	if _state == en.State.JMPA:
+		_state = en.State.FREE
+	_calc_bottom_y()
 
 func _sidecheck():
 	if _p1_side != (self.position.x < _other.position.x):
@@ -576,5 +588,6 @@ func _update_console():
 	var e=self._cur_input
 	var f1=self._cur_x
 	var f2=self._stored_x
+	var g=self._grounded
 	
-	self.get_parent().update_console(a,b,c,d,e,f1,f2)
+	self.get_parent().update_console(a,b,c,d,e,f1,f2,g)

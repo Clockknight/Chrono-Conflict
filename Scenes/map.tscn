@@ -30,7 +30,7 @@ texture = ExtResource( 2 )
 script = ExtResource( 3 )
 
 [node name="Character_Orbulon" parent="manager" instance=ExtResource( 1 )]
-position = Vector2( 138, -207 )
+position = Vector2( -126, 101 )
 
 [node name="Character_Orbulon2" parent="manager" instance=ExtResource( 1 )]
 position = Vector2( 165, -47 )

@@ -29,7 +29,7 @@ const diff_x_min = 400
 const diff_y_max = 300
 const diff_y_min = 100
 
-var debug_state_for_p1n2 = [true, true]
+var debug_state_for_p1n2 = [true, false]
 
 func _ready():
 	_camera = self.get_parent().get_node("Camera2D")
@@ -152,8 +152,8 @@ func adjust_ui(p1, new_val, item:int):
 			
 			
 			
-func update_console(p1, combo, state, direction, input, cx, sx):
-	UI.update_console(p1==self.p1, combo, state, direction, input, cx, sx)
+func update_console(p1, combo, state, direction, input, cx, sx, grounded):
+	UI.update_console(p1==self.p1, combo, state, direction, input, cx, sx, grounded)
 
 	
 func _debug_message(level:int, msg:String, p1:bool):
