@@ -342,7 +342,6 @@ func _move_tick():
 			self.directional_input.x = _cur_input.x*horizontal_speed
 	
 	if _grounded:
-		$Collision_Box.disable(false)
 			
 		if _state != en.State.JMPS:
 			_jumps = _jumps_max
@@ -363,13 +362,12 @@ func _move_tick():
 	
 		
 	if(not _grounded):
-		$Collision_Box.disable(true)
 		#get_node("Collision_Box").disabled = true
 		self.directional_input.y = min(gravity + self.directional_input.y , terminal_speed)
 		
 		if self._state == en.State.JMPS:
 			self.directional_input.x = self._cur_x * self.horizontal_speed
-		elif self._state == en.State.FREE:
+		elif self._state == en.State.JMPA:
 			self.directional_input.x = self._stored_x * self.horizontal_speed
 		
 		# clause for landing
@@ -428,8 +426,10 @@ func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
 	_grounded = _bottom_pos >= 0
 	
-	if _state != en.State.JMPS:
-		$Collision_Box.disable(!_grounded)
+	if _state == en.State.JMPA and self.directional_input.y < 0:
+		_grounded = false
+		
+	$Collision_Box.disable(!_grounded)
 		
 	_debug_message(str(_grounded))
 
