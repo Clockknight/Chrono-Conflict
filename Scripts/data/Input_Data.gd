@@ -38,6 +38,42 @@ func compare(o):
 		self.older = o
 		return self
 		
+		
+		
+func input_new_down(input:String):
+	if self.older == null or duration > 1:
+		return false
+	
+	var newinput
+	var oldinput
+	
+	match input:
+		'a':
+			newinput = self.a 
+			oldinput = self.older.a
+		'b':
+			newinput = self.b 
+			oldinput = self.older.b
+		'c':
+			newinput = self.c 
+			oldinput = self.older.c
+		'd':
+			newinput = self.d 
+			oldinput = self.older.d
+		'x':
+			newinput = self.x 
+			oldinput = self.older.x
+		'y':
+			newinput = self.y 
+			oldinput = self.older.y
+
+	if( (newinput != oldinput) and newinput):
+		print("/////")
+		print(str(newinput != oldinput))
+		print(str(newinput))
+				
+	return (newinput != oldinput) and newinput
+			
 	
 
 func report(full=true, history=30):

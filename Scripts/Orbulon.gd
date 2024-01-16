@@ -38,15 +38,15 @@ func _interpret_inputs(input:Input_Data):
 		frame_data = ._interpret_inputs(input)
 			
 		# Normal Block
-		if input.a == true:
+		if input.input_new_down('a'):
 			spawn_box()
-			frame_data = ['ACTV|15','RECV|5']
+			frame_data = ['STRT|1','ACTV|1','RECV|1']
 
 		#Command Normal Block
-		if input.a == true and input.x *  int(_p1_side) > 0:
-			spawn_box()
-			frame_data = ['ACTV|15','RECV|5']
-		
+#		if input.a == true and input.x *  int(_p1_side) > 0:
+#			spawn_box()
+#			frame_data = ['ACTV|15','RECV|5']
+#
 		
 		# Special Block
 		

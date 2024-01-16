@@ -222,8 +222,13 @@ func _interpret_inputs(input:Input_Data):
 	# Movement block (lowest priority)		
 	if input.y < 0:
 		frame_data = ['JMPS|5']
-		_cur_x = _stored_x
-		_stored_x = _cur_input['x']
+		if self._grounded:
+			self._cur_x = 0
+		else:
+			self._cur_x = self._stored_x
+			
+			
+		self._stored_x = _cur_input['x']
 	
 	return frame_data
 
@@ -276,7 +281,7 @@ func _state_tick():
 					_grounded = false
 					_debug_message(en.Level.FRAME, 'jump started')
 					self.directional_input.y = -1 * self.vertical_speed
-					_cur_x = _stored_x
+						
 					_jumps -= 1
 					
 				_state = new_state[0]
@@ -342,10 +347,7 @@ func _move_tick():
 			self.directional_input.x = _cur_input.x*horizontal_speed
 	
 	if _grounded:
-			
-		if _state != en.State.JMPS:
-			_jumps = _jumps_max
-		
+				
 		
 		if _state == en.State.FREE:
 			#Y movement
@@ -431,7 +433,6 @@ func _calc_bottom_y():
 		
 	$Collision_Box.disable(!_grounded)
 		
-	_debug_message(str(_grounded))
 
 func _ground():
 	_calc_bottom_y()
@@ -591,3 +592,6 @@ func _update_console():
 	var g=self._grounded
 	
 	self.get_parent().update_console(a,b,c,d,e,f1,f2,g)
+
+
+	
