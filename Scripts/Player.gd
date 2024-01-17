@@ -46,7 +46,7 @@ var _state = en.State.FREE
 
 # integers
 var _state_frames_left = 1
-var _bottom_pos = 0
+var _bottom_pos 
 var _base_scaley
 var _base_scalex 
 var _stage_bounds 
@@ -342,12 +342,10 @@ func _move_tick():
 	
 	_calc_bottom_y()
 	
-	if _state == en.State.FREE:
-			#X movement
-			self.directional_input.x = _cur_input.x*horizontal_speed
+	
 	
 	if _grounded:
-				
+		self.directional_input.x = 0
 		
 		if _state == en.State.FREE:
 			#Y movement
@@ -361,6 +359,8 @@ func _move_tick():
 			
 		if _state == en.State.ACTV:
 			self.directional_input.x = 0
+			
+	
 	
 		
 	if(not _grounded):
@@ -375,15 +375,18 @@ func _move_tick():
 		# clause for landing
 		if self.directional_input.y >= -1 * _bottom_pos:
 			self.directional_input.y = -1 * _bottom_pos
+			
+	
+	if _state == en.State.FREE:
+			#X movement
+			self.directional_input.x = _cur_input.x*horizontal_speed
 		
 	
 			
 	if(_state == en.State.STUN):
 		self.directional_input.x = self.directional_input.x * _friction
 		
-		
 
-	
 	#clause to stay in stage bounds
 	if(abs(self.directional_input.x + self.position.x) > _stage_bounds):
 		self.directional_input.x -= (abs(self.directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
@@ -415,7 +418,7 @@ func _check_overlap(report):
 	
 func _check_floor():
 	
-	if (_bottom_pos > 0):
+	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
 #		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
 		_ground()
 	
@@ -426,17 +429,17 @@ func _check_floor():
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
-	_grounded = _bottom_pos >= 0
+	self._grounded = _bottom_pos >= 0
 	
 	if _state == en.State.JMPA and self.directional_input.y < 0:
-		_grounded = false
+		self._grounded = false
 		
 	$Collision_Box.disable(!_grounded)
 		
 
 func _ground():
 	_calc_bottom_y()
-	self.position.y -= _bottom_pos
+	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
 	_calc_bottom_y()

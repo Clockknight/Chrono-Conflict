@@ -31,7 +31,7 @@ func _ready():
 
 
 func _interpret_inputs(input:Input_Data):
-	if _state == en.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []):
+	if _state == en.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []) or (self._state ==en.State.JMPA):
 		
 		var frame_data = null
 		
