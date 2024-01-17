@@ -85,7 +85,7 @@ func _configure(other_player, bounds):
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
 
-	_sidecheck()
+	help_sidecheck()
 	
 	_up_string = update_dictionary(_up_string, "ui_p2up")
 	_down_string= update_dictionary(_down_string, "ui_p2down")
@@ -122,34 +122,34 @@ func tick():
 	_debug_message(en.Level.FRAME, 'Tick Start ============')
 	# Read Inputs and save the input for this frame for later use
 	
-	_input_tick()
-	_other._input_tick()
+	_subtick_input()
+	_other._subtick_input()
 	
-	_state_tick()
-	_other._state_tick()
+	_subtick_state()
+	_other._subtick_state()
 	
 	#move self and move projectiles, which should move child boxes as well
-	_move_tick()
-	_other._move_tick()
+	_subtick_move()
+	_other._subtick_move()
 	
 	
 	# tick box lifespans, and spawn new ones as needed
-	_box_tick()
-	_other._box_tick()
+	_subtick_box()
+	_other._subtick_box()
 	
 	# check box interactions
-	_interact_tick()
-	_other._interact_tick()
+	_subtick_interact()
+	_other._subtick_interact()
 	
-	_process_tick()
-	_other._process_tick()
+	_subtick_process()
+	_other._subtick_process()
 	
 
 
-func _input_tick():
+func _subtick_input():
 	_debug_message(en.Level.FRAME, 'Input Tick')
-	_cur_input = _read_input()
-	_interpret_inputs(_cur_input)
+	_cur_input = step_input_process()
+	step_input_interpret(_cur_input)
 
 #	_debug_message(_input_queue)
 #		todo
@@ -159,7 +159,7 @@ func _input_tick():
 	
 	
 
-func _read_input():
+func step_input_process():
 	# Process all the queued inputs, and pass the resulting input to cur innput next
 	var x = 0
 	var y = 0
@@ -216,7 +216,7 @@ func _read_input():
 	
 	return _cur_input
 
-func _interpret_inputs(input:Input_Data):
+func step_input_interpret(input:Input_Data):
 	var frame_data = null
 
 	# Movement block (lowest priority)		
@@ -233,7 +233,7 @@ func _interpret_inputs(input:Input_Data):
 	return frame_data
 
 		
-func _state_tick():
+func _subtick_state():
 	_debug_message(en.Level.FRAME, 'State Tick')
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	
@@ -249,9 +249,7 @@ func _state_tick():
 			else:
 				_move_queue.pop_front()
 		
-		# block for being hit
-		# TODO this should be its own function
-		process_move(cur_move)
+		step_state_process(cur_move)
 	else:
 		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
 		
@@ -270,7 +268,7 @@ func _state_tick():
 			_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
 			if new_state == null:
 				if _state == en.State.JMPS:
-					_parse_states([],en.State.JMPA, 1)
+					step_state_interpret([],en.State.JMPA, 1)
 					
 				else:
 					_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
@@ -288,35 +286,35 @@ func _state_tick():
 				_state_frames_left = new_state[1]
 					
 					
-# todo rename test
-func process_move(cur_move):
-	match _block_check(cur_move):
+func step_state_process(cur_move):
+	match step_block_check(cur_move):
 		en.Hit.HURT:
 			self._other.play_sound(cur_move.hit)
 			_other._debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 			_other.combo +=1
-			
-			
 			self._health -= cur_move.damage
 			var pct = float( _health / _max_health)
-			
 			_adjust_ui(pct, en.Elem.HEALTH)
-			
 			
 			if self._health <= 0:
 				self._health = 0
-				self.die()
+				self.step_die()
 			
 			self._state = cur_move.state
 			self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
 		en.Hit.BLCK:
 			#block for blocking
 			self._other.play_sound(cur_move.block)
-	_parse_states([], cur_move.state, cur_move.duration)
-			
-func _parse_states(incoming: Array = [], incoming_state: int=en.State.FREE, incoming_duration: int = 0):
+	step_state_interpret([], cur_move.state, cur_move.duration)
+
+
+func step_die():
+	_debug_message(en.Level.EVENT, 'I am Defeated!.')			
+
+
+func step_state_interpret(incoming: Array = [], incoming_state: int=en.State.FREE, incoming_duration: int = 0):
 	#if _state_queue != []:
-		#_debug_message(en.Level.EVENT, '_parse_states() called when _state_queue not empty')
+		#_debug_message(en.Level.EVENT, 'step_state_interpret() called when _state_queue not empty')
 	if incoming != []:
 		for s in incoming:
 			s = s.split('|')
@@ -329,101 +327,101 @@ func _parse_states(incoming: Array = [], incoming_state: int=en.State.FREE, inco
 			_debug_message( en.Level.ERROR, 'State with duration of 0 passed in!')
 		_state_queue.append([incoming_state, incoming_duration])
 		return
-			
 	_debug_message(en.Level.ERROR, 'Empty state passed to parse_states')
-	
 	return
 		
+		
+func step_block_check(move:Move_Data):
+	var hit 
+	# if unblock hit = true
+	if _state != en.State.FREE and _state != en.State.JMPA:
+		hit = true
+	elif int(self._cur_input.x) == 0:
+		hit = true
+	elif int(self._cur_input.x) == int((int(_p1_side ) -.5 )*-2):
+		hit = false
+	elif int(self._cur_input.x) == int((int(_p1_side ) -.5 )*2):
+		hit = true
+		
+	if hit == false:
+		if step_low_check(move):
+			return en.Hit.BLCK
+		hit=true
+	if hit == true:
+		if _state == en.State.STRT or _state == en.State.ACTV:
+			return en.Hit.CNTR
+		if _state == en.State.JMPS and move.type==en.Type.GRB:
+			return en.Hit.BLCK
+		return en.Hit.HURT
+	# returns 1 if t is holding back, -1 if not
+	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * step_low_check(move)
+	#int(self._cur_input.x)
+#	 is -1, 0, or 1. If it's 0, then it's failed.
+
+	
+func step_low_check(move):
+	if (move.type == en.Type.LOW and self._cur_input.y == 1) or (move.type == en.Type.HIG and self._cur_input.y == -1):
+		return false
+	return true
+
 
 #todo player locks into horiz movement when attacking
-func _move_tick():
-	
+func _subtick_move():
 	_debug_message(en.Level.FRAME, 'Move Tick')
-	
 	_calc_bottom_y()
-	
-	
-	
 	if _grounded:
 		self.directional_input.x = 0
-		
 		if _state == en.State.FREE:
 			#Y movement
 			self.directional_input.y = 0
-		
-		
 		if (_cur_input.y > 0):
 			self.scale.y = _base_scaley * .5
 			self.directional_input.x = 0
 			self.directional_input.y += self._base_scaley
-			
 		if _state == en.State.ACTV:
 			self.directional_input.x = 0
-			
-	
-	
 		
 	if(not _grounded):
 		#get_node("Collision_Box").disabled = true
 		self.directional_input.y = min(gravity + self.directional_input.y , terminal_speed)
-		
 		if self._state == en.State.JMPS:
 			self.directional_input.x = self._cur_x * self.horizontal_speed
 		elif self._state == en.State.JMPA:
 			self.directional_input.x = self._stored_x * self.horizontal_speed
-		
 		# clause for landing
 		if self.directional_input.y >= -1 * _bottom_pos:
 			self.directional_input.y = -1 * _bottom_pos
-			
 	
 	if _state == en.State.FREE:
 			#X movement
 			self.directional_input.x = _cur_input.x*horizontal_speed
-		
-	
 			
 	if(_state == en.State.STUN):
 		self.directional_input.x = self.directional_input.x * _friction
-		
 
 	#clause to stay in stage bounds
 	if(abs(self.directional_input.x + self.position.x) > _stage_bounds):
 		self.directional_input.x -= (abs(self.directional_input.x + self.position.x) - _stage_bounds) * sign(self.position.x)	
 
-
-	
-
 	var collision_report = move_and_collide(self.directional_input)
-	_check_overlap(collision_report)
-	
-	_check_floor()
-	
-	_sidecheck()
-	
+	step_move_check(collision_report)
+	help_sidecheck()
 	return self.directional_input
 	
 	
-func _check_overlap(report):
+func step_move_check(report):
 	if report and _grounded:
 		var width = -collision.scale.x/5
-		_ground()
+		help_ground()
 		if _p1_side:
 			self.position.x += width
 			_grounded = true
-			_check_overlap(move_and_collide(Vector2.ZERO))
-			
-	return
-			
-	
-func _check_floor():
-	
+			step_move_check(move_and_collide(Vector2.ZERO))
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
 #		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
-		_ground()
-	
-
+		help_ground()
 	_calc_bottom_y()
+	return
 
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
@@ -435,16 +433,17 @@ func _calc_bottom_y():
 		self._grounded = false
 		
 	$Collision_Box.disable(!_grounded)
-		
 
-func _ground():
+
+func help_ground():
 	_calc_bottom_y()
 	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
 	_calc_bottom_y()
 
-func _sidecheck():
+
+func help_sidecheck():
 	if _p1_side != (self.position.x < _other.position.x):
 		_p1_side = not _p1_side
 	
@@ -453,41 +452,38 @@ func _sidecheck():
 			self.scale.x *= -1
 			self._flipped = not _flipped
 
-func _box_tick():
+
+func _subtick_box():
 	_debug_message(en.Level.FRAME, 'Box Tick')
-			
-func _interact_tick():
+	
+	
+func _subtick_interact():
 	_debug_message(en.Level.FRAME, 'Interact Tick')
 	for _i in self.get_children():
 		if _i is Box:
 			_i.tick()
 
-func _process_tick():
+
+func _subtick_process():
 	_debug_message(en.Level.FRAME, 'Process Tick')
 	# look at list of interactions, compare highest priority value on list of interactions against other
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
-	
-	
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
 	#_debug_messageen.Level.EVENT, "_state value: " + str(_state))
 	#if _state == en.State.FREE:
-	
 	#elif _state == en.State.STUN:
 	#	$Sprite.set_texture()
-	
-	
-	
 	if _other._state != en.State.STUN:
 		self.combo = 0
-		
-	
 	_update_console()
+
 
 func hit(incoming_move: Move_Data):
 	_move_queue.append(incoming_move)
+
 
 func clash(e1: Hit_Box, e2:Hit_Box):
 	if not _p1_side:
@@ -498,14 +494,13 @@ func clash(e1: Hit_Box, e2:Hit_Box):
 
 # func spawn_boxes(framedata: 2dArray):
 # take in 2d array and repeatedly call below box spawning func
-
-
 func spawn_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,framedata: Array =[]):
 	#spawn box given array of variables describing it
 	var newBox  = preloadHitBox.instance()
 	self.add_child(newBox)
 	self.play_sound(0)
 	newBox.set_box(posx, posy, scalex,scaley, lifetime)
+
 
 func play_sound(sound_id:int, duration:int = 1):
 	var newSFX = SFx_Audio.instance(sound_id)
@@ -523,16 +518,12 @@ func play_sound(sound_id:int, duration:int = 1):
 	newSFX.queue_free()
 	t.queue_free()
 
-	
+
 func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	var newSprite : Sprite_Box = preloadSprite.instance()
 	self.add_child(newSprite)
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
-
-func die():
-	_debug_message(en.Level.EVENT, 'I am Defeated!.')
-		
 
 func _debug_message(level, msg:String=""):
 	if level is String:
@@ -546,43 +537,9 @@ func _debug_message(level, msg:String=""):
 	self.get_parent()._debug_message( level, msg, _p1_side)
 
 
-
-func _block_check(move:Move_Data):
-	var hit 
-	# if unblock hit = true
-	
-	if _state != en.State.FREE and _state != en.State.JMPA:
-		hit = true
-	elif int(self._cur_input.x) == 0:
-		hit = true
-	elif int(self._cur_input.x) == int((int(_p1_side ) -.5 )*-2):
-		hit = false
-	elif int(self._cur_input.x) == int((int(_p1_side ) -.5 )*2):
-		hit = true
-		
-	if hit == false:
-		if _low_check(move):
-			return en.Hit.BLCK
-		hit=true
-	if hit == true:
-		if _state == en.State.STRT or _state == en.State.ACTV:
-			return en.Hit.CNTR
-		if _state == en.State.JMPS and move.type==en.Type.GRB:
-			return en.Hit.BLCK
-		return en.Hit.HURT
-	# returns 1 if t is holding back, -1 if not
-	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * _low_check(move)
-	#int(self._cur_input.x)
-#	 is -1, 0, or 1. If it's 0, then it's failed.
-#
-	
-func _low_check(move):
-	if (move.type == en.Type.LOW and self._cur_input.y == 1) or (move.type == en.Type.HIG and self._cur_input.y == -1):
-		return false
-	return true
-	
 func _adjust_ui(value, elem):
 	self.get_parent().adjust_ui(self, value, elem)
+
 
 func _update_console():
 	var a= self
@@ -595,6 +552,3 @@ func _update_console():
 	var g=self._grounded
 	
 	self.get_parent().update_console(a,b,c,d,e,f1,f2,g)
-
-
-	
