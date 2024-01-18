@@ -30,12 +30,12 @@ func _ready():
 
 
 
-func _interpret_inputs(input:Input_Data):
+func step_input_interpret(input:Input_Data):
 	if _state == en.State.FREE or (_state_frames_left <= BUFFER_WINDOW and _state_queue == []) or (self._state ==en.State.JMPA):
 		
 		var frame_data = null
 		
-		frame_data = ._interpret_inputs(input)
+		frame_data = .step_input_interpret(input)
 			
 		# Normal Block
 		if input.input_new_down('a'):
@@ -53,4 +53,4 @@ func _interpret_inputs(input:Input_Data):
 		# Super Block
 
 		if frame_data != null:
-			_parse_states(frame_data)
+			step_state_interpret(frame_data)

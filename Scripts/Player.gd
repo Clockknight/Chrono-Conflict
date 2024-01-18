@@ -256,10 +256,8 @@ func _subtick_state():
 		
 	
 		
-	if (_state == en.State.FREE and _state_queue == []) or (_state ==en.State.JMPA):
+	if (_state == en.State.FREE or _state ==en.State.JMPA) and _state_queue == []:
 		_state_frames_left = 1
-		
-		
 	else:
 		_state_frames_left -= 1
 		if _state_frames_left <= 0:
@@ -327,7 +325,7 @@ func step_state_interpret(incoming: Array = [], incoming_state: int=en.State.FRE
 			_debug_message( en.Level.ERROR, 'State with duration of 0 passed in!')
 		_state_queue.append([incoming_state, incoming_duration])
 		return
-	_debug_message(en.Level.ERROR, 'Empty state passed to parse_states')
+	_debug_message(en.Level.ERROR, 'Empty state passed to step_state_interpret')
 	return
 		
 		
