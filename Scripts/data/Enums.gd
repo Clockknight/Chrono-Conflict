@@ -19,7 +19,7 @@ enum State {
 enum Level {
 	# For reports that occur once per sub-tick (eg movement_tick's calculations)
 	CALC, 
-	# For reports that occur once per frame (eg Tick and Tick varients)
+	# For reports that occur once per frame (eg Tick and Sub Tick)
 	FRAME, 
 	# For reports that occur ocassionally (eg player dying/taking damage)
 	EVENT, 

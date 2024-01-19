@@ -122,9 +122,19 @@ func tick():
 	_debug_message(en.Level.FRAME, 'Tick Start ============')
 	# Read Inputs and save the input for this frame for later use
 	
+	# Parse inputs
 	_subtick_input()
 	_other._subtick_input()
 	
+	# Spawn boxes based on inputs / State
+	_subtick_box()
+	_other._subtick_box()
+	
+	# Check interactions with boxes
+	_subtick_interact()
+	_other._subtick_interact()
+	
+	# Assign state based on inputs / interactions
 	_subtick_state()
 	_other._subtick_state()
 	
@@ -132,15 +142,7 @@ func tick():
 	_subtick_move()
 	_other._subtick_move()
 	
-	
-	# tick box lifespans, and spawn new ones as needed
-	_subtick_box()
-	_other._subtick_box()
-	
-	# check box interactions
-	_subtick_interact()
-	_other._subtick_interact()
-	
+	# miscellaneous processing of various actions
 	_subtick_process()
 	_other._subtick_process()
 	
@@ -232,6 +234,16 @@ func step_input_interpret(input:Input_Data):
 	
 	return frame_data
 
+func _subtick_box():
+	_debug_message(en.Level.FRAME, 'Box Tick')
+	
+	
+func _subtick_interact():
+	_debug_message(en.Level.FRAME, 'Interact Tick')
+	for _i in self.get_children():
+		if _i is Box:
+			_i.tick()
+		
 		
 func _subtick_state():
 	_debug_message(en.Level.FRAME, 'State Tick')
@@ -251,11 +263,11 @@ func _subtick_state():
 		
 		step_state_process(cur_move)
 	else:
-		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue != []))
+		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue == []))
 		
 		
 	
-		
+	
 	if (_state == en.State.FREE or _state ==en.State.JMPA) and _state_queue == []:
 		_state_frames_left = 1
 	else:
@@ -451,19 +463,11 @@ func help_sidecheck():
 			self._flipped = not _flipped
 
 
-func _subtick_box():
-	_debug_message(en.Level.FRAME, 'Box Tick')
-	
-	
-func _subtick_interact():
-	_debug_message(en.Level.FRAME, 'Interact Tick')
-	for _i in self.get_children():
-		if _i is Box:
-			_i.tick()
+
 
 
 func _subtick_process():
-	_debug_message(en.Level.FRAME, 'Process Tick')
+	_debug_message(en.Level.FRAME, 'Subtick Process')
 	# look at list of interactions, compare highest priority value on list of interactions against other
 	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration

@@ -67,10 +67,6 @@ func input_new_down(input:String):
 			newinput = self.y 
 			oldinput = self.older.y
 
-	if( (newinput != oldinput) and newinput):
-		print("/////")
-		print(str(newinput != oldinput))
-		print(str(newinput))
 				
 	return (newinput != oldinput) and newinput
 			
