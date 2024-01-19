@@ -6,6 +6,7 @@ func _ready():
 	self.vertical_speed = 80.0
 	self.gravity = 10
 	self.terminal_speed = 100.0
+	self._jumps_max = 2
 	
 	self._max_health = 10.0
 	
@@ -39,12 +40,12 @@ func step_input_interpret(input:Input_Data):
 			
 		# Normal Block
 		if input.input_new_down('a'):
-			spawn_box()
+			queue_box()
 			frame_data = ['STRT|1','ACTV|1','RECV|1']
 
 		#Command Normal Block
 #		if input.a == true and input.x *  int(_p1_side) > 0:
-#			spawn_box()
+#			queue_box()
 #			frame_data = ['ACTV|15','RECV|5']
 #
 		

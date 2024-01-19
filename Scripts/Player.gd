@@ -54,8 +54,8 @@ var _stored_x = 0
 var _cur_x = 0
 var _max_health
 var _health
-var _jumps_max = 80
-var _jumps
+var _jumps_max
+var _jumps = 0
 var combo = 0
 
 # floats
@@ -126,6 +126,10 @@ func tick():
 	_subtick_input()
 	_other._subtick_input()
 	
+	# Assign state based on inputs / interactions
+	_subtick_state()
+	_other._subtick_state()
+	
 	# Spawn boxes based on inputs / State
 	_subtick_box()
 	_other._subtick_box()
@@ -133,10 +137,6 @@ func tick():
 	# Check interactions with boxes
 	_subtick_interact()
 	_other._subtick_interact()
-	
-	# Assign state based on inputs / interactions
-	_subtick_state()
-	_other._subtick_state()
 	
 	#move self and move projectiles, which should move child boxes as well
 	_subtick_move()
@@ -233,37 +233,12 @@ func step_input_interpret(input:Input_Data):
 		self._stored_x = _cur_input['x']
 	
 	return frame_data
-
-func _subtick_box():
-	_debug_message(en.Level.FRAME, 'Box Tick')
 	
-	
-func _subtick_interact():
-	_debug_message(en.Level.FRAME, 'Interact Tick')
-	for _i in self.get_children():
-		if _i is Box:
-			_i.tick()
-		
-		
 func _subtick_state():
 	_debug_message(en.Level.FRAME, 'State Tick')
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	
-	if _move_queue != []:
-		_debug_message(en.Level.FRAME, "Interactions: " + str(_move_queue))
-		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
-		var cur_move = _move_queue.pop_front()
-		
-		
-		while _move_queue != []:
-			if cur_move.priority < _move_queue[0].priority:
-				cur_move = _move_queue.pop_front()
-			else:
-				_move_queue.pop_front()
-		
-		step_state_process(cur_move)
-	else:
-		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue == []))
+	
 		
 		
 	
@@ -340,6 +315,45 @@ func step_state_interpret(incoming: Array = [], incoming_state: int=en.State.FRE
 	_debug_message(en.Level.ERROR, 'Empty state passed to step_state_interpret')
 	return
 		
+
+func _subtick_box():
+	_debug_message(en.Level.FRAME, 'Box Tick')
+	
+	
+func _subtick_interact():
+	_debug_message(en.Level.FRAME, 'Interact Tick')
+	for _i in self.get_children():
+		if _i is Box:
+			_i.tick()
+			
+	if _move_queue != []:
+		_debug_message(en.Level.FRAME, "Interactions: " + str(_move_queue))
+		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
+		var cur_move = _move_queue.pop_front()
+		
+		
+		while _move_queue != []:
+			if cur_move.priority < _move_queue[0].priority:
+				cur_move = _move_queue.pop_front()
+			else:
+				_move_queue.pop_front()
+		
+		step_state_process(cur_move)
+	else:
+		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue == []))
+			
+func hit(incoming_move: Move_Data):
+	_move_queue.append(incoming_move)
+
+
+func clash(e1: Hit_Box, e2:Hit_Box):
+	if not _p1_side:
+		e1.queue_free()
+		e2.queue_free()
+		_debug_message(en.Level.EVENT, "Clash detected")
+		
+		
+
 		
 func step_block_check(move:Move_Data):
 	var hit 
@@ -450,6 +464,7 @@ func help_ground():
 	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
+		_jumps = 2
 	_calc_bottom_y()
 
 
@@ -483,20 +498,12 @@ func _subtick_process():
 	_update_console()
 
 
-func hit(incoming_move: Move_Data):
-	_move_queue.append(incoming_move)
 
 
-func clash(e1: Hit_Box, e2:Hit_Box):
-	if not _p1_side:
-		e1.queue_free()
-		e2.queue_free()
-		_debug_message(en.Level.EVENT, "Clash detected")
 
-
-# func spawn_boxes(framedata: 2dArray):
+# func queue_boxes(framedata: 2dArray):
 # take in 2d array and repeatedly call below box spawning func
-func spawn_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,framedata: Array =[]):
+func queue_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,framedata: Array =[]):
 	#spawn box given array of variables describing it
 	var newBox  = preloadHitBox.instance()
 	self.add_child(newBox)
