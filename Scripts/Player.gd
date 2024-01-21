@@ -559,5 +559,6 @@ func _update_console():
 	var f1=self._cur_x
 	var f2=self._stored_x
 	var g=self._grounded
+	var h=self._jumps
 	
-	self.get_parent().update_console(a,b,c,d,e,f1,f2,g)
+	self.get_parent().update_console(a,b,c,d,e,f1,f2,g,h)

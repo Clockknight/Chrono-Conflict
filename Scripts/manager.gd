@@ -152,8 +152,8 @@ func adjust_ui(p1, new_val, item:int):
 			
 			
 			
-func update_console(p1, combo, state, direction, input,  cx, sx, grounded):
-	UI.update_console(p1==self.p1, combo, state, direction, input, cx, sx, grounded)
+func update_console(p1, combo, state, direction, input,  cx, sx, grounded, jumps):
+	UI.update_console(p1==self.p1, combo, state, direction, input, cx, sx, grounded, jumps)
 
 	
 func _debug_message(level:int, msg:String, p1:bool):
