@@ -44,12 +44,15 @@ func _ready():
 	# assign p1/p2 arbitrarily for now
 	
 	
-	UI.scale.x = size[0]/1920
-	UI.scale.y = size[1]/1080
+	UI.scale.x = size[0]/1920.0
+	print(UI.scale.x)
+	UI.scale.y = size[1]/1080.0
+	print(UI.scale.y)
+	
 
 	
 	for player in self.get_children():
-		if player.get_class() == 'KinematicBody2D':
+		if player.get_class() == 'CharacterBody2D':
 			if not p1:
 				p1 = player
 			else:
@@ -65,7 +68,7 @@ func _ready():
 	_timer = Timer.new()
 	add_child(_timer)
 	_timer.TIMER_PROCESS_IDLE
-	_timer.connect("timeout", self, "_on_timer_timeout")
+	_timer.connect("timeout", Callable(self, "_on_timer_timeout"))
 	_timer.set_wait_time(1.0 / _framerate)
 	_timer.set_one_shot(false) # Make sure it loops
 	_timer.start()
@@ -73,7 +76,7 @@ func _ready():
 	_fps = Timer.new()
 	add_child(_fps)
 	_timer.TIMER_PROCESS_IDLE
-	_fps.connect("timeout", self, "_on_fps_timeout")
+	_fps.connect("timeout", Callable(self, "_on_fps_timeout"))
 	_fps.set_wait_time(1.0)
 	_fps.set_one_shot(false) # Make sure it loops
 	_fps.start()
@@ -119,7 +122,7 @@ func _tick_camera():
 	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
 	
 	
-	_camera.zoom.x = diff_vector.x/ 160
+	_camera.zoom.x = 160 / diff_vector.x
 	_camera.zoom.y = _camera.zoom.x
 	_view_width = 350 * _camera.zoom.x
 		

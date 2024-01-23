@@ -44,6 +44,6 @@ enum Hit{
 }
 
 enum Elem{
-	HEALTH = 0
+	HEALTH = 0,
 	CONSOLE = 1
 }

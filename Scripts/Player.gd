@@ -1,5 +1,5 @@
 class_name player
-extends KinematicBody2D
+extends CharacterBody2D
 
 # external classes
 const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
@@ -98,7 +98,7 @@ func _configure(other_player, bounds):
 
 func _unhandled_input(event):
 	if event is InputEventKey:
-		if event.scancode in _input_dict:
+		if event.keycode in _input_dict:
 			_input_queue.append([event, event.pressed])
 
 func update_dictionary(player1_option:String, player2_option:String):
@@ -110,10 +110,10 @@ func update_dictionary(player1_option:String, player2_option:String):
 	else:
 		res = player2_option
 	
-	if InputMap.get_action_list(res).pop_front().physical_scancode == 0:
-		_input_dict[InputMap.get_action_list(res).pop_front().scancode] = res
+	if InputMap.action_get_events(res).pop_front().physical_keycode == 0:
+		_input_dict[InputMap.action_get_events(res).pop_front().keycode] = res
 	else:
-		_input_dict[InputMap.get_action_list(res).pop_front().physical_scancode] = res
+		_input_dict[InputMap.action_get_events(res).pop_front().physical_keycode] = res
 	
 	return res
 	
@@ -187,7 +187,7 @@ func step_input_process():
 		_debug_message(en.Level.FRAME, "Processing input queue...")
 	while _input_queue != []:
 		new_input = _input_queue.pop_front()
-		_ninput_event = new_input[0].scancode
+		_ninput_event = new_input[0].keycode
 		_ninput_state = new_input[1]
 		
 		
@@ -488,7 +488,7 @@ func _subtick_process():
 		#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
-	$Sprite.set_texture(_state_sprites[_state])
+	$Sprite2D.set_texture(_state_sprites[_state])
 	#_debug_messageen.Level.EVENT, "_state value: " + str(_state))
 	#if _state == en.State.FREE:
 	#elif _state == en.State.STUN:
@@ -505,14 +505,14 @@ func _subtick_process():
 # take in 2d array and repeatedly call below box spawning func
 func queue_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,framedata: Array =[]):
 	#spawn box given array of variables describing it
-	var newBox  = preloadHitBox.instance()
+	var newBox  = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0)
 	newBox.set_box(posx, posy, scalex,scaley, lifetime)
 
 
 func play_sound(sound_id:int, duration:int = 1):
-	var newSFX = SFx_Audio.instance(sound_id)
+	var newSFX = SFx_Audio.instantiate(sound_id)
 	newSFX.stream = sfxs[sound_id]
 	self.add_child(newSFX)
 	
@@ -523,13 +523,13 @@ func play_sound(sound_id:int, duration:int = 1):
 	t.start()
 	
 	newSFX.play()
-	yield(t, "timeout")
+	await t.timeout
 	newSFX.queue_free()
 	t.queue_free()
 
 
 func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
-	var newSprite : Sprite_Box = preloadSprite.instance()
+	var newSprite : Sprite_Box = preloadSprite.instantiate()
 	self.add_child(newSprite)
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 

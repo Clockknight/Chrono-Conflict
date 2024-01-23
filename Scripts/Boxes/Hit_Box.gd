@@ -11,13 +11,13 @@ var data
 	
 	
 func _ready():
-	connect("area_entered", self, "_on_area_entered")
+	connect("area_entered", Callable(self, "_on_area_entered"))
 
 #func _on_area_entered(object: Hit_Box) -> void:
 #	if (object != null):
 
 func set_box(a,b,c,d,e, inc_data:Move_Data=null):
-	.set_box(a,b,c,d,e)
+	super.set_box(a,b,c,d,e)
 	self.data = inc_data
 	if data==null:
 		self.data = (Move_Data.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, en.Type.MID))
@@ -47,7 +47,7 @@ func tick():
 		# if its p2, and the owner is being told to hit, check for hurtboxes to look for a trade,
 		#if its p1, calc as normal
 			
-	.tick()
+	super.tick()
 	
 	
 func box_check():

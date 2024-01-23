@@ -27,7 +27,7 @@ func _ready():
 	_base_sprite, #6
 	_base_sprite] #7
 	
-	._ready()
+	super._ready()
 
 
 
@@ -36,7 +36,7 @@ func step_input_interpret(input:Input_Data):
 		
 		var frame_data = null
 		
-		frame_data = .step_input_interpret(input)
+		frame_data = super.step_input_interpret(input)
 			
 		# Normal Block
 		if input.input_new_down('a'):

@@ -20,7 +20,7 @@ func _ready():
 	
 	p2hp = get_node("p2hp")
 	p2con = get_node("p2con")
-	p2con.align = Label.ALIGN_RIGHT
+	p2con.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	
 	timer = get_node("timer_temp")
 

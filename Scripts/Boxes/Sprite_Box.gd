@@ -14,7 +14,7 @@ func _ready():
 func set_sprite(displacement: Vector2, duration: int, image_texture):
 	self.position += displacement
 	self._frames_remaining = duration
-	$Sprite.set_texture(image_texture)
+	$Sprite2D.set_texture(image_texture)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
