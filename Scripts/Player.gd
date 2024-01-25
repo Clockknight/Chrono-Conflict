@@ -222,7 +222,8 @@ func step_input_interpret(input:Input_Data):
 	var frame_data = null
 
 	# Movement block (lowest priority)		
-	if input.y < 0:
+	if input.input_new_down('y') and input.y < 0:
+		
 		frame_data = ['JMPS|5']
 		if self._grounded:
 			self._cur_x = 0
@@ -231,7 +232,7 @@ func step_input_interpret(input:Input_Data):
 			
 			
 		self._stored_x = _cur_input['x']
-	
+
 	return frame_data
 	
 func _subtick_state():
@@ -260,12 +261,12 @@ func _subtick_state():
 					_state = en.State.FREE
 			else:
 				if _state == en.State.JMPS and _jumps > 0:
+					_jumps -= 1
 					$Collision_Box.disable(true)
 					_grounded = false
 					_debug_message(en.Level.FRAME, 'jump started')
 					self.directional_input.y = -1 * self.vertical_speed
 						
-					_jumps -= 1
 					
 				_state = new_state[0]
 				_state_frames_left = new_state[1]

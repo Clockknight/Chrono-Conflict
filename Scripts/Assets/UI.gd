@@ -51,12 +51,9 @@ func update_console(p1:bool, combo, state, direction, input,  cx, sx, grounded, 
 	
 	(p1con if p1 else p2con).text = text
 	
-	
-	
 # func decompose(node:String)
+
 # func to make lose shrink to have's size
-	
-	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 # func _process(delta):

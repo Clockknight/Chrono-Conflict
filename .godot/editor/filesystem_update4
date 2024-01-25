@@ -1,5 +1,5 @@
 res://default_env.tres
 res://Scenes/map.tscn
-res://Scripts/Data/Enums.gd
-res://Scripts/Assets/UI.gd
 res://Scripts/manager.gd
+res://Scripts/Assets/UI.gd
+res://Scripts/Player.gd

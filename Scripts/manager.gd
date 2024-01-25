@@ -64,13 +64,13 @@ func _ready():
 	p2._configure(p1, _stage_boundaries)
 		
 
-	#Creat timer
+	#Timer section
 	_timer = Timer.new()
 	add_child(_timer)
 	_timer.TIMER_PROCESS_IDLE
 	_timer.connect("timeout", Callable(self, "_on_timer_timeout"))
 	_timer.set_wait_time(1.0 / _framerate)
-	_timer.set_one_shot(false) # Make sure it loops
+	_timer.set_one_shot(false)
 	_timer.start()
 	
 	_fps = Timer.new()

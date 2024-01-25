@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dunoe4ffcb88w"]
 
 [ext_resource type="PackedScene" path="res://Scenes/Character/Character_Orbulon.tscn" id="1"]
-[ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://sprites/icon.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://Sprites/icon.png" id="2"]
 [ext_resource type="Script" path="res://Scripts/manager.gd" id="3"]
 [ext_resource type="Script" path="res://Scripts/Assets/UI.gd" id="4"]
 [ext_resource type="PackedScene" path="res://Scenes/Assets/player_hp.tscn" id="5"]
