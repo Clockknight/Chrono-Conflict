@@ -18,6 +18,7 @@ config/icon="res://sprites/icon.png"
 [autoload]
 
 en="*res://Scripts/Data/Enums.gd"
+Move_Data="*res://Scripts/Data/Move_Data.gd"
 
 [debug]
 

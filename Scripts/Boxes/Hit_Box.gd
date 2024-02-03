@@ -1,8 +1,6 @@
 class_name Hit_Box
 extends Box
 
-const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
-
 var overlaps = []
 var hit_boxes = []
 var hurt_boxes = []

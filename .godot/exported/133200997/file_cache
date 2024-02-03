@@ -1,0 +1,10 @@
+res://Scenes/Assets/player_console.tscn::7c2bd61142b61a0a43ca119e38cbdbde::1705982616::res://.godot/exported/133200997/export-69cd5dbe6a5c4b16beb14d3f4573f82d-player_console.scn
+res://Scenes/Assets/player_hp.tscn::d5d72629b360e179bcf1d74a06555003::1705982616::res://.godot/exported/133200997/export-6deb6367c277ac5e9c6e64cf7b487a82-player_hp.scn
+res://Scenes/Assets/SFx_Audio.tscn::3e2e5da04833c9e4001b1d61310d4c8b::1705982616::res://.godot/exported/133200997/export-7b84b195d50c8332bd3aa3f7b295d4c0-SFx_Audio.scn
+res://Scenes/Boxes/Collision_Box.tscn::e0b79b734fbc280fd7e6b8cdaa97541f::1705982616::res://.godot/exported/133200997/export-6de16dfb713d6492813e619cb730c7e3-Collision_Box.scn
+res://Scenes/Boxes/Hit_Box.tscn::37518c628ba803078b527844bff2c732::1705982616::res://.godot/exported/133200997/export-720215336871911378f913dbc72b5f6c-Hit_Box.scn
+res://Scenes/Boxes/Hurt_Box.tscn::fc4c5cbc871a2be7960b83645e213385::1705982616::res://.godot/exported/133200997/export-1a05a00f649b66c90b602b8be45fecc8-Hurt_Box.scn
+res://Scenes/Boxes/Sprite_Box.tscn::b576936a9f4d8f653eda4365ddd2d38d::1705982616::res://.godot/exported/133200997/export-40b63a7606df283dfdcd2132f8335c18-Sprite_Box.scn
+res://Scenes/Character/Character_Orbulon.tscn::32318bc96f384f0f9835017573d6bf22::1705982616::res://.godot/exported/133200997/export-3edb3fb03dba0a6487814df1d14da836-Character_Orbulon.scn
+res://Scenes/map.tscn::ba90b5238b77d2c161c9d2480f914cc9::1706660655::res://.godot/exported/133200997/export-522b15b96246958d270083e8689e20e5-map.scn
+res://default_env.tres::502764272d7448fe1ea69dd4c928fe7d::1706660656::res://.godot/exported/133200997/export-7cf3fd67ad9f55210191d77b582b8209-default_env.res

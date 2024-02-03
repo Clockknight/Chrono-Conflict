@@ -2,16 +2,15 @@ class_name player
 extends CharacterBody2D
 
 # external classes
-const Move_Data = preload('res://Scripts/Data/Move_Data.gd')
-const i = preload('res://Scripts/Data/Input_Data.gd')
+var i = load('res://Scripts/Data/Input_Data.gd')
 
 # Constants
 const BUFFER_WINDOW = 3
 
 # Assets
-const SFx_Audio  =preload('res://Scenes/Assets/SFx_Audio.tscn')
-const preloadHitBox = preload("res://Scenes/Boxes/Hit_Box.tscn")
-const preloadHurtBox = preload("res://Scenes/Boxes/Hurt_Box.tscn")
+var SFx_Audio  =load('res://Scenes/Assets/SFx_Audio.tscn')
+var preloadHitBox = load("res://Scenes/Boxes/Hit_Box.tscn")
+var preloadHurtBox = load("res://Scenes/Boxes/Hurt_Box.tscn")
 var preloadSprite
 var sprites 
 var _base_sprite 

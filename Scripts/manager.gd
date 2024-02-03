@@ -1,6 +1,5 @@
 extends Node
 
-const e = preload('res://Scripts/Data/Enums.gd')
 
 var _camera
 var p1 = null
@@ -16,7 +15,7 @@ var _view_width = 350
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = e.Level.FRAME
+var _min_level = en.Level.FRAME
 
 var size
 
@@ -160,7 +159,7 @@ func update_console(p1, combo, state, direction, input,  cx, sx, grounded, jumps
 
 	
 func _debug_message(level:int, msg:String, p1:bool):
-	if ((p1 and debug_state_for_p1n2[0]) or (not p1 and debug_state_for_p1n2[1]))and (level >= _min_level and  _min_level != e.Level.DEBUG) or (level == e.Level.DEBUG and level == _min_level):
+	if ((p1 and debug_state_for_p1n2[0]) or (not p1 and debug_state_for_p1n2[1]))and (level >= _min_level and  _min_level != en.Level.DEBUG) or (level == en.Level.DEBUG and level == _min_level):
 		
 		msg = '==> '.repeat(level+1) + msg
 		

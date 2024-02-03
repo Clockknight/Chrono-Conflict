@@ -1,5 +1,7 @@
 res://default_env.tres
 res://Scenes/map.tscn
-res://Scripts/manager.gd
-res://Scripts/Assets/UI.gd
 res://Scripts/Player.gd
+res://Scripts/manager.gd
+res://Scripts/Data/Input_Data.gd
+res://Scripts/Boxes/Hit_Box.gd
+res://Scripts/Data/Move_Data.gd

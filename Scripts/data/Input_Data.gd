@@ -1,7 +1,6 @@
 class_name Input_Data
 extends Node
 
-const e = preload('res://Scripts/Data/Enums.gd')
 
 var duration 
 

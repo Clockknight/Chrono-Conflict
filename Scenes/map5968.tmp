@@ -1,0 +1,69 @@
+[gd_scene load_steps=8 format=3 uid="uid://dunoe4ffcb88w"]
+
+[ext_resource type="PackedScene" path="res://Scenes/Character/Character_Orbulon.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://Sprites/icon.png" id="2"]
+[ext_resource type="Script" path="res://Scripts/manager.gd" id="3"]
+[ext_resource type="Script" path="res://Scripts/Assets/UI.gd" id="4"]
+[ext_resource type="PackedScene" path="res://Scenes/Assets/player_hp.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://Scenes/Assets/player_console.tscn" id="6"]
+[ext_resource type="Texture2D" uid="uid://biwvie638qtt4" path="res://Sprites/skyline.png" id="7"]
+
+[node name="Scene" type="Node2D"]
+
+[node name="groundline" type="Sprite2D" parent="."]
+scale = Vector2(98, 0.2)
+texture = ExtResource("2")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, -300)
+editor_draw_drag_margin = true
+
+[node name="Background" type="Sprite2D" parent="Camera2D"]
+z_index = -999
+position = Vector2(2, -500)
+scale = Vector2(5, 5)
+texture = ExtResource("7")
+
+[node name="manager" type="Node" parent="."]
+script = ExtResource("3")
+
+[node name="Character_Orbulon" parent="manager" instance=ExtResource("1")]
+position = Vector2(-126, 101)
+
+[node name="Character_Orbulon2" parent="manager" instance=ExtResource("1")]
+position = Vector2(165, -47)
+
+[node name="UI" type="CanvasLayer" parent="manager"]
+scale = Vector2(1, 1.2)
+transform = Transform2D(1, 0, 0, 1.2, 0, 0)
+script = ExtResource("4")
+
+[node name="p1hp" parent="manager/UI" instance=ExtResource("5")]
+position = Vector2(900, 25)
+scale = Vector2(-2, 1)
+
+[node name="p2hp" parent="manager/UI" instance=ExtResource("5")]
+position = Vector2(1020, 25)
+
+[node name="p1con" parent="manager/UI" instance=ExtResource("6")]
+offset_left = 50.0
+offset_top = 100.0
+offset_right = 50.0
+offset_bottom = 300.0
+scale = Vector2(1.5, 1)
+
+[node name="p2con" parent="manager/UI" instance=ExtResource("6")]
+offset_left = 1820.0
+offset_top = 100.0
+offset_right = 1820.0
+offset_bottom = 200.0
+grow_horizontal = 0
+scale = Vector2(1.5, 1)
+
+[node name="timer_temp" type="Label" parent="manager/UI"]
+offset_left = 925.0
+offset_top = 25.0
+offset_right = 949.0
+offset_bottom = 39.0
+scale = Vector2(3, 3)
+text = "10"
