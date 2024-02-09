@@ -1,1 +1,4 @@
 res://default_env.tres
+res://Scenes/map_test.tscn
+res://Scripts/Data/Enums.gd
+res://Scenes/menu_main.tscn
