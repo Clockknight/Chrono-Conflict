@@ -25,7 +25,11 @@ func _ready():
 	load("res://sprites/stunned.png"), #4
 	_base_sprite, #5
 	_base_sprite, #6
-	_base_sprite] #7
+	_base_sprite, #7 
+	_base_sprite, #8 
+	_base_sprite, #9
+	_base_sprite  #10
+	] 
 	
 	super._ready()
 
