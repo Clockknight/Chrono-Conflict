@@ -6,10 +6,12 @@ var sprite_child
 var active_sprite
 var unactive_sprite
 var used_sprite
+
 var used_scene
 
 var scene_is_new
 var is_active
+var button_using
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -32,7 +34,7 @@ func button_set(active_sprite, unactive_sprite, used_sprite, used_scene, scene_i
 	
 # function for checking which sprite to use
 func sprite_check():
-	self.sprite = active_sprite if self.button_is_active else unactive_sprite
+	self.sprite = used_sprite if button_using else (active_sprite if self.button_is_active else unactive_sprite)
 
 # function for updating selected/unselected state that calls sprite check
 func active_toggle(new_active=null):
@@ -44,5 +46,8 @@ func active_toggle(new_active=null):
 		new_active.active_toggle()
 
 # function for being used
-
+# func use()
+#	load next scene
+#	update in use bool
+#	sprite_check()
 
