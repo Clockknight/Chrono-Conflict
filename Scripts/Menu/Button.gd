@@ -18,19 +18,14 @@ func _ready():
 	sprite_child = self.get_node("Sprite")
 
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
-func button_set(active_sprite, unactive_sprite, used_sprite, used_scene, scene_is_new):
+func button_set(active_sprite, unactive_sprite, used_sprite, used_scene, scene_is_new, button_text):
 	self.active_sprite = active_sprite
 	self.unactive_sprite = unactive_sprite
 	self.used_sprite = used_sprite
 	self.used_scene = used_scene
 	self.scene_is_new = scene_is_new
+	$Label.text = button_text
 	
 # function for checking which sprite to use
 func sprite_check():
