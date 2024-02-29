@@ -86,14 +86,14 @@ func _configure(other_player, bounds):
 
 	help_sidecheck()
 	
-	_up_string = update_dictionary(_up_string, "ui_p2up")
-	_down_string= update_dictionary(_down_string, "ui_p2down")
-	_left_string =update_dictionary(_left_string, "ui_p2left")
-	_right_string=update_dictionary(_right_string, "ui_p2right")
-	_a_string=update_dictionary(_a_string, "ui_p2a")
-	_b_string=update_dictionary(_b_string, "ui_p2b")
-	_c_string=update_dictionary(_c_string,  "ui_p2c")
-	_d_string=update_dictionary(_d_string, "ui_p2d")
+	_up_string = update_dictionary("ui_p1up", "ui_p2up")
+	_down_string= update_dictionary("ui_p1down", "ui_p2down")
+	_left_string =update_dictionary("ui_p1left", "ui_p2left")
+	_right_string=update_dictionary("ui_p1right", "ui_p2right")
+	_a_string=update_dictionary("ui_p1a", "ui_p2a")
+	_b_string=update_dictionary("ui_p1b", "ui_p2b")
+	_c_string=update_dictionary("ui_p1c", "ui_p2c")
+	_d_string=update_dictionary("ui_p1d", "ui_p2d")
 
 func _unhandled_input(event):
 	if event is InputEventKey:
