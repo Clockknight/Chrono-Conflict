@@ -1,44 +1,73 @@
 extends Control
 
 var preload_Button = load("res://Scenes/Menu/button.tscn")
-var buttons 
+var dict_location = "res://Data/controls.cfg"
+var _controls_dictionary
 
-var _up_string 
-var _down_string
-var _left_string
-var _right_string
-var _a_string
-var _b_string
+
+var _up1_string 
+var _up2_string 
+var _down1_string
+var _down2_string
+var _left1_string
+var _left2_string
+var _right1_string
+var _right2_string
+var _a1_string
+var _a2_string
+var _b1_string
+var _b2_string
+
 # Called when the node enters the scene tree for the first time.
-#func _ready():
+func _ready():
+	_configure()
 	
 	
-
-func menu_init(length:int):
-	buttons = []
 	
-	for x in range(0,length):
-		buttons[x] = preload_Button.instantiate()
-		buttons[x].button_set()
-
-
 # Should check for new inputs from user like checking for attacks
 # On up, down or a1 from either user, change boxes appropriately
-func _configure(other_player, bounds):
-	# player object assumes it's player 1 until otherwise stated
+func _configure():
+	_load_controls
 	
-	_up_string = update_dictionary(_up_string, ["ui_p1up","ui_p2up"])
-	_down_string= update_dictionary(_down_string, ["ui+p1down", "ui_p2down"])
-	_left_string =update_dictionary(_left_string, "ui_p2left")
-	_right_string=update_dictionary(_right_string, "ui_p2right")
-	_a_string=update_dictionary(_a_string, "ui_p2a")
-	_b_string=update_dictionary(_b_string, "ui_p2b")
+	_up1_string = _update_dictionary("ui_p1up")
+	_up2_string = _update_dictionary("ui_p1up")
+	_down1_string= _update_dictionary("ui_p1down")
+	_down2_string= _update_dictionary("ui_p2down")
+	_left1_string =_update_dictionary("ui_p1left")
+	_left2_string =_update_dictionary("ui_p2left")
+	_right1_string=_update_dictionary("ui_p1right")
+	_right2_string=_update_dictionary( "ui_p2right")
+	_a1_string=_update_dictionary("ui_p1a")
+	_a2_string=_update_dictionary("ui_p2a")
+	_b1_string=_update_dictionary("ui_p1b")
+	_b2_string=_update_dictionary("ui_p2b")
+	
+func _update_dictionary(res:String):
+	
 
+	if InputMap.action_get_events(res).pop_front().physical_keycode == 0:
+		_controls_dictionary[InputMap.action_get_events(res).pop_front().keycode] = res
+	else:
+		_controls_dictionary[InputMap.action_get_events(res).pop_front().physical_keycode] = res
+	
+	return res
+
+
+func _load_controls():
+	if FileAccess.file_exists(dict_location):
+		var file = FileAccess.get_file_as_string(dict_location)
+		_controls_dictionary = JSON.parse_string(file)
+	
+	
+func _save_controls():
+	if FileAccess.file_exists(dict_location):
+		var file = FileAccess.open(dict_location, FileAccess.WRITE)
+		file.store_string(_controls_dictionary.stringify())
 
 '''
 func _unhandled_input(event):
 	if event is InputEventKey:
-		if event.keycode in _input_dict:
+		if event.keycode in _controls_dictionary:
 			_input_queue.append([event, event.pressed])
 			
 func step_input_process():
@@ -71,7 +100,7 @@ func step_input_process():
 		_ninput_state = new_input[1]
 		
 		
-		match _input_dict[_ninput_event]:
+		match _controls_dictionary[_ninput_event]:
 			_up_string:
 				y -=  int(_ninput_state) *2-1
 			_down_string:
