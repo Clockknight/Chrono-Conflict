@@ -27,7 +27,10 @@ func _ready():
 # Should check for new inputs from user like checking for attacks
 # On up, down or a1 from either user, change boxes appropriately
 func _configure():
-	_load_controls
+	
+	_controls_dictionary = {}
+	
+	_load_controls()
 	
 	_up1_string = _update_dictionary("ui_p1up")
 	_up2_string = _update_dictionary("ui_p1up")
@@ -42,9 +45,9 @@ func _configure():
 	_b1_string=_update_dictionary("ui_p1b")
 	_b2_string=_update_dictionary("ui_p2b")
 	
-func _update_dictionary(res:String):
+	_save_controls()
 	
-
+func _update_dictionary(res:String):
 	if InputMap.action_get_events(res).pop_front().physical_keycode == 0:
 		_controls_dictionary[InputMap.action_get_events(res).pop_front().keycode] = res
 	else:
@@ -54,15 +57,22 @@ func _update_dictionary(res:String):
 
 
 func _load_controls():
+	print("loading")
 	if FileAccess.file_exists(dict_location):
-		var file = FileAccess.get_file_as_string(dict_location)
+		var file = FileAccess.get_file_as_string(dict_location)	
 		_controls_dictionary = JSON.parse_string(file)
+		
+		
 	
 	
 func _save_controls():
+	print("saving")
+	print(_controls_dictionary)
+	var file = FileAccess.open(dict_location, FileAccess.WRITE)
 	if FileAccess.file_exists(dict_location):
-		var file = FileAccess.open(dict_location, FileAccess.WRITE)
-		file.store_string(_controls_dictionary.stringify())
+		file.store_string(JSON.stringify(_controls_dictionary, '	'))
+	else:
+		file
 
 '''
 func _unhandled_input(event):
