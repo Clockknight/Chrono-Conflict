@@ -2,7 +2,7 @@ extends Control
 
 var preload_Button = load("res://Scenes/Menu/button.tscn")
 var dict_location = "res://Data/controls.cfg"
-var _controls_dictionary
+var _controls_dictionary  = Dictionary()
 
 
 var _up1_string 
@@ -27,19 +27,16 @@ func _ready():
 # Should check for new inputs from user like checking for attacks
 # On up, down or a1 from either user, change boxes appropriately
 func _configure():
-	
-	_controls_dictionary = {}
-	
 	_load_controls()
 	
 	_up1_string = _update_dictionary("ui_p1up")
-	_up2_string = _update_dictionary("ui_p1up")
+	_up2_string = _update_dictionary("ui_p2up")
 	_down1_string= _update_dictionary("ui_p1down")
 	_down2_string= _update_dictionary("ui_p2down")
 	_left1_string =_update_dictionary("ui_p1left")
 	_left2_string =_update_dictionary("ui_p2left")
 	_right1_string=_update_dictionary("ui_p1right")
-	_right2_string=_update_dictionary( "ui_p2right")
+	_right2_string=_update_dictionary("ui_p2right")
 	_a1_string=_update_dictionary("ui_p1a")
 	_a2_string=_update_dictionary("ui_p2a")
 	_b1_string=_update_dictionary("ui_p1b")
@@ -60,7 +57,9 @@ func _load_controls():
 	print("loading")
 	if FileAccess.file_exists(dict_location):
 		var file = FileAccess.get_file_as_string(dict_location)	
-		_controls_dictionary = JSON.parse_string(file)
+		var content = JSON.parse_string(file)
+		if content != null:
+			_controls_dictionary = content
 		
 		
 	
