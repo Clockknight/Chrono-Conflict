@@ -3,7 +3,8 @@ extends Control
 var preload_Button = load("res://Scenes/Menu/button.tscn")
 var dict_location = "res://Data/controls.cfg"
 var _controls_dictionary  = Dictionary()
-
+var _menu_stack
+var _active_menu 
 
 var _up1_string 
 var _up2_string 
@@ -68,17 +69,39 @@ func _save_controls():
 	print("saving")
 	print(_controls_dictionary)
 	var file = FileAccess.open(dict_location, FileAccess.WRITE)
-	if FileAccess.file_exists(dict_location):
-		file.store_string(JSON.stringify(_controls_dictionary, '	'))
-	else:
-		file
+	file.store_string(JSON.stringify(_controls_dictionary, '	'))
 
-'''
 func _unhandled_input(event):
+	
 	if event is InputEventKey:
 		if event.keycode in _controls_dictionary:
-			_input_queue.append([event, event.pressed])
+			match _controls_dictionary[event.keycode]:
+				_up1_string:
+					_menu_stack[-1].cycle(false)
+				_up2_string:
+					_menu_stack[-1].cycle(false)
+				_down1_string:
+					_menu_stack[-1].cycle(true)
+				_down2_string:
+					_menu_stack[-1].cycle(true)
+				_left1_string:
+					_menu_stack[-1].left(_menu_stack)
+				_left2_string:
+					_menu_stack[-1].left(_menu_stack)
+				_right1_string:
+					_menu_stack[-1].right(_menu_stack)
+				_right2_string:
+					_menu_stack[-1].right(_menu_stack)
+				_a1_string:
+					_menu_stack[-1].accept(_menu_stack)
+				_a2_string:
+					_menu_stack[-1].accept(_menu_stack)
+				_b1_string:
+					_menu_stack[-1].back(_menu_stack)
+				_b2_string:
+					_menu_stack[-1].back(_menu_stack)
 			
+'''
 func step_input_process():
 	# Process all the queued inputs, and pass the resulting input to cur innput next
 	var x = 0
