@@ -1,16 +1,23 @@
 extends Control
 
 var preload_Button = load("res://Scenes/Menu/button.tscn")
-var buttons 
 var active_index = 0
+
+var content
+var label
+var buttons
+var array_2d
 
 #func _ready():
 
-func menu_init(length:int):
-	buttons = []
-	for x in range(0,length):
-		buttons[x] = preload_Button.instantiate()
-		buttons[x].button_set()
+func menu_init(menu_id:String):
+		
+	if FileAccess.file_exists(dict_location):
+		var file = FileAccess.get_file_as_string(dict_location)	
+		res = JSON.parse_string(file)[menu_id]
+		if res != null:
+			content = res
+
 
 
 func cycle(downwards:bool):
@@ -23,12 +30,20 @@ func cycle(downwards:bool):
 		downwards = buttons.size()
 	
 	
+var data = {"sam_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
+
+ 
 func left(stack):
+	
+	
 	
 func right(stack):
 	
 func accept(stack):
 	
 func back(stack):
+	
+	
+	
 
 	

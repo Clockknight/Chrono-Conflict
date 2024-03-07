@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bl0qriilf8d5h"]
+[gd_scene load_steps=3 format=3 uid="uid://bl0qriilf8d5h"]
 
-[ext_resource type="Script" path="res://Scripts/menu_manager.gd" id="1_cs26q"]
+[ext_resource type="Script" path="res://Scripts/Menu_manager.gd" id="1_cs26q"]
+[ext_resource type="PackedScene" uid="uid://bhbw7r54n6kkk" path="res://Scenes/Menu/Menu.tscn" id="2_r45bo"]
 
 [node name="Menu Manager" type="Control"]
 layout_mode = 3
@@ -13,4 +14,4 @@ script = ExtResource("1_cs26q")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-[node name="Main Menu" type="Node2D" parent="."]
+[node name="Menu" parent="." instance=ExtResource("2_r45bo")]

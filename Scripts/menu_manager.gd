@@ -1,6 +1,6 @@
 extends Control
 
-var preload_Button = load("res://Scenes/Menu/button.tscn")
+var preload_Button = load("res://Scenes/Menu/Menu.tscn")
 var dict_location = "res://Data/controls.cfg"
 var _controls_dictionary  = Dictionary()
 var _menu_stack
@@ -22,6 +22,7 @@ var _b2_string
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_configure()
+	
 	
 	
 	
@@ -67,7 +68,6 @@ func _load_controls():
 	
 func _save_controls():
 	print("saving")
-	print(_controls_dictionary)
 	var file = FileAccess.open(dict_location, FileAccess.WRITE)
 	file.store_string(JSON.stringify(_controls_dictionary, '	'))
 

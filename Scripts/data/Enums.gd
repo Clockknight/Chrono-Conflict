@@ -49,3 +49,9 @@ enum Elem{
 	HEALTH = 0,
 	CONSOLE = 1
 }
+
+enum Load{
+	SCENE=0,
+	BUNDLE=1,
+	ASSET=2
+}
