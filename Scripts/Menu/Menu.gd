@@ -20,7 +20,7 @@ func menu_init(menu_id:String):
 		if res != null:
 			content = res
 
-var data = {"sam_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
+#var data = {"sam_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
 
 
 func cycle(downwards:bool):
