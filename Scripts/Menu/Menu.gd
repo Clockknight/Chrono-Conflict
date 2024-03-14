@@ -10,6 +10,7 @@ var buttons
 var array_2d
 var length
 var index
+#var data = {"sam_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
 
 #func _ready():
 
@@ -20,7 +21,6 @@ func menu_init(menu_id:String):
 		if res != null:
 			content = res
 
-#var data = {"sam_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
 
 
 func cycle(downwards:bool):
@@ -31,8 +31,7 @@ func cycle(downwards:bool):
 		
 	if index < 0:
 		downwards = buttons.size()
-	
-	
+
 
  
 func left(stack):
