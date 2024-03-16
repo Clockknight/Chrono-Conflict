@@ -1,3 +1,4 @@
+class_name MenuLeaf
 extends Node2D
 
 var sprite_child
@@ -31,13 +32,13 @@ func sprite_check():
 	sprite_child.sprite = activated_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite)
 
 # function for updating selected/unselected state that calls sprite check
-func active_toggle(new_active=null):
+func highlight_toggle(new_active:MenuLeaf=null):
 	self.is_active = not self.is_active
 	
 	self.sprite_check()
 	
 	if new_active != null:
-		new_active.active_toggle()
+		new_active.highlight_toggle()
 
 # function for being used
 func use():

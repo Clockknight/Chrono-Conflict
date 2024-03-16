@@ -19,7 +19,7 @@ config/icon="res://sprites/icon.png"
 
 en="*res://Scripts/Data/Enums.gd"
 Move_Data="*res://Scripts/Data/Move_Data.gd"
-Menu_Button="*res://Scripts/Menu/Button.gd"
+Menu_Button="*res://Scripts/Menu/MenuLeaf.gd"
 Controls="*res://Data/controls.cfg"
 
 [debug]
