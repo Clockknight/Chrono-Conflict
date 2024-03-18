@@ -10,16 +10,18 @@ var buttons
 var array_2d
 var length
 var index
-#var data = {"sam_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
+#var data = {"menu_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
 
 #func _ready():
 
-func menu_init(menu_id:String):
+func init(menu_id:String):
 	if FileAccess.file_exists(menu_location):
 		var file = FileAccess.get_file_as_string(menu_location)	
 		var res = JSON.parse_string(file)[menu_id]
-		if res != null:
-			content = res
+		if res == null:
+			get_tree().change_scene("res://Scenes/menu_main.tscn")
+			
+		content = res
 
 
 

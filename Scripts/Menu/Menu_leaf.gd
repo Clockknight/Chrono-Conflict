@@ -17,7 +17,6 @@ var activated
 func _ready():
 	sprite_child = self.get_node("Sprite")
 
-
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
 func button_set(active_sprite, unactive_sprite, used_sprite, used_scene, scene_is_new, button_text):
 	self.active_sprite = active_sprite
@@ -30,7 +29,6 @@ func button_set(active_sprite, unactive_sprite, used_sprite, used_scene, scene_i
 # function for checking which sprite to use
 func sprite_check():
 	sprite_child.sprite = activated_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite)
-
 # function for updating selected/unselected state that calls sprite check
 func highlight_toggle(new_active:MenuLeaf=null):
 	self.is_active = not self.is_active

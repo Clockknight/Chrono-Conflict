@@ -1,9 +1,9 @@
 extends Control
 
-var preload_Button = load("res://Scenes/Menu/Menu.tscn")
+var Prefab_menu = load("res://Scenes/Menu/Menu.tscn")
 var dict_location = "res://Data/controls.cfg"
 var _controls_dictionary  = Dictionary()
-var _menu_stack
+var _menu_stack = []
 var _active_menu 
 
 var _up1_string 
@@ -22,6 +22,7 @@ var _b2_string
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_configure()
+	_build_menu()
 	
 	
 	
@@ -56,18 +57,13 @@ func _update_dictionary(res:String):
 
 
 func _load_controls():
-	print("loading")
 	if FileAccess.file_exists(dict_location):
 		var file = FileAccess.get_file_as_string(dict_location)	
 		var content = JSON.parse_string(file)
 		if content != null:
 			_controls_dictionary = content
-		
-		
-	
 	
 func _save_controls():
-	print("saving")
 	var file = FileAccess.open(dict_location, FileAccess.WRITE)
 	file.store_string(JSON.stringify(_controls_dictionary, '	'))
 
@@ -156,5 +152,17 @@ func step_input_process():
 	new_input = i.new(self, x, y, a,b,c,d)
 	_cur_input = new_input.compare(_cur_input)
 
-	return _cur_input
-'''
+	return _cur_input'''
+
+func _build_menu(menu_id:String="Main"):
+	var new_menu
+	$Camera.offset.x += 300
+	
+	#instantiate a menu
+	new_menu = Prefab_menu.instantiate()
+	new_menu.init(menu_id)
+	#add menu to stack
+	_menu_stack.append(new_menu)
+	#update active_menu
+	_active_menu = new_menu
+	

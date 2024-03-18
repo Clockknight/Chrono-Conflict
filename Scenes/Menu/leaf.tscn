@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d21wxf4w7fgu3"]
 
-[ext_resource type="Script" path="res://Scripts/Menu/MenuLeaf.gd" id="1_b24dd"]
+[ext_resource type="Script" path="res://Scripts/Menu/Menu_leaf.gd" id="1_b24dd"]
 [ext_resource type="Texture2D" uid="uid://bvj1t0am8fsnw" path="res://Sprites/hurtbox.png" id="2_jm2fu"]
 
 [node name="Button" type="Node2D"]
