@@ -1,38 +1,63 @@
-extends Control
+extends Node2D
 
 var preload_Button = load("res://Scenes/Menu/button.tscn")
 var menu_location = "res://Data/menus.cfg"
-var active_index = 0
 
 var content
 var label
-var buttons
-var array_2d
+var leafs
+var grid
 var length
-var index
-#var data = {"menu_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
+var index = 0
 
 #func _ready():
 
 func init(menu_id:String):
+	self.label = menu_id
+	
 	if FileAccess.file_exists(menu_location):
 		var file = FileAccess.get_file_as_string(menu_location)	
-		var res = JSON.parse_string(file)[menu_id]
+		var res = JSON.parse_string(file)
+		
 		if res == null:
 			get_tree().change_scene("res://Scenes/menu_main.tscn")
 			
-		content = res
+		content = res[menu_id]
+#var data = {"menu_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
+		self.grid = content["Grid"]
+		self.leafs = content["Leafs"]
+		self.length = leafs.size()
+		
+		#grid check 
+		if self.grid:
+			self.length = [self.length, leafs[0].size()]
+			self.index = [0,0]
+
 
 
 
 func cycle(downwards:bool):
-	if downwards:
-		active_index += 1 
+	if grid:
+		if downwards:
+			index[1] += 1
+		else:
+			index[1] -= 1
+			
+			
+		if index[1] < 0:
+			index[1] = leafs.size()-1
+		elif index[1] >= leafs.size():
+			index[1] = 0
 	else:
-		active_index -= 1
+		if downwards:
+			index += 1 
+		else:
+			index -= 1
 		
-	if index < 0:
-		downwards = buttons.size()
+		if index < 0:
+			index = leafs.size()-1
+		elif index >= leafs.size():
+			index = 0
 
 
  
