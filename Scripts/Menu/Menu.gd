@@ -24,8 +24,8 @@ func init(menu_id:String):
 			
 		content = res[menu_id]
 #var data = {"menu_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
-		self.grid = content["Grid"]
-		self.leafs = content["Leafs"]
+		self.grid = content["grid"]
+		self.leafs = content["leafs"]
 		self.length = leafs.size()
 		
 		#grid check 
