@@ -23,17 +23,29 @@ func init(menu_id:String):
 			get_tree().change_scene("res://Scenes/menu_main.tscn")
 			
 		content = res[menu_id]
-#var data = {"menu_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
+		
+		#var data = {"menu_id":{"name":"asdasd", "buttons":["id1","id2","id3"], "2d":false}}
 		self.grid = content["grid"]
 		self.leafs = content["leafs"]
 		self.length = leafs.size()
+		self.leaf_height = content["height"]
 		
 		#grid check 
 		if self.grid:
 			self.length = [self.length, leafs[0].size()]
 			self.index = [0,0]
+			# loop
+			# spawn button
+			# adjust button_spawn by button height	
+		else:
+			for i in self.leafs:
+				_spawn_button(height)
+		
 
-
+func _spawn_button(height:int):
+	#instantiate button
+	# init it according to values
+	# adjust button_spawn by button height
 
 
 func cycle(downwards:bool):

@@ -155,11 +155,11 @@ func step_input_process():
 	return _cur_input'''
 
 func _build_menu(menu_id:String="Main"):
-	var new_menu
 	$Camera.offset.x += 300
 	
 	#instantiate a menu
-	new_menu = Prefab_menu.instantiate()
+	var new_menu = Prefab_menu.instantiate()
+	self.add_child(new_menu)
 	new_menu.init(menu_id)
 	#add menu to stack
 	_menu_stack.append(new_menu)
