@@ -1,4 +1,4 @@
-[gd_scene format=2]
+[gd_scene format=3 uid="uid://bf7tqwr52fr4c"]
 
 [node name="con" type="Label"]
 offset_right = 40.0

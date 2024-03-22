@@ -1,6 +1,6 @@
 extends Node2D
 
-var preload_Button = load("res://Scenes/Menu/button.tscn")
+var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
 var menu_location = "res://Data/menus.cfg"
 
 var content
@@ -8,6 +8,8 @@ var label
 var leafs
 var grid
 var length
+var dimensions
+var offset
 var index = 0
 
 #func _ready():
@@ -28,7 +30,7 @@ func init(menu_id:String):
 		self.grid = content["grid"]
 		self.leafs = content["leafs"]
 		self.length = leafs.size()
-		self.leaf_height = content["height"]
+		self.dimensions = content["dimensions"]
 		
 		#grid check 
 		if self.grid:
@@ -38,14 +40,18 @@ func init(menu_id:String):
 			# spawn button
 			# adjust button_spawn by button height	
 		else:
-			for i in self.leafs:
-				_spawn_button(height)
+			for leaf in self.leafs:
+				_spawn_leaf(leaf, dimensions)
 		
 
-func _spawn_button(height:int):
+func _spawn_leaf(leaf_id:String, dimensions):
 	#instantiate button
+	var leaf = self.preload_Leaf.instantiate()
 	# init it according to values
+	leaf.init(leaf_id, dimensions)
 	# adjust button_spawn by button height
+	self.Transform.position.y -= dimensions[1]
+	self.add_child(leaf)
 
 
 func cycle(downwards:bool):
