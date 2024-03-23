@@ -16,13 +16,15 @@ var activated
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	sprite_child = self.get_node("Sprite")
+	
+
 
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
-func button_set(active_sprite, unactive_sprite, used_sprite, used_scene, scene_is_new, button_text):
-	self.active_sprite = active_sprite
-	self.unactive_sprite = unactive_sprite
-	self.used_sprite = used_sprite
-	self.used_scene = used_scene
+func init(button_text, dimensions):
+	self.active_sprite = self.get_parent().active_sprite 
+	self.unactive_sprite = self.get_parent().unactive_sprite
+	self.used_sprite = self.get_parent().used_sprite
+	self.used_scene = used_sceneasd
 	self.scene_is_new = scene_is_new
 	$Label.text = button_text
 	

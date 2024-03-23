@@ -2,6 +2,9 @@ extends Node2D
 
 var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
 var menu_location = "res://Data/menus.cfg"
+var active_sprite = load("res://Sprites/collisionbox.png")
+var unactive_sprite = load("res://Sprites/hitbox.png")
+var used_sprite = load("res://Sprites/grabbox.png")
 
 var content
 var label
@@ -13,7 +16,6 @@ var offset
 var index = 0
 
 #func _ready():
-
 func init(menu_id:String):
 	self.label = menu_id
 	
