@@ -3,13 +3,10 @@ extends Node2D
 
 var sprite_child
 
-var used_scene
+var active_sprite
+var unactive_sprite
+var used_sprite
 
-var highlighted_sprite
-var unhighlighted_sprite
-var activated_sprite
-
-var scene_is_new
 var highlighted
 var activated
 
@@ -24,13 +21,11 @@ func init(button_text, dimensions):
 	self.active_sprite = self.get_parent().active_sprite 
 	self.unactive_sprite = self.get_parent().unactive_sprite
 	self.used_sprite = self.get_parent().used_sprite
-	self.used_scene = used_sceneasd
-	self.scene_is_new = scene_is_new
 	$Label.text = button_text
 	
 # function for checking which sprite to use
 func sprite_check():
-	sprite_child.sprite = activated_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite)
+	sprite_child.sprite = used_sprite if activated else (active_sprite if self.highlighted else unactive_sprite)
 # function for updating selected/unselected state that calls sprite check
 func highlight_toggle(new_active:MenuLeaf=null):
 	self.is_active = not self.is_active

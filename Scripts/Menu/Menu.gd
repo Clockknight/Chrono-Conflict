@@ -1,10 +1,12 @@
 extends Node2D
 
-var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
 var menu_location = "res://Data/menus.cfg"
-var active_sprite = load("res://Sprites/collisionbox.png")
-var unactive_sprite = load("res://Sprites/hitbox.png")
-var used_sprite = load("res://Sprites/grabbox.png")
+var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
+var active_sprite = "res://Sprites/collisionbox.png"
+var unactive_sprite = "res://Sprites/hitbox.png"
+var used_sprite = "res://Sprites/grabbox.png"
+var used_sound
+var active_sound
 
 var content
 var label
@@ -49,11 +51,11 @@ func init(menu_id:String):
 func _spawn_leaf(leaf_id:String, dimensions):
 	#instantiate button
 	var leaf = self.preload_Leaf.instantiate()
+	self.add_child(leaf)
 	# init it according to values
 	leaf.init(leaf_id, dimensions)
 	# adjust button_spawn by button height
-	self.Transform.position.y -= dimensions[1]
-	self.add_child(leaf)
+	self.position.y -= dimensions[1]
 
 
 func cycle(downwards:bool):
