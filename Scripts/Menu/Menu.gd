@@ -8,6 +8,8 @@ var used_sprite = "res://Sprites/grabbox.png"
 var used_sound
 var active_sound
 
+var leafx = 0
+var leafy = 0
 var content
 var label
 var leafs
@@ -53,9 +55,9 @@ func _spawn_leaf(leaf_id:String, dimensions):
 	var leaf = self.preload_Leaf.instantiate()
 	self.add_child(leaf)
 	# init it according to values
-	leaf.init(leaf_id, dimensions)
+	leaf.init(leaf_id, dimensions, leafx, leafy)
 	# adjust button_spawn by button height
-	self.position.y -= dimensions[1]
+	leafy -= dimensions[1]
 
 
 func cycle(downwards:bool):

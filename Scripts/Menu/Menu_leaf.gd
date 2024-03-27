@@ -17,10 +17,12 @@ func _ready():
 
 
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
-func init(button_text, dimensions):
+func init(button_text, dimensions, leafx, leafy):
 	self.active_sprite = self.get_parent().active_sprite 
 	self.unactive_sprite = self.get_parent().unactive_sprite
 	self.used_sprite = self.get_parent().used_sprite
+	
+	self.position = Vector2(leafx, leafy)
 	$Label.text = button_text
 	
 # function for checking which sprite to use
