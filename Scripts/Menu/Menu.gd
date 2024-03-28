@@ -18,6 +18,7 @@ var length
 var dimensions
 var offset
 var index = 0
+var leaf_stack = []
 
 #func _ready():
 func init(menu_id:String):
@@ -47,7 +48,12 @@ func init(menu_id:String):
 			# adjust button_spawn by button height	
 		else:
 			for leaf in self.leafs:
-				_spawn_leaf(leaf, dimensions)
+				leaf_stack.append(_spawn_leaf(leaf, dimensions))
+				
+				
+		leaf_stack[-1].highlight_toggle()
+				
+		
 		
 
 func _spawn_leaf(leaf_id:String, dimensions):
@@ -58,6 +64,7 @@ func _spawn_leaf(leaf_id:String, dimensions):
 	leaf.init(leaf_id, dimensions, leafx, leafy)
 	# adjust button_spawn by button height
 	leafy -= dimensions[1]
+	return leaf
 
 
 func cycle(downwards:bool):
@@ -86,17 +93,18 @@ func cycle(downwards:bool):
 
  
 func left(stack):
+	# if grid then move to a left column
+	if not grid:
+		back(stack)
 	
-	
-	'''
 func right(stack):
+	# if grid then move to a right column
+	if not grid:
+		accept(stack)
 	
 func accept(stack):
+	print('accept not implemented')
 	
 func back(stack):
+	print('back not implemented')
 	
-	
-	
-
-	
-'''

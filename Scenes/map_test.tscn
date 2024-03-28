@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://dunoe4ffcb88w"]
 
-[ext_resource type="PackedScene" path="res://Scenes/Character/Character_orbulon.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://57xfr64q8e8f" path="res://Scenes/Character/Character_orbulon.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://Sprites/icon.png" id="2"]
 [ext_resource type="Script" path="res://Scripts/Game_manager.gd" id="3"]
 [ext_resource type="Script" path="res://Scripts/Assets/Game_UI.gd" id="4"]
