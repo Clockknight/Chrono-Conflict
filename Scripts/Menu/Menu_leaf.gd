@@ -3,9 +3,9 @@ extends Node2D
 
 var sprite_child
 
+var highlighted_sprite
+var unhighlighted_sprite
 var active_sprite
-var unactive_sprite
-var used_sprite
 
 var highlighted
 var activated
@@ -18,28 +18,27 @@ func _ready():
 
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
 func init(button_text, dimensions, leafx, leafy):
+	self.highlighted_sprite = load(self.get_parent().highlighted_sprite)
+	self.unhighlighted_sprite = load(self.get_parent().unhighlighted_sprite)
 	self.active_sprite = load(self.get_parent().active_sprite)
-	self.unactive_sprite = load(self.get_parent().unactive_sprite)
-	self.used_sprite = load(self.get_parent().used_sprite)
 	
 	self.position = Vector2(leafx, leafy)
 	$Label.text = button_text
 	
+	sprite_check()
+	
 # function for checking which sprite to use
 func sprite_check():
-	sprite_child.set_texture( used_sprite if activated else (active_sprite if self.highlighted else unactive_sprite))
+	sprite_child.set_texture( active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
 	
 	
 
 	
 # function for updating selected/unselected state that calls sprite check
-func highlight_toggle(new_active:MenuLeaf=null):
+func highlight_toggle():
 	self.highlighted = not self.highlighted
 	
 	self.sprite_check()
-	
-	if new_active != null:
-		new_active.highlight_toggle()
 
 # function for being used
 func use():

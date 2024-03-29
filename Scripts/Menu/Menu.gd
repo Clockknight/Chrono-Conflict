@@ -2,9 +2,9 @@ extends Node2D
 
 var menu_location = "res://Data/menus.cfg"
 var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
-var active_sprite = "res://Sprites/collisionbox.png"
-var unactive_sprite = "res://Sprites/hitbox.png"
-var used_sprite = "res://Sprites/grabbox.png"
+var highlighted_sprite = "res://Sprites/hurtbox.png"
+var unhighlighted_sprite = "res://Sprites/hitbox.png"
+var active_sprite = "res://Sprites/grabbox.png"
 var used_sound
 var active_sound
 
@@ -48,7 +48,7 @@ func init(menu_id:String):
 			# adjust button_spawn by button height	
 		else:
 			for leaf in self.leafs:
-				leaf_stack.append(_spawn_leaf(leaf, dimensions))
+				leaf_stack.push_front(_spawn_leaf(leaf, dimensions))
 				
 				
 		leaf_stack[-1].highlight_toggle()
@@ -63,7 +63,7 @@ func _spawn_leaf(leaf_id:String, dimensions):
 	# init it according to values
 	leaf.init(leaf_id, dimensions, leafx, leafy)
 	# adjust button_spawn by button height
-	leafy -= dimensions[1]
+	leafy += dimensions[1]
 	return leaf
 
 
@@ -74,12 +74,13 @@ func cycle(downwards:bool):
 		else:
 			index[1] -= 1
 			
-			
 		if index[1] < 0:
 			index[1] = leafs.size()-1
 		elif index[1] >= leafs.size():
 			index[1] = 0
+			
 	else:
+		leaf_stack[index].highlight_toggle()
 		if downwards:
 			index += 1 
 		else:
@@ -89,6 +90,10 @@ func cycle(downwards:bool):
 			index = leafs.size()-1
 		elif index >= leafs.size():
 			index = 0
+		
+		leaf_stack[index].highlight_toggle()
+		
+	print(index)
 
 
  

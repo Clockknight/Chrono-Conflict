@@ -69,7 +69,7 @@ func _save_controls():
 
 func _unhandled_input(event):
 	
-	if event is InputEventKey:
+	if event is InputEventKey and event.pressed:
 		if event.keycode in _controls_dictionary:
 			match _controls_dictionary[event.keycode]:
 				_up1_string:
