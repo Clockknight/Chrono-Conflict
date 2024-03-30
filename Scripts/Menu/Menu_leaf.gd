@@ -7,12 +7,12 @@ var highlighted_sprite
 var unhighlighted_sprite
 var active_sprite
 
-var highlighted
-var activated
+var highlighted = false
+var activated = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	sprite_child = self.get_node("Sprite2D")
+	sprite_child = self.get_child(0)
 	
 
 
@@ -29,7 +29,8 @@ func init(button_text, dimensions, leafx, leafy):
 	
 # function for checking which sprite to use
 func sprite_check():
-	sprite_child.set_texture( active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
+	sprite_child.set_texture(active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
+	print(report())
 	
 	
 
@@ -37,7 +38,6 @@ func sprite_check():
 # function for updating selected/unselected state that calls sprite check
 func highlight_toggle():
 	self.highlighted = not self.highlighted
-	
 	self.sprite_check()
 
 # function for being used
@@ -48,3 +48,5 @@ func use():
 	activated = true
 #	sprite_check()
 
+func report():
+	return self.name  + " - " + str(activated) + "  - " + str(highlighted) 

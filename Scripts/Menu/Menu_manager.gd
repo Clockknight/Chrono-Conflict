@@ -73,13 +73,13 @@ func _unhandled_input(event):
 		if event.keycode in _controls_dictionary:
 			match _controls_dictionary[event.keycode]:
 				_up1_string:
-					_menu_stack[-1].cycle(false)
+					_menu_stack[-1].cycle(true)
 				_up2_string:
-					_menu_stack[-1].cycle(false)
+					_menu_stack[-1].cycle(true)
 				_down1_string:
-					_menu_stack[-1].cycle(true)
+					_menu_stack[-1].cycle(false)
 				_down2_string:
-					_menu_stack[-1].cycle(true)
+					_menu_stack[-1].cycle(false)
 				_left1_string:
 					_menu_stack[-1].left(_menu_stack)
 				_left2_string:

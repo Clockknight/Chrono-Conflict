@@ -51,12 +51,13 @@ func init(menu_id:String):
 				leaf_stack.push_front(_spawn_leaf(leaf, dimensions))
 				
 				
-		leaf_stack[-1].highlight_toggle()
+		leaf_stack[0].highlight_toggle()
 				
 		
 		
 
 func _spawn_leaf(leaf_id:String, dimensions):
+	
 	#instantiate button
 	var leaf = self.preload_Leaf.instantiate()
 	self.add_child(leaf)
@@ -67,9 +68,11 @@ func _spawn_leaf(leaf_id:String, dimensions):
 	return leaf
 
 
-func cycle(downwards:bool):
+func cycle(upwards:bool):
+	
+	print(index)
 	if grid:
-		if downwards:
+		if upwards:
 			index[1] += 1
 		else:
 			index[1] -= 1
@@ -81,7 +84,7 @@ func cycle(downwards:bool):
 			
 	else:
 		leaf_stack[index].highlight_toggle()
-		if downwards:
+		if upwards:
 			index += 1 
 		else:
 			index -= 1
@@ -93,7 +96,6 @@ func cycle(downwards:bool):
 		
 		leaf_stack[index].highlight_toggle()
 		
-	print(index)
 
 
  
