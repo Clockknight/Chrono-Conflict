@@ -17,20 +17,21 @@ func _ready():
 
 
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
-func init(button_text, dimensions, leafx, leafy):
+func init(button_id, dimensions, leafx, leafy):
 	self.highlighted_sprite = load(self.get_parent().highlighted_sprite)
 	self.unhighlighted_sprite = load(self.get_parent().unhighlighted_sprite)
 	self.active_sprite = load(self.get_parent().active_sprite)
 	
 	self.position = Vector2(leafx, leafy)
-	$Label.text = button_text
+	self.name = button_id
+	button_id = button_id.trim_suffix(".gd")
+	$Label.text = button_id
 	
 	sprite_check()
 	
 # function for checking which sprite to use
 func sprite_check():
 	sprite_child.set_texture(active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
-	print(report())
 	
 	
 
@@ -40,13 +41,9 @@ func highlight_toggle():
 	self.highlighted = not self.highlighted
 	self.sprite_check()
 
-# function for being used
-func use():
-#	load next scene
-# 	get_tree().root.add_child(simultaneous_scene)
-#	update in use bool
-	activated = true
-#	sprite_check()
+func activate():
+	self.activated = true
+	self.sprite_check()
 
 func report():
 	return self.name  + " - " + str(activated) + "  - " + str(highlighted) 

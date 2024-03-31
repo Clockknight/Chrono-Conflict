@@ -68,7 +68,6 @@ func _save_controls():
 	file.store_string(JSON.stringify(_controls_dictionary, '	'))
 
 func _unhandled_input(event):
-	
 	if event is InputEventKey and event.pressed:
 		if event.keycode in _controls_dictionary:
 			match _controls_dictionary[event.keycode]:

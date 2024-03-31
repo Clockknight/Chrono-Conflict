@@ -110,8 +110,25 @@ func right(stack):
 		accept(stack)
 	
 func accept(stack):
-	print('accept not implemented')
+	if not grid:
+		#  trigger highlight on current button
+		leaf_stack[index].activate()
+		# get id of leaf at index
+		#leaf_stack[index].
+		# if ending in .gd open new scene
+		# else open new menu and shift stuff around
+		
+		
+		'''
+# function for being used
+func use():
+#	load next scene
+# 	get_tree().root.add_child(simultaneous_scene)
+#	update in use bool
+	activated = true
+#	sprite_check()'''
 	
 func back(stack):
-	print('back not implemented')
+	if not grid:
+		print('back not implemented')
 	
