@@ -107,27 +107,33 @@ func left(stack):
 func right(stack):
 	# if grid then move to a right column
 	if not grid:
-		accept(stack)
+		accept()
 	
-func accept(stack):
+func accept():
 	if not grid:
 		#  trigger highlight on current button
 		leaf_stack[index].activate()
 		# get id of leaf at index
-		#leaf_stack[index].
+		var temp = str(leaf_stack[index].name)
 		# if ending in .gd open new scene
-		# else open new menu and shift stuff around
+		if temp.substr(len(temp)-3) == '_gd':
+			temp[-3] = '.'
+			# replace current scene with targetted scene
+		else:
+			return temp
+			
 		
 		
-		'''
+		
+		'
 # function for being used
 func use():
 #	load next scene
 # 	get_tree().root.add_child(simultaneous_scene)
 #	update in use bool
 	activated = true
-#	sprite_check()'''
-	
+#	sprite_check()
+	'
 func back(stack):
 	if not grid:
 		print('back not implemented')

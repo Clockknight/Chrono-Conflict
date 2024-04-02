@@ -22,7 +22,7 @@ var _b2_string
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_configure()
-	_build_menu()
+	build_menu()
 	
 	
 	
@@ -88,18 +88,20 @@ func _unhandled_input(event):
 				_right2_string:
 					_menu_stack[-1].right(_menu_stack)
 				_a1_string:
-					_menu_stack[-1].accept(_menu_stack)
+					build_menu(_menu_stack[-1].accept())
 				_a2_string:
-					_menu_stack[-1].accept(_menu_stack)
+					build_menu(_menu_stack[-1].accept())
 				_b1_string:
 					_menu_stack[-1].back(_menu_stack)
 				_b2_string:
 					_menu_stack[-1].back(_menu_stack)
 
 
-func _build_menu(menu_id:String="Main"):
+func build_menu(menu_id="Main"):
+	if menu_id == null:
+		# this shouldnt ever be called
+		return
 	$Camera.offset.x += 300
-	
 	#instantiate a menu
 	var new_menu = Prefab_menu.instantiate()
 	self.add_child(new_menu)
