@@ -101,11 +101,12 @@ func build_menu(menu_id="Main"):
 	if menu_id == null:
 		# this shouldnt ever be called
 		return
-	$Camera.offset.x += 300
 	#instantiate a menu
 	var new_menu = Prefab_menu.instantiate()
 	self.add_child(new_menu)
 	new_menu.init(menu_id)
+	$Camera.offset.x += new_menu.dimensions[0]
+	new_menu.position.x = new_menu.dimensions[0]
 	#add menu to stack
 	_menu_stack.append(new_menu)
 	#update active_menu
