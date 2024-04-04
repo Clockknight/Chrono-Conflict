@@ -17,6 +17,7 @@ var grid
 var length
 var dimensions
 var offset
+var source
 var index = 0
 var leaf_stack = []
 
@@ -38,6 +39,7 @@ func init(menu_id:String):
 		self.leafs = content["leafs"]
 		self.length = leafs.size()
 		self.dimensions = content["dimensions"]
+		self.source = content["source"]
 		
 		#grid check 
 		if self.grid:
@@ -48,7 +50,7 @@ func init(menu_id:String):
 			# adjust button_spawn by button height	
 		else:
 			for leaf in self.leafs:
-				leaf_stack.push_front(_spawn_leaf(leaf, dimensions))
+				leaf_stack.push_back(_spawn_leaf(leaf, dimensions))
 				
 				
 		leaf_stack[0].highlight_toggle()
@@ -70,12 +72,11 @@ func _spawn_leaf(leaf_id:String, dimensions):
 
 func cycle(upwards:bool):
 	
-	print(index)
 	if grid:
 		if upwards:
-			index[1] += 1
-		else:
 			index[1] -= 1
+		else:
+			index[1] += 1
 			
 		if index[1] < 0:
 			index[1] = leafs.size()-1
@@ -85,9 +86,9 @@ func cycle(upwards:bool):
 	else:
 		leaf_stack[index].highlight_toggle()
 		if upwards:
-			index += 1 
+			index -= 1 
 		else:
-			index -= 1
+			index += 1
 		
 		if index < 0:
 			index = leafs.size()-1
@@ -124,17 +125,16 @@ func accept():
 			
 		
 		
-		
-		'
-# function for being used
-func use():
-#	load next scene
-# 	get_tree().root.add_child(simultaneous_scene)
-#	update in use bool
-	activated = true
-#	sprite_check()
-	'
 func back(stack):
 	if not grid:
-		print('back not implemented')
+		if stack[0] == self:
+			load_scene(self.source)
+		queue_free()
+		# drop an item off the list
+		
+func load_scene(next_scene):
+#	load next scene
+	get_tree().root.add_child(load(next_scene).instantiate())
+	self.get_parent().queue_free()
+
 	

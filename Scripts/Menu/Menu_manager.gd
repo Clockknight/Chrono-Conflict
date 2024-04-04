@@ -92,9 +92,9 @@ func _unhandled_input(event):
 				_a2_string:
 					build_menu(_menu_stack[-1].accept())
 				_b1_string:
-					_menu_stack[-1].back(_menu_stack)
+					back()
 				_b2_string:
-					_menu_stack[-1].back(_menu_stack)
+					back()
 
 
 func build_menu(menu_id="Main"):
@@ -112,3 +112,6 @@ func build_menu(menu_id="Main"):
 	#update active_menu
 	_active_menu = new_menu
 	
+
+func back():
+	_menu_stack[-1].back(_menu_stack)
