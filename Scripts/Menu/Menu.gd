@@ -111,18 +111,20 @@ func right(stack):
 		accept()
 	
 func accept():
+	var active_leaf
+	
 	if not grid:
 		#  trigger highlight on current button
-		leaf_stack[index].activate()
-		# get id of leaf at index
-		var temp = str(leaf_stack[index].name)
-		# if ending in .gd open new scene
-		if temp.substr(len(temp)-3) == '_gd':
-			temp[-3] = '.'
-			# replace current scene with targetted scene
-		else:
-			return temp
-			
+		active_leaf = leaf_stack[index]
+	else:
+		active_leaf = leaf_stack[index[0]][index[1]]
+		
+	# get id of leaf at index
+	active_leaf.activate_toggle()
+	return str(active_leaf.name)
+	
+	# if ending in .tscn open new scene
+		
 		
 		
 func back(stack):
@@ -131,10 +133,12 @@ func back(stack):
 			load_scene(self.source)
 		queue_free()
 		# drop an item off the list
+	stack.pop_back()
 		
 func load_scene(next_scene):
 #	load next scene
 	get_tree().root.add_child(load(next_scene).instantiate())
 	self.get_parent().queue_free()
 
-	
+func deactivate():
+	self.leaf_stack[self.index].activate_toggle()

@@ -106,7 +106,7 @@ func build_menu(menu_id="Main"):
 	self.add_child(new_menu)
 	new_menu.init(menu_id)
 	$Camera.offset.x += new_menu.dimensions[0]
-	new_menu.position.x = new_menu.dimensions[0]
+	new_menu.position.x += $Camera.offset.x
 	#add menu to stack
 	_menu_stack.append(new_menu)
 	#update active_menu
@@ -114,4 +114,8 @@ func build_menu(menu_id="Main"):
 	
 
 func back():
+	$Camera.offset.x -= _menu_stack[-1].dimensions[0]
 	_menu_stack[-1].back(_menu_stack)
+	_active_menu = _menu_stack[-1]
+	
+	_active_menu.deactivate()

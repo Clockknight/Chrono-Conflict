@@ -24,7 +24,7 @@ func init(button_id, dimensions, leafx, leafy):
 	
 	self.position = Vector2(leafx, leafy)
 	self.name = button_id
-	button_id = button_id.trim_suffix(".gd")
+	button_id = button_id.trim_suffix(".tscn")
 	$Label.text = button_id
 	
 	sprite_check()
@@ -41,8 +41,8 @@ func highlight_toggle():
 	self.highlighted = not self.highlighted
 	self.sprite_check()
 
-func activate():
-	self.activated = true
+func activate_toggle():
+	self.activated = !self.activated
 	self.sprite_check()
 
 func report():
