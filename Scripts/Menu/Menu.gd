@@ -44,16 +44,20 @@ func init(menu_id:String):
 		#grid check 
 		if self.grid:
 			self.length = [self.length, leafs[0].size()]
-			self.index = [0,0]
+			self.index = [0, 0]
+			#leaf_stack[self.index[0]][self.index[1]]
 			# loop
-			# spawn button
-			# adjust button_spawn by button height	
+			for i in leafs:
+				for j in i:
+					_spawn_leaf(j, self.dimensions)
+				# spawn button
+				# adjust button_spawn by button height	
 		else:
+			self.index = 0
 			for leaf in self.leafs:
 				leaf_stack.push_back(_spawn_leaf(leaf, dimensions))
 				
-				
-		leaf_stack[0].highlight_toggle()
+			leaf_stack[self.index].highlight_toggle()
 				
 		
 		
