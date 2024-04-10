@@ -22,6 +22,8 @@ func init(button_id, dimensions, leafx, leafy):
 	self.unhighlighted_sprite = load(self.get_parent().unhighlighted_sprite)
 	self.active_sprite = load(self.get_parent().active_sprite)
 	
+	self.scale = Vector2(dimensions[0], dimensions[1])
+	
 	self.position = Vector2(leafx, leafy)
 	self.name = button_id
 	button_id = button_id.trim_suffix(".tscn")

@@ -16,6 +16,8 @@ var leafs
 var grid
 var length
 var dimensions
+var width
+var height
 var offset
 var source
 var index = 0
@@ -39,6 +41,8 @@ func init(menu_id:String):
 		self.leafs = content["leafs"]
 		self.length = leafs.size()
 		self.dimensions = content["dimensions"]
+		self.width = self.dimensions[0] + content["offset"][0]
+		self.height = self.dimensions[1] + content["offset"][1]
 		self.source = content["source"]
 		
 		#grid check 
@@ -55,8 +59,7 @@ func init(menu_id:String):
 		else:
 			self.index = 0
 			for leaf in self.leafs:
-				leaf_stack.push_back(_spawn_leaf(leaf, dimensions))
-				
+				leaf_stack.push_back(_spawn_leaf(leaf, self.dimensions))
 			leaf_stack[self.index].highlight_toggle()
 				
 		
@@ -75,32 +78,31 @@ func _spawn_leaf(leaf_id:String, dimensions):
 
 
 func cycle(upwards:bool):
-	
 	if grid:
 		if upwards:
 			index[1] -= 1
 		else:
 			index[1] += 1
-			
+
 		if index[1] < 0:
 			index[1] = leafs.size()-1
 		elif index[1] >= leafs.size():
 			index[1] = 0
-			
+
 	else:
 		leaf_stack[index].highlight_toggle()
 		if upwards:
 			index -= 1 
 		else:
 			index += 1
-		
+
 		if index < 0:
 			index = leafs.size()-1
 		elif index >= leafs.size():
 			index = 0
-		
+
 		leaf_stack[index].highlight_toggle()
-		
+
 
 
  

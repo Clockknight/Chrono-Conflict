@@ -21,6 +21,8 @@ var _b2_string
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	self.size.x = 1
+	self.size.y = 1
 	_configure()
 	build_menu()
 	
@@ -105,10 +107,11 @@ func build_menu(menu_id="Main"):
 	var new_menu = Prefab_menu.instantiate()
 	self.add_child(new_menu)
 	new_menu.init(menu_id)
-	$Camera.offset.x += new_menu.dimensions[0]
+	$Camera.offset.x += new_menu.width if _menu_stack == [] else new_menu.dimensions[0]/2 + _menu_stack[0].dimensions[0]/2
+	
+	_menu_stack.append(new_menu)
 	new_menu.position.x += $Camera.offset.x
 	#add menu to stack
-	_menu_stack.append(new_menu)
 	#update active_menu
 	_active_menu = new_menu
 	
