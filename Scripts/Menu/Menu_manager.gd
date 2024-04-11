@@ -119,6 +119,7 @@ func build_menu(menu_id="Main"):
 func back():
 	$Camera.offset.x -= _menu_stack[-1].dimensions[0]
 	_menu_stack[-1].back(_menu_stack)
+	
 	_active_menu = _menu_stack[-1]
 	
 	_active_menu.deactivate()

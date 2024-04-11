@@ -22,14 +22,23 @@ func init(button_id, dimensions, leafx, leafy):
 	self.unhighlighted_sprite = load(self.get_parent().unhighlighted_sprite)
 	self.active_sprite = load(self.get_parent().active_sprite)
 	
-	self.scale = Vector2(dimensions[0], dimensions[1])
-	
 	self.position = Vector2(leafx, leafy)
 	self.name = button_id
 	button_id = button_id.trim_suffix(".tscn")
 	$Label.text = button_id
+	_init_scale(dimensions)
+	
+	
 	
 	sprite_check()
+func _init_scale(dimensions):
+	
+	self.scale = Vector2(dimensions[0], dimensions[1])
+	for item in get_children():
+		item.scale.x *= dimensions[0]
+		item.scale.y *= dimensions[1]
+		$Label.position.x = -.5 * $Label.size.x * dimensions[0]
+		$Label.position.y = -.5 * $Label.size.y * dimensions[1]
 	
 # function for checking which sprite to use
 func sprite_check():
