@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 var Prefab_menu = load("res://Scenes/Menu/Menu.tscn")
 var dict_location = "res://Data/controls.cfg"
@@ -21,8 +21,6 @@ var _b2_string
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.size.x = 1
-	self.size.y = 1
 	_configure()
 	build_menu()
 	
@@ -107,8 +105,9 @@ func build_menu(menu_id="Main"):
 	var new_menu = Prefab_menu.instantiate()
 	self.add_child(new_menu)
 	new_menu.init(menu_id)
-	$Camera.offset.x += new_menu.width if _menu_stack == [] else new_menu.dimensions[0]/2 + _menu_stack[0].dimensions[0]/2
-	
+	$Camera.offset.x += new_menu.width if _menu_stack == [] else new_menu.width/2 + _menu_stack[0].width/2
+	if _menu_stack != []:
+		_menu_stack[-1].reposition(true) 
 	_menu_stack.append(new_menu)
 	new_menu.position.x += $Camera.offset.x
 	#add menu to stack

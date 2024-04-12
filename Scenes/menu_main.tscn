@@ -2,13 +2,9 @@
 
 [ext_resource type="Script" path="res://Scripts/Menu/Menu_manager.gd" id="1_cs26q"]
 
-[node name="Menu Manager" type="Control"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Menu Manager" type="CanvasLayer"]
+follow_viewport_enabled = true
 script = ExtResource("1_cs26q")
 
 [node name="Camera" type="Camera2D" parent="."]
+position = Vector2(1, 3)

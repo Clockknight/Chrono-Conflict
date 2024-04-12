@@ -31,6 +31,7 @@ func init(button_id, dimensions, leafx, leafy):
 	
 	
 	sprite_check()
+	
 func _init_scale(dimensions):
 	
 	self.scale = Vector2(dimensions[0], dimensions[1])

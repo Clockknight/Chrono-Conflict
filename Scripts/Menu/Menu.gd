@@ -148,3 +148,7 @@ func load_scene(next_scene):
 
 func deactivate():
 	self.leaf_stack[self.index].activate_toggle()
+
+func reposition(leaving):
+	
+	self.position.x -= self.width * 6 * (1 if leaving else -1)
