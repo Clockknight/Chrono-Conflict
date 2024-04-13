@@ -7,13 +7,12 @@
 script = ExtResource("1_b24dd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.01, 0.01)
 texture = ExtResource("2_jm2fu")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 80.0
 offset_bottom = 30.0
-scale = Vector2(0.01, 0.01)
+scale = Vector2(0.03, 0.03)
 text = "Text Here"
 horizontal_alignment = 1
 vertical_alignment = 1

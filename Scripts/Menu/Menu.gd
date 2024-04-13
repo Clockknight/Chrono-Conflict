@@ -16,9 +16,9 @@ var leafs
 var grid
 var length
 var dimensions
+var offset
 var width
 var height
-var offset
 var source
 var index = 0
 var leaf_stack = []
@@ -41,8 +41,9 @@ func init(menu_id:String):
 		self.leafs = content["leafs"]
 		self.length = leafs.size()
 		self.dimensions = content["dimensions"]
-		self.width = self.dimensions[0] + content["offset"][0]
-		self.height = self.dimensions[1] + content["offset"][1]
+		self.offset = content["offset"]
+		self.width = self.dimensions[0] + self.offset[0]
+		self.height = self.dimensions[1] + self.offset[1]
 		self.source = content["source"]
 		
 		#grid check 
@@ -72,8 +73,8 @@ func _spawn_leaf(leaf_id:String, dimensions):
 	self.add_child(leaf)
 	# init it according to values
 	leaf.init(leaf_id, dimensions, leafx, leafy)
-	# adjust button_spawn by button height
-	leafy += dimensions[1]
+	leafy += 2* (dimensions[1]+ offset[1])
+	print(leafy)
 	return leaf
 
 

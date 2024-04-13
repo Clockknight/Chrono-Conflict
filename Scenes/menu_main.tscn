@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://Scripts/Menu/Menu_manager.gd" id="1_cs26q"]
 
 [node name="Menu Manager" type="CanvasLayer"]
+scale = Vector2(5, 5)
+transform = Transform2D(5, 0, 0, 5, 0, 0)
 follow_viewport_enabled = true
 script = ExtResource("1_cs26q")
 
