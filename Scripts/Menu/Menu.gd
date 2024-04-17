@@ -21,6 +21,7 @@ var width
 var height
 var source
 var index = 0
+var grid_index= null
 var leaf_stack = []
 
 #func _ready():
@@ -48,15 +49,23 @@ func init(menu_id:String):
 		
 		#grid check 
 		if self.grid:
-			self.length = [self.length, leafs[0].size()]
-			self.index = [0, 0]
-			#leaf_stack[self.index[0]][self.index[1]]
+			self.index = 0
+			self.grid_index = 0
+			self.length = leafs[index].size()
+
 			# loop
+			var temp = 0
 			for i in leafs:
+				leaf_stack.append([])
 				for j in i:
 					_spawn_leaf(j, self.dimensions)
+					leaf_stack[temp].append(j)
+				leafx += self.width
+				temp += 1
 				# spawn button
 				# adjust button_spawn by button height	
+			
+			leaf_stack[self.index][self.grid_index].highlight_toggle()
 		else:
 			self.index = 0
 			for leaf in self.leafs:
@@ -79,7 +88,7 @@ func _spawn_leaf(leaf_id:String, dimensions):
 
 
 func cycle(upwards:bool):
-	if grid:
+	'if grid:
 		if upwards:
 			index[1] -= 1
 		else:
@@ -90,19 +99,19 @@ func cycle(upwards:bool):
 		elif index[1] >= leafs.size():
 			index[1] = 0
 
+	else:'
+	leaf_stack[index].highlight_toggle()
+	if upwards:
+		index -= 1 
 	else:
-		leaf_stack[index].highlight_toggle()
-		if upwards:
-			index -= 1 
-		else:
-			index += 1
+		index += 1
 
-		if index < 0:
-			index = leafs.size()-1
-		elif index >= leafs.size():
-			index = 0
+	if index < 0:
+		index = leafs.size()-1
+	elif index >= leafs.size():
+		index = 0
 
-		leaf_stack[index].highlight_toggle()
+	leaf_stack[index].highlight_toggle()
 
 
 
