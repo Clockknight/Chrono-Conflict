@@ -21,7 +21,7 @@ var width
 var height
 var source
 var index = 0
-var grid_index= null
+var column_index= null
 var leaf_stack = []
 
 #func _ready():
@@ -50,7 +50,7 @@ func init(menu_id:String):
 		#grid check 
 		if self.grid:
 			self.index = 0
-			self.grid_index = 0
+			self.column_index = 0
 			self.length = leafs[index].size()
 
 			# loop
@@ -58,14 +58,15 @@ func init(menu_id:String):
 			for i in leafs:
 				leaf_stack.append([])
 				for j in i:
-					_spawn_leaf(j, self.dimensions)
-					leaf_stack[temp].append(j)
+					
+					leaf_stack[temp].append( _spawn_leaf(j, self.dimensions) )
 				leafx += self.width
+				leafy = 0
 				temp += 1
 				# spawn button
 				# adjust button_spawn by button height	
 			
-			leaf_stack[self.index][self.grid_index].highlight_toggle()
+			leaf_stack[self.index][self.column_index].highlight_toggle()
 		else:
 			self.index = 0
 			for leaf in self.leafs:
@@ -83,47 +84,67 @@ func _spawn_leaf(leaf_id:String, dimensions):
 	# init it according to values
 	leaf.init(leaf_id, dimensions, leafx, leafy)
 	leafy += 2* (dimensions[1]+ offset[1])
-	print(leafy)
 	return leaf
 
 
 func cycle(upwards:bool):
-	'if grid:
+	if grid:
+		leaf_stack[column_index][index].highlight_toggle()
 		if upwards:
-			index[1] -= 1
+			index -= 1
 		else:
-			index[1] += 1
+			index += 1
 
-		if index[1] < 0:
-			index[1] = leafs.size()-1
-		elif index[1] >= leafs.size():
-			index[1] = 0
+		if index < 0:
+			index = leafs.size()-1
+		elif index >= leafs.size():
+			index = 0
+		leaf_stack[column_index][index].highlight_toggle()
+			
+		
 
-	else:'
-	leaf_stack[index].highlight_toggle()
-	if upwards:
-		index -= 1 
 	else:
-		index += 1
+		leaf_stack[index].highlight_toggle()
+		if upwards:
+			index -= 1 
+		else:
+			index += 1
 
-	if index < 0:
-		index = leafs.size()-1
-	elif index >= leafs.size():
-		index = 0
+		if index < 0:
+			index = leaf_stack[column_index].size()-1
+		elif index >= leaf_stack[column_index].size():
+			index = 0
 
-	leaf_stack[index].highlight_toggle()
+		leaf_stack[index].highlight_toggle()
 
 
 
  
 func left(stack):
 	# if grid then move to a left column
-	if not grid:
+	if grid:
+		leaf_stack[column_index][index].highlight_toggle()
+		column_index -= 1
+		
+
+		if column_index < 0:
+			column_index = leaf_stack.size()-1
+		leaf_stack[column_index][index].highlight_toggle()
+		
+	else:
 		back(stack)
 	
 func right(stack):
 	# if grid then move to a right column
-	if not grid:
+	if grid:
+		leaf_stack[column_index][index].highlight_toggle()
+		column_index += 1
+		
+		if column_index >= leaf_stack.size():
+			column_index = leaf_stack.size()-1
+		leaf_stack[column_index][index].highlight_toggle()
+		
+	else:
 		accept()
 	
 func accept():
