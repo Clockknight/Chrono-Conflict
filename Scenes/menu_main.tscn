@@ -3,10 +3,10 @@
 [ext_resource type="Script" path="res://Scripts/Menu/Menu_manager.gd" id="1_cs26q"]
 
 [node name="Menu Manager" type="CanvasLayer"]
-scale = Vector2(5, 5)
-transform = Transform2D(5, 0, 0, 5, 0, 0)
+layer = 0
 follow_viewport_enabled = true
 script = ExtResource("1_cs26q")
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2(1, 3)
+position = Vector2(8, 7)
+zoom = Vector2(4, 4)

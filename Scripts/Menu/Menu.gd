@@ -111,8 +111,8 @@ func cycle(upwards:bool):
 			index += 1
 
 		if index < 0:
-			index = leaf_stack[column_index].size()-1
-		elif index >= leaf_stack[column_index].size():
+			index = leaf_stack.size()-1
+		elif index >= leaf_stack.size():
 			index = 0
 
 		leaf_stack[index].highlight_toggle()
@@ -141,7 +141,10 @@ func right(stack):
 		column_index += 1
 		
 		if column_index >= leaf_stack.size():
-			column_index = leaf_stack.size()-1
+			column_index = 0
+		
+		if index >= leaf_stack[column_index].size():
+			index = leaf_stack[column_index].size()-1
 		leaf_stack[column_index][index].highlight_toggle()
 		
 	else:

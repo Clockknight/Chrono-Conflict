@@ -10,9 +10,12 @@ script = ExtResource("1_b24dd")
 texture = ExtResource("2_jm2fu")
 
 [node name="Label" type="Label" parent="."]
-offset_right = 80.0
-offset_bottom = 30.0
-scale = Vector2(0.03, 0.03)
+layout_direction = 1
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 96.0
+offset_bottom = 96.0
+scale = Vector2(0.5, 0.5)
 text = "Text Here"
 horizontal_alignment = 1
 vertical_alignment = 1

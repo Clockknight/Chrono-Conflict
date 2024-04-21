@@ -35,13 +35,14 @@ func init(button_id, dimensions, leafx, leafy):
 func _init_scale(dimensions):
 	
 	self.scale = Vector2(dimensions[0], dimensions[1])
-	$Sprite2D.scale.x = dimensions[0] / sprite_child.texture.get_size().x
+	'$Sprite2D.scale.x = dimensions[0] / sprite_child.texture.get_size().x
 	$Sprite2D.scale.y = dimensions[1] / sprite_child.texture.get_size().y
 	$Label.scale.x *= dimensions[0]
 	$Label.scale.y *= dimensions[1]
-	$Label.position.x = -.5 * $Label.size.x * dimensions[0]
-	$Label.position.y = -.5 * $Label.size.y * dimensions[1]
+	$Label.position.x = -.25 * $Label.size.x * dimensions[0]
+	$Label.position.y = -.25 * $Label.size.y * dimensions[1]'
 	
+		
 # function for checking which sprite to use
 func sprite_check():
 	sprite_child.set_texture(active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
