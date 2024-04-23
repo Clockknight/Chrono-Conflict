@@ -8,5 +8,4 @@ follow_viewport_enabled = true
 script = ExtResource("1_cs26q")
 
 [node name="Camera" type="Camera2D" parent="."]
-position = Vector2(8, 7)
-zoom = Vector2(4, 4)
+scale = Vector2(2, 2)

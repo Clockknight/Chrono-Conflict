@@ -24,7 +24,7 @@ func init(button_id, dimensions, leafx, leafy):
 	
 	self.position = Vector2(leafx, leafy)
 	self.name = button_id
-	button_id = button_id.trim_suffix(".tscn")
+	button_id = button_id.trim_suffix(".tscn").trim_suffix(".fnc")
 	$Label.text = button_id
 	_init_scale(dimensions)
 	
