@@ -162,8 +162,6 @@ func accept():
 	# get id of leaf at index
 	active_leaf.activate_toggle()
 	return str(active_leaf.name)
-	
-	# if ending in .tscn open new scene
 		
 		
 		

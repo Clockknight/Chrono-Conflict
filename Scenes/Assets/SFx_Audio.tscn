@@ -1,4 +1,3 @@
-[gd_scene format=2]
+[gd_scene format=3 uid="uid://jsalvc2cudv"]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer"]
-volume_db = -32.0

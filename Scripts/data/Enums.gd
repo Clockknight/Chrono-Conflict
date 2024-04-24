@@ -55,3 +55,15 @@ enum Load{
 	BUNDLE=1,
 	ASSET=2
 }
+
+enum AudioTypes{
+	MASTER=0,
+	SFX=1,
+	DIA=2,
+	MUS=3,
+	CAL=4
+}
+
+enum Constants{
+	BUFFER_WINDOW = 3
+}

@@ -9,6 +9,8 @@ var _background
 var _timer
 var _fps
 
+var levels = [1.0,1.0,1.0,1.0,1.0]
+
 var _camera_pos
 
 var _view_width = 350
@@ -31,6 +33,10 @@ const diff_y_min = 100
 var debug_state_for_p1n2 = [true, false]
 
 func _ready():
+	var temp = get_tree().get_node("Menu Manager")
+	if temp != null:
+		self.levels = temp.levels
+		
 	_camera = self.get_parent().get_node("Camera2D")
 	_background = _camera.get_node("Background")
 	UI = self.get_node("UI")
@@ -59,8 +65,8 @@ func _ready():
 				
 				
 	# run config function on each, setting their control strings as needed depending on which is p1/p2
-	p1._configure(p2, _stage_boundaries)
-	p2._configure(p1, _stage_boundaries)
+	p1._configure(p2, _stage_boundaries, levels)
+	p2._configure(p1, _stage_boundaries, levels)
 		
 
 	#Timer section

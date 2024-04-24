@@ -5,9 +5,10 @@ extends CharacterBody2D
 var i = load('res://Scripts/Data/Input_Data.gd')
 
 # Constants
-const BUFFER_WINDOW = 3
+const BUFFER_WINDOW = en.Constants.BUFFER_WINDOW
 
 # Assets
+var audio_levels = [1.0,1.0,1.0,1.0,1.0]
 var SFx_Audio  =load('res://Scenes/Assets/SFx_Audio.tscn')
 var preloadHitBox = load("res://Scenes/Boxes/Hit_Box.tscn")
 var preloadHurtBox = load("res://Scenes/Boxes/Hurt_Box.tscn")
@@ -78,11 +79,13 @@ func _ready():
 	_health = _max_health
 
 
-func _configure(other_player, bounds):
+func _configure(other_player, bounds, levels):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
+	self.audio_levels = levels
+	
 
 	help_sidecheck()
 	
@@ -274,7 +277,7 @@ func _subtick_state():
 func step_state_process(cur_move):
 	match step_block_check(cur_move):
 		en.Hit.HURT:
-			self._other.play_sound(cur_move.hit)
+			self._other.play_sound(cur_move.hit, en.AudioTypes.SFX)
 			_other._debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage) )
 			_other.combo +=1
 			self._health -= cur_move.damage
@@ -507,11 +510,11 @@ func queue_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,
 	#spawn box given array of variables describing it
 	var newBox  = preloadHitBox.instantiate()
 	self.add_child(newBox)
-	self.play_sound(0)
+	self.play_sound(0, en.AudioTypes.SFX)
 	newBox.set_box(posx, posy, scalex,scaley, lifetime)
 
 
-func play_sound(sound_id:int, duration:int = 1):
+func play_sound(sound_id:int, audiotype:en.AudioTypes, duration:int = 1):
 	var newSFX = SFx_Audio.instantiate(sound_id)
 	newSFX.stream = sfxs[sound_id]
 	self.add_child(newSFX)
@@ -522,6 +525,8 @@ func play_sound(sound_id:int, duration:int = 1):
 	self.add_child(t)
 	t.start()
 	
+	newSFX.set_volume_db((newSFX.get_volume_db() + 80) * audio_level[0] * audio_level[audiotype] - 80)
+
 	newSFX.play()
 	await t.timeout
 	newSFX.queue_free()
