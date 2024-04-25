@@ -33,7 +33,7 @@ const diff_y_min = 100
 var debug_state_for_p1n2 = [true, false]
 
 func _ready():
-	var temp = get_tree().get_node("Menu Manager")
+	var temp = get_tree().current_scene.get_node("Menu Manager")
 	if temp != null:
 		self.levels = temp.levels
 		

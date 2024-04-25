@@ -14,11 +14,12 @@ func _ready():
 #func _on_area_entered(object: Hit_Box) -> void:
 #	if (object != null):
 
-func set_box(a,b,c,d,e, inc_data:Move_Data=null):
+func set_box(a,b,c,d,e, inc_data:MoveData=null):
 	super.set_box(a,b,c,d,e)
-	self.data = inc_data
-	if data==null:
-		self.data = (Move_Data.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, en.Type.MID))
+	if inc_data==null:
+		self.data = MoveData.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, en.Type.MID)
+	else:
+		self.data = inc_data
 
 func tick():
 	#check for hurt boxes

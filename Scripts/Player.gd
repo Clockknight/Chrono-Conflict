@@ -1,4 +1,4 @@
-class_name player
+class_name Player
 extends CharacterBody2D
 
 # external classes
@@ -85,7 +85,7 @@ func _configure(other_player, bounds, levels):
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
 	self.audio_levels = levels
-	
+	print(audio_levels)
 
 	help_sidecheck()
 	
@@ -274,7 +274,7 @@ func _subtick_state():
 				_state_frames_left = new_state[1]
 					
 					
-func step_state_process(cur_move):
+func step_state_process(cur_move:MoveData):
 	match step_block_check(cur_move):
 		en.Hit.HURT:
 			self._other.play_sound(cur_move.hit, en.AudioTypes.SFX)
@@ -289,7 +289,7 @@ func step_state_process(cur_move):
 				self.step_die()
 			
 			self._state = cur_move.state
-			self.directional_input = cur_move.hit_influence * (-1 if _p1_side else 1)
+			self.directional_input = cur_move.hit_direction * (-1 if _p1_side else 1)
 		en.Hit.BLCK:
 			#block for blocking
 			self._other.play_sound(cur_move.block)
@@ -345,7 +345,7 @@ func _subtick_interact():
 	else:
 		_debug_message(en.Level.FRAME, 'empty _state_queue: ' + str(_state_queue == []))
 			
-func hit(incoming_move: Move_Data):
+func hit(incoming_move: MoveData):
 	_move_queue.append(incoming_move)
 
 
@@ -358,7 +358,7 @@ func clash(e1: Hit_Box, e2:Hit_Box):
 		
 
 		
-func step_block_check(move:Move_Data):
+func step_block_check(move:MoveData):
 	var hit 
 	# if unblock hit = true
 	if _state != en.State.FREE and _state != en.State.JMPA:
@@ -525,7 +525,7 @@ func play_sound(sound_id:int, audiotype:en.AudioTypes, duration:int = 1):
 	self.add_child(t)
 	t.start()
 	
-	newSFX.set_volume_db((newSFX.get_volume_db() + 80) * audio_level[0] * audio_level[audiotype] - 80)
+	newSFX.set_volume_db((newSFX.get_volume_db() + 80) * audio_levels[0] * audio_levels[audiotype] - 80)
 
 	newSFX.play()
 	await t.timeout

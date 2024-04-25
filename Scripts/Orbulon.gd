@@ -1,4 +1,5 @@
-extends player
+class_name Orbulon 
+extends Player
 
 func _ready():
 
