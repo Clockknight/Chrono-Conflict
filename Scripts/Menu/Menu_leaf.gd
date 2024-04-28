@@ -24,11 +24,14 @@ func init(button_id, dimensions, leafx, leafy):
 	
 	self.position = Vector2(leafx, leafy)
 	self.name = button_id
-	button_id = button_id.trim_suffix(".tscn").trim_suffix(".fnc")
-	$Label.text = button_id
+	if button_id.ends_with(".tscn"):
+		print("tscn case")
+	elif button_id.ends_with(".val"):
+		print("val case")
+		
+	
+	$Label.text = button_id.trim_suffix(".tscn").trim_suffix(".val")
 	_init_scale(dimensions)
-	
-	
 	
 	sprite_check()
 	
