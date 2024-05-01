@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bclwshcc8018e"]
+
+[node name="HSlider" type="HSlider"]
+offset_right = 8.0
+offset_bottom = 16.0

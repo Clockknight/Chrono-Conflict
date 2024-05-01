@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bl0qriilf8d5h"]
 
-[ext_resource type="Script" path="res://Scripts/Menu/Menu_manager.gd" id="1_cs26q"]
+[ext_resource type="Script" path="res://Scripts/Menu/Manager_Menu.gd" id="1_cs26q"]
 
 [node name="Menu Manager" type="CanvasLayer"]
 layer = 0
