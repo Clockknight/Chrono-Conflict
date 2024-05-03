@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource path="res://Scripts/Boxes/Hurt_Box.gd" type="Script" id=1]
-[ext_resource path="res://sprites/hurtbox.png" type="Texture2D" id=2]
+[ext_resource type="Script" path="res://Scripts/Boxes/Box_hurt.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bvj1t0am8fsnw" path="res://sprites/hurtbox.png" id="2"]
 
 [sub_resource type="RectangleShape2D" id=1]
 

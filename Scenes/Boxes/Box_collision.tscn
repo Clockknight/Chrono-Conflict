@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource path="res://Scripts/Boxes/Collision_Box.gd" type="Script" id=1]
-[ext_resource path="res://sprites/collisionbox.png" type="Texture2D" id=2]
-[ext_resource path="res://sprites/mark.png" type="Texture2D" id=3]
+[ext_resource type="Script" path="res://Scripts/Boxes/Box_collision.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bfkrj767fujyo" path="res://sprites/collisionbox.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://c0ocrj67h731e" path="res://sprites/mark.png" id="3"]
 
 [sub_resource type="RectangleShape2D" id=1]
 

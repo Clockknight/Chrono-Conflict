@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource path="res://Scripts/Boxes/Sprite_Box.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://Scripts/Boxes/Box_sprite.gd" id="1"]
 
 [sub_resource type="RectangleShape2D" id=1]
 
