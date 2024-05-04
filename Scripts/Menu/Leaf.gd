@@ -17,20 +17,16 @@ func _ready():
 
 
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
-func init(button_id, dimensions, leafx, leafy):
+func init(leaf_id, dimensions, leafx, leafy):
 	self.highlighted_sprite = load(self.get_parent().highlighted_sprite)
 	self.unhighlighted_sprite = load(self.get_parent().unhighlighted_sprite)
 	self.active_sprite = load(self.get_parent().active_sprite)
 	
 	self.position = Vector2(leafx, leafy)
-	self.name = button_id
-	if button_id.ends_with(".tscn"):
-		print("tscn case")
-	elif button_id.ends_with(".val"):
-		print("val case")
+	self.name = leaf_id
 		
 	
-	$Label.text = button_id.trim_suffix(".tscn").trim_suffix(".val")
+	$Label.text = leaf_id.trim_suffix(".tscn").trim_suffix(".val")
 	_init_scale(dimensions)
 	
 	sprite_check()

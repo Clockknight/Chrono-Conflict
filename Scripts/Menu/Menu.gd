@@ -2,6 +2,7 @@ extends Node2D
 
 var menu_location = "res://Data/menus.cfg"
 var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
+var preload_Leafslider = load("res://Scenes/Menu/Leaf_slider.tscn")
 var highlighted_sprite = "res://Sprites/hurtbox.png"
 var unhighlighted_sprite = "res://Sprites/hitbox.png"
 var active_sprite = "res://Sprites/grabbox.png"
@@ -77,9 +78,17 @@ func init(menu_id:String):
 		
 
 func _spawn_leaf(leaf_id:String, dimensions):
+	var leaf
+	
+	if leaf_id.ends_with(".tscn"):
+		print("tscn case")
+		leaf = self.preload_Leaf.instantiate()	
+	elif leaf_id.ends_with(".val"):
+		leaf = self.preload_Leafslider.instantiate()
+	else:
+		leaf = self.preload_Leaf.instantiate()	
 	
 	#instantiate button
-	var leaf = self.preload_Leaf.instantiate()
 	self.add_child(leaf)
 	# init it according to values
 	leaf.init(leaf_id, dimensions, leafx, leafy)
