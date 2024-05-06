@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bclwshcc8018e"]
 
-[ext_resource type="Script" path="res://Scenes/Menu/Leaf_slider.gd" id="1_w5fg4"]
+[ext_resource type="Script" path="res://Scripts/Menu/Leaf_slider.gd" id="1_w5fg4"]
 
 [node name="HSlider" type="HSlider"]
 offset_right = 8.0
