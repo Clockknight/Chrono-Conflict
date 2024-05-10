@@ -10,3 +10,7 @@ script = ExtResource("1_ke5sa")
 offset_right = 8.0
 offset_bottom = 16.0
 script = ExtResource("1_w5fg4")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0

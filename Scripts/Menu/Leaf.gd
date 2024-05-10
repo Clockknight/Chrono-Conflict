@@ -12,7 +12,7 @@ var activated = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	sprite_child = self.get_child(0)
+	sprite_child = $Sprite2D
 	
 
 
@@ -44,7 +44,8 @@ func _init_scale(dimensions):
 		
 # function for checking which sprite to use
 func sprite_check():
-	sprite_child.set_texture(active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
+	if sprite_child != null:
+		sprite_child.set_texture(active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
 	
 	
 	
