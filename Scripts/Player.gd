@@ -2,16 +2,16 @@ class_name Player
 extends CharacterBody2D
 
 # external classes
-var i = load('res://Scripts/Data/Input_Data.gd')
+var i = load('res://Scripts/Data/Inputs.gd')
 
 # Constants
 const BUFFER_WINDOW = en.Constants.BUFFER_WINDOW
 
 # Assets
-var audio_levels = [1.0,1.0,1.0,1.0,1.0]
-var SFx_Audio  =load('res://Scenes/Assets/SFx_Audio.tscn')
-var preloadHitBox = load("res://Scenes/Boxes/Hit_Box.tscn")
-var preloadHurtBox = load("res://Scenes/Boxes/Hurt_Box.tscn")
+var audio_levels = []
+var SFx_Audio  =load('res://Scenes/Assets/Audio_SFx.tscn')
+var preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
+var preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
 var preloadSprite
 var sprites 
 var _base_sprite 
