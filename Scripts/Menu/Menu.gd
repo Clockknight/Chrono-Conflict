@@ -3,6 +3,7 @@ extends Node2D
 var menu_location = "res://Data/menus.cfg"
 var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
 var preload_Leafslider = load("res://Scenes/Menu/Leaf_slider.tscn")
+
 var highlighted_sprite = "res://Sprites/hurtbox.png"
 var unhighlighted_sprite = "res://Sprites/hitbox.png"
 var active_sprite = "res://Sprites/grabbox.png"
@@ -46,7 +47,7 @@ func init(menu_id:String):
 		self.offset = content["offset"]
 		self.width = self.dimensions[0] + self.offset[0]
 		self.height = self.dimensions[1] + self.offset[1]
-		self.source = content["source"]
+		#self.source = content["source"]
 		
 		#grid check 
 		if self.grid:
@@ -166,7 +167,10 @@ func accept():
 		#  trigger highlight on current button
 		active_leaf = leaf_stack[index]
 	else:
-		active_leaf = leaf_stack[index[0]][index[1]]
+		active_leaf = leaf_stack[column_index]
+		active_leaf = active_leaf[index]
+		if self.label == "Matchmaking":
+			self._select(active_leaf.name)
 		
 	# get id of leaf at index
 	active_leaf.activate_toggle()
@@ -181,6 +185,10 @@ func back(stack):
 		queue_free()
 		# drop an item off the list
 	stack.pop_back()
+		
+func _select(character_id):
+	if character_id == "1":
+		load_scene("res://Scenes/map_test.tscn")
 		
 func load_scene(next_scene):
 #	load next scene
