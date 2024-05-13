@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnoapjsphx604"]
+
+[ext_resource type="Script" path="res://Scripts/Player_evilorbulon.gd" id="1_dhxvh"]
+[ext_resource type="PackedScene" path="res://Scenes/Boxes/Box_collision.tscn" id="2_ry6f2"]
+[ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://Sprites/icon.png" id="3_a3emc"]
+[ext_resource type="PackedScene" path="res://Scenes/Boxes/Box_hurt.tscn" id="4_ms0fr"]
+
+[node name="Character_Orbulon" type="CharacterBody2D"]
+scale = Vector2(2, 1)
+script = ExtResource("1_dhxvh")
+
+[node name="Collision_Box" parent="." instance=ExtResource("2_ry6f2")]
+scale = Vector2(6.5, 6.5)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -2
+scale = Vector2(2, 2)
+texture = ExtResource("3_a3emc")
+region_rect = Rect2(10, 10, 10, 0)
+
+[node name="Hurt_Box" parent="." instance=ExtResource("4_ms0fr")]
+position = Vector2(35, 15)
+scale = Vector2(2, 4)

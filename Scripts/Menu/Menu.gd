@@ -169,8 +169,7 @@ func accept():
 	else:
 		active_leaf = leaf_stack[column_index]
 		active_leaf = active_leaf[index]
-		if self.label == "Matchmaking":
-			self._select(active_leaf.name)
+		
 		
 	# get id of leaf at index
 	active_leaf.activate_toggle()
@@ -186,9 +185,6 @@ func back(stack):
 		# drop an item off the list
 	stack.pop_back()
 		
-func _select(character_id):
-	if character_id == "1":
-		load_scene("res://Scenes/map_test.tscn")
 		
 func load_scene(next_scene):
 #	load next scene

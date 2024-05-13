@@ -103,6 +103,12 @@ func build_menu(menu_id="Main"):
 	if menu_id == null:
 		# this shouldnt ever be called
 		return
+	
+	if _active_menu != null and _active_menu.label == "Matchmaking":
+		if menu_id == "1":
+			_active_menu.load_scene("res://Scenes/map_test.tscn")
+			return
+			
 	#instantiate a menu
 	var new_menu = Prefab_menu.instantiate()
 	self.add_child(new_menu)
