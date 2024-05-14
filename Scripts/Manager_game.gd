@@ -113,8 +113,7 @@ func _tick_players():
 # move tick all children
 # collisions and jumps n stuff
 	
-	if p1 != null:
-		p1.tick()
+	p1.tick()
 	
 
 
@@ -126,10 +125,8 @@ func _tick_camera():
 	diff_vector.x = clamp(abs(diff_vector.x), diff_x_min, diff_x_max)
 	diff_vector.y = clamp(diff_vector.y, diff_y_min, diff_y_max)
 	
-	
-	_camera.zoom.x = 160 / diff_vector.x
-	_camera.zoom.y = _camera.zoom.x
-	_view_width = 350 * _camera.zoom.x
+	var zoom = 160 / diff_vector.x
+	_view_width = 350 * zoom
 		
 	# codeblock for camera position
 	_camera_pos = p1.position + p2.position	
@@ -144,9 +141,10 @@ func _tick_camera():
 	
 	_background.position.x = _camera.position.x *-.05
 	_camera.position = _camera_pos
-	
-	
+	_camera.zoom = Vector2(zoom, zoom)
 	_background.scale = _camera.zoom * 2
+	
+	
 	
 	
 	
