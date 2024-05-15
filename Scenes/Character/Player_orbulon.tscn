@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://57xfr64q8e8f"]
 
 [ext_resource type="PackedScene" path="res://Scenes/Boxes/Box_collision.tscn" id="1"]
-[ext_resource type="Script" path="res://Scripts/Player_orbulon.gd" id="2"]
+[ext_resource type="Script" path="res://Scripts/Character/Player_orbulon.gd" id="2"]
 [ext_resource type="PackedScene" path="res://Scenes/Boxes/Box_hurt.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://Sprites/icon.png" id="5"]
 
