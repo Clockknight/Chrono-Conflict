@@ -46,7 +46,7 @@ func step_input_interpret(input:Input_Data):
 		# Normal Block
 		if input.input_new_down('a'):
 			queue_box()
-			frame_data = ['STRT|1','ACTV|1','RECV|1']
+			frame_data = ['STRT|10','ACTV|1','RECV|1']
 
 		#Command Normal Block
 #		if input.a == true and input.x *  int(_p1_side) > 0:
