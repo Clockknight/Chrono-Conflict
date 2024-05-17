@@ -240,38 +240,36 @@ func step_input_interpret(input:Input_Data):
 func _subtick_state():
 	_debug_message(en.Level.FRAME, 'State Tick')
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
+	_state_frames_left -= 1
+	#if (_state == en.State.FREE or _state ==en.State.JMPA) and _state_queue == []:
+	#else:
 	
+	var new_state = _state_queue.pop_front()
 	
+	if new_state == null:
+		_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
+		_state = en.State.FREE
+		return
 		
-		
-	
-	
-	if (_state == en.State.FREE or _state ==en.State.JMPA) and _state_queue == []:
-		_state_frames_left = 1
-	else:
-		_state_frames_left -= 1
-		if _state_frames_left <= 0:
-			var new_state = _state_queue.pop_front()
-			_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
-			_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
-			if new_state == null:
-				if _state == en.State.JMPS:
-					step_state_interpret([],en.State.JMPA, 1)
-					
-				else:
-					_debug_message(en.Level.FRAME, 'state queue empty - returning to free')
-					_state = en.State.FREE
-			else:
-				if _state == en.State.JMPS and _jumps > 0:
+	if _state_frames_left <= 0:
+		_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
+		_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
+		match new_state[0]:
+			en.State.JMPS:
+				if _jumps > 0:
 					_jumps -= 1
 					$Collision_Box.disable(true)
 					_grounded = false
 					_debug_message(en.Level.FRAME, 'jump started')
 					self.directional_input.y = -1 * self.vertical_speed
-						
+					step_state_adopt(new_state)
+			_:
+					step_state_adopt(new_state)
 					
-				_state = new_state[0]
-				_state_frames_left = new_state[1]
+func step_state_adopt(new_state_array):
+		_state = new_state_array[0]
+		_state_frames_left = new_state_array[1]
+				
 					
 					
 func step_state_process(cur_move:MoveData):
