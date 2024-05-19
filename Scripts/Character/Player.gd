@@ -502,11 +502,11 @@ func _subtick_process():
 
 
 
-# func queue_boxes(framedata: 2dArray):
-# take in 2d array and repeatedly call below box spawning func
-func queue_box( posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5,framedata: Array =[]):
-	
-
+# Should take in an id, and then pout it in the queue of boxes to create
+# the queue should tick up the appearance value each time the ACTV state begins
+# once a box in the queue has reached appearance 0, then it should build the box
+#func queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func queue_box(move_id="null")
 	#spawn box given array of variables describing it
 	var newBox  = preloadHitBox.instantiate()
 	self.add_child(newBox)

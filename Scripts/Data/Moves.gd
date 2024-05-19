@@ -15,6 +15,8 @@ var block
 var hit
 var type
 
+var appearance
+
 
 func _init(priority: int, damage: int, duration: int, 
 hit_dir_x, hit_dir_y, blk_dir_x, blk_dir_y, whiff_id, block_id, hit_id, type:int, state: int=en.State.STUN):
@@ -30,4 +32,5 @@ hit_dir_x, hit_dir_y, blk_dir_x, blk_dir_y, whiff_id, block_id, hit_id, type:int
 	self.block = block_id
 	self.hit = hit_id
 	
+	self.appearance = 1
 	self.type = type
