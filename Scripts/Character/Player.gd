@@ -506,12 +506,14 @@ func _subtick_process():
 # the queue should tick up the appearance value each time the ACTV state begins
 # once a box in the queue has reached appearance 0, then it should build the box
 #func queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func queue_box(move_id="null")
+func queue_box(move_id="null"):
+	#_move_queue.append("x")
 	#spawn box given array of variables describing it
 	var newBox  = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
-	newBox.set_box(posx, posy, scalex,scaley, lifetime)
+	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
+	newBox.set_box(10,10,10,10,10)
 
 
 func play_sound(sound_id:int, audiotype:en.AudioTypes, duration:int = 1):
