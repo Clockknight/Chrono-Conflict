@@ -2,7 +2,8 @@ class_name Player
 extends CharacterBody2D
 
 # external classes
-var i = load('res://Scripts/Data/Inputs.gd')
+var i = load('res://Data/Inputs.gd')
+var framedata
 
 # Constants
 const BUFFER_WINDOW = en.Constants.BUFFER_WINDOW
@@ -509,6 +510,7 @@ func _subtick_process():
 func queue_box(move_id="null"):
 	#_move_queue.append("x")
 	#spawn box given array of variables describing it
+	#var newBox  = preloadHitBox.instantiate(framedata["5a"])
 	var newBox  = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)

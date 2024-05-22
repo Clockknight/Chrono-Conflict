@@ -11,6 +11,8 @@ func _ready():
 	
 	self._max_health = 10.0
 	
+	self.framedata = load("res://Data/framedata_orbulon.cfg")
+	
 	preloadSprite = load("res://Scenes/Boxes/Sprite_Box.tscn")
 	sprites = [load("res://sprites/pow.png")]
 	_base_sprite = load("res://sprites/icon.png")
@@ -45,7 +47,7 @@ func step_input_interpret(input:Input_Data):
 			
 		# Normal Block
 		if input.input_new_down('a'):
-			queue_box()
+			queue_box("5a")
 			frame_data = ['STRT|10','ACTV|1','RECV|1']
 
 		#Command Normal Block

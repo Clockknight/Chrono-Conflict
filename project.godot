@@ -17,8 +17,8 @@ config/icon="res://sprites/icon.png"
 
 [autoload]
 
-en="*res://Scripts/Data/Enums.gd"
-Move_Data="*res://Scripts/Data/Moves.gd"
+en="*res://Data/Enums.gd"
+Move_Data="*res://Data/Moves.gd"
 Menu_Button="*res://Scripts/Menu/Leaf.gd"
 Controls="*res://Data/controls.cfg"
 
