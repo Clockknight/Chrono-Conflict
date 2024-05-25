@@ -264,6 +264,9 @@ func _subtick_state():
 					_debug_message(en.Level.FRAME, 'jump started')
 					self.directional_input.y = -1 * self.vertical_speed
 					step_state_adopt(new_state)
+			en.State.ACTV:
+				# Should tick down all the queued boxes, and spawn in any that have zero left
+				step_state_adopt(new_state, new_state, new_state, new_state)
 			_:
 					step_state_adopt(new_state)
 					
