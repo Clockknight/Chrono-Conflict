@@ -28,6 +28,7 @@ var leaf_stack = []
 
 #func _ready():
 func init(menu_id:String):
+	
 	self.label = menu_id
 	
 	if FileAccess.file_exists(menu_location):

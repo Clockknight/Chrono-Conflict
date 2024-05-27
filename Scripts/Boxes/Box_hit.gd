@@ -6,8 +6,7 @@ var hit_boxes = []
 var hurt_boxes = []
 
 var data
-	
-	
+
 func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 

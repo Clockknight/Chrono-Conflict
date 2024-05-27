@@ -266,7 +266,17 @@ func _subtick_state():
 					step_state_adopt(new_state)
 			en.State.ACTV:
 				# Should tick down all the queued boxes, and spawn in any that have zero left
-				step_state_adopt(new_state, new_state, new_state, new_state)
+				var occurences
+				for i in range(1, _move_queue.length):
+					move = _move_queue.pop_front.split("|")
+					occurences = int(move[1])-1
+					
+					if occurences <= 0:
+						#spawn the box NOW
+						
+					else:
+						_move_queue.append(move[0] + "|" + str(occurences))
+					
 			_:
 					step_state_adopt(new_state)
 					
@@ -510,15 +520,20 @@ func _subtick_process():
 # the queue should tick up the appearance value each time the ACTV state begins
 # once a box in the queue has reached appearance 0, then it should build the box
 #func queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func queue_box(move_id="null"):
-	#_move_queue.append("x")
+func queue_box(move_id):
+	
 	#spawn box given array of variables describing it
 	#var newBox  = preloadHitBox.instantiate(framedata["5a"])
+	var result = {}[move_id]["queue_info"]
+	_move_queue.append(result)
+	
+func spawn_box(move_id):
 	var newBox  = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(10,10,10,10,10)
+	
 
 
 func play_sound(sound_id:int, audiotype:en.AudioTypes, duration:int = 1):
