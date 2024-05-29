@@ -2,7 +2,7 @@ class_name Player
 extends CharacterBody2D
 
 # external classes
-var i = load('res://Data/Inputs.gd')
+var i
 var framedata
 
 # Constants
@@ -10,9 +10,9 @@ const BUFFER_WINDOW = en.Constants.BUFFER_WINDOW
 
 # Assets
 var audio_levels = []
-var SFx_Audio  =load('res://Scenes/Assets/Audio_SFx.tscn')
-var preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
-var preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
+var SFx_Audio  
+var preloadHitBox 
+var preloadHurtBox 
 var preloadSprite
 var sprites 
 var _base_sprite 
@@ -74,11 +74,20 @@ var _input_queue = []
 var _input_history = []
 
 func _ready():
-	_base_scaley = scale.y
-	_base_scalex = scale.x
-	collision = self.get_node("Collision_Box")
-	_health = _max_health
+	self._base_scaley = scale.y
+	self._base_scalex = scale.x
+	self.collision = self.get_node("Collision_Box")
+	self._health = _max_health
+	
+	load_assets()
 
+func load_assets():
+	# Should be overwritten as part of character specific script
+	self.i = load('res://Data/Inputs.gd') 
+	self.SFx_Audio = load('res://Scenes/Assets/Audio_SFx.tscn')
+	self.preloadSprite = load("res://Scenes/Boxes/Sprite_Box.tscn")
+	self.preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
+	self.preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
 
 func _configure(other_player, bounds, levels):
 	# player object assumes it's player 1 until otherwise stated
@@ -268,12 +277,12 @@ func _subtick_state():
 				# Should tick down all the queued boxes, and spawn in any that have zero left
 				var occurences
 				for i in range(1, _move_queue.length):
-					move = _move_queue.pop_front.split("|")
+					var move = _move_queue.pop_front().split("|")
 					occurences = int(move[1])-1
 					
 					if occurences <= 0:
 						#spawn the box NOW
-						
+						spawn_box(move[0])
 					else:
 						_move_queue.append(move[0] + "|" + str(occurences))
 					
@@ -521,10 +530,8 @@ func _subtick_process():
 # once a box in the queue has reached appearance 0, then it should build the box
 #func queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 func queue_box(move_id):
-	
 	#spawn box given array of variables describing it
-	#var newBox  = preloadHitBox.instantiate(framedata["5a"])
-	var result = {}[move_id]["queue_info"]
+	var result = framedata[move_id]["queue_info"]
 	_move_queue.append(result)
 	
 func spawn_box(move_id):

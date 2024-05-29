@@ -11,16 +11,22 @@ func _ready():
 	
 	self._max_health = 10.0
 	
-	self.framedata = load("res://Data/framedata_orbulon.cfg")
+	super._ready()
 	
-	preloadSprite = load("res://Scenes/Boxes/Sprite_Box.tscn")
-	sprites = [load("res://sprites/pow.png")]
-	_base_sprite = load("res://sprites/icon.png")
-	sfxs = [
+func load_assets():
+	var temp = "res://Data/framedata_orbulon.cfg"
+	if FileAccess.file_exists(temp):
+		temp = FileAccess.get_file_as_string(temp)
+		self.framedata = JSON.parse_string(temp)
+		print(framedata)
+	
+	self.sprites = [load("res://sprites/pow.png")]
+	self._base_sprite = load("res://sprites/icon.png")
+	self.sfxs = [
 		load("res://Sound/whiff.mp3"), 
 		load("res://Sound/hit.mp3"), 
 		load("res://Sound/block.mp3")]
-	_state_sprites = [
+	self._state_sprites = [
 	_base_sprite, #0
 	_base_sprite, #1
 	_base_sprite, #2
@@ -34,7 +40,8 @@ func _ready():
 	_base_sprite  #10
 	] 
 	
-	super._ready()
+	super.load_assets()
+	
 
 
 
