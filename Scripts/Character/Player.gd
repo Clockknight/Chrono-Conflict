@@ -69,6 +69,7 @@ var terminal_speed
 
 # queues
 var _move_queue = []
+var _box_queue = []
 var _state_queue = []
 var _input_queue = []
 var _input_history = []
@@ -531,8 +532,12 @@ func _subtick_process():
 #func queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 func queue_box(move_id):
 	#spawn box given array of variables describing it
-	var result = framedata[move_id]["queue_info"]
-	_move_queue.append(result)
+	
+	for item in framedata[move_id]["boxes"]:
+		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
+	
+	_state_queue.append_array(framedata[move_id]["framedata"])
+	
 	
 func spawn_box(move_id):
 	var newBox  = preloadHitBox.instantiate()
