@@ -277,15 +277,15 @@ func _subtick_state():
 			en.State.ACTV:
 				# Should tick down all the queued boxes, and spawn in any that have zero left
 				var occurences
-				for i in range(1, _move_queue.length):
-					var move = _move_queue.pop_front().split("|")
+				for i in range(1, _box_queue.length):
+					var move = _box_queue.pop_front().split("|")
 					occurences = int(move[1])-1
 					
 					if occurences <= 0:
 						#spawn the box NOW
 						spawn_box(move[0])
 					else:
-						_move_queue.append(move[0] + "|" + str(occurences))
+						_box_queue.append(move[0] + "|" + str(occurences))
 					
 			_:
 					step_state_adopt(new_state)
@@ -536,7 +536,10 @@ func queue_box(move_id):
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
 	
-	_state_queue.append_array(framedata[move_id]["framedata"])
+	
+	# todo refactor this so it calls a function to parse the | strings array
+	
+	step_state_interpret(framedata[move_id]["framedata"])
 	
 	
 func spawn_box(move_id):
