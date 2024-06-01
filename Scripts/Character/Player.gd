@@ -412,15 +412,17 @@ func _subtick_move():
 	_debug_message(en.Level.FRAME, 'Move Tick')
 	_calc_bottom_y()
 	if _grounded:
-		self.directional_input.x = 0
+		# todo refactor this so the repeated .xs are not necessary
 		if _state == en.State.FREE:
 			#Y movement
+			self.directional_input.x = 0
 			self.directional_input.y = 0
 		if (_cur_input.y > 0):
 			self.scale.y = _base_scaley * .5
 			self.directional_input.x = 0
 			self.directional_input.y += self._base_scaley
 		if _state == en.State.ACTV:
+			self.directional_input.x = 0
 			self.directional_input.x = 0
 		
 	if(not _grounded):
