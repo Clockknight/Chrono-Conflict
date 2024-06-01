@@ -166,14 +166,6 @@ func _subtick_input():
 	_cur_input = step_input_process()
 	step_input_interpret(_cur_input)
 
-#	_debug_message(_input_queue)
-#		todo
-#		refactor other functions to use an input variable to figure out what to do
-
-#	_debug_message(_input_queue)
-	
-	
-
 func step_input_process():
 	# Process all the queued inputs, and pass the resulting input to cur innput next
 	var x = 0
@@ -266,6 +258,9 @@ func _subtick_state():
 		_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
 		_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
 		match new_state[0]:
+			# todo new states should not be queued if they are not possible
+			# ie these checks should be moved to input
+			# this function should just be for making the actual changes
 			en.State.JMPS:
 				if _jumps > 0:
 					_jumps -= 1
@@ -277,7 +272,7 @@ func _subtick_state():
 			en.State.ACTV:
 				# Should tick down all the queued boxes, and spawn in any that have zero left
 				var occurences
-				for i in range(1, _box_queue.length):
+				for i in range(1, _box_queue.size()):
 					var move = _box_queue.pop_front().split("|")
 					occurences = int(move[1])-1
 					
@@ -286,9 +281,10 @@ func _subtick_state():
 						spawn_box(move[0])
 					else:
 						_box_queue.append(move[0] + "|" + str(occurences))
+				step_state_adopt(new_state)
 					
 			_:
-					step_state_adopt(new_state)
+				step_state_adopt(new_state)
 					
 func step_state_adopt(new_state_array):
 		_state = new_state_array[0]
@@ -376,8 +372,6 @@ func clash(e1: Hit_Box, e2:Hit_Box):
 		e1.queue_free()
 		e2.queue_free()
 		_debug_message(en.Level.EVENT, "Clash detected")
-		
-		
 
 		
 func step_block_check(move:MoveData):
@@ -414,7 +408,6 @@ func step_low_check(move):
 	return true
 
 
-#todo player locks into horiz movement when attacking
 func _subtick_move():
 	_debug_message(en.Level.FRAME, 'Move Tick')
 	_calc_bottom_y()
@@ -536,11 +529,7 @@ func queue_box(move_id):
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
 	
-	
-	# todo refactor this so it calls a function to parse the | strings array
-	
 	step_state_interpret(framedata[move_id]["framedata"])
-	
 	
 func spawn_box(move_id):
 	var newBox  = preloadHitBox.instantiate()
@@ -578,7 +567,7 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 
 func _debug_message(level, msg:String=""):
 	if level is String:
-		msg= level
+		msg = level
 		level = en.Level.DEBUG
 	elif typeof(level) != TYPE_INT:
 		msg = "Misconfigured _Debug String..." + str(level)
@@ -593,14 +582,14 @@ func _adjust_ui(value, elem):
 
 
 func _update_console():
-	var a= self
-	var b=self.combo
-	var c=self._state
-	var d=self.directional_input
-	var e=self._cur_input
-	var f1=self._cur_x
-	var f2=self._stored_x
-	var g=self._grounded
-	var h=self._jumps
+	var a = self
+	var b = self.combo
+	var c = self._state
+	var d = self.directional_input
+	var e = self._cur_input
+	var f1 = self._cur_x
+	var f2 = self._stored_x
+	var g = self._grounded
+	var h = self._jumps
 	
 	self.get_parent().update_console(a,b,c,d,e,f1,f2,g,h)
