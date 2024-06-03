@@ -21,6 +21,13 @@ func set_box(a,b,c,d,e, inc_data:MoveData=null):
 		self.data = inc_data
 
 func tick():
+	
+	
+	
+	
+	
+	
+	
 	#check for hurt boxes
 	overlaps = get_overlapping_areas()
 	if overlaps != []:

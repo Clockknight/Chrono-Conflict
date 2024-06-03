@@ -31,6 +31,10 @@ settings/fps/force_fps=60
 window/size/viewport_width=960
 window/size/viewport_height=500
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/format_on_save/plugin.cfg")
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
