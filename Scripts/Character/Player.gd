@@ -231,6 +231,13 @@ func step_input_process():
 func step_input_interpret(input: Input_Data):
 	var frame_data = null
 
+	#Code will have to check if player is currently in active/recovery frames
+	#Will have to check if previous hit landed
+	#check if incoming move is OK to cancel to
+	#If all are true, then:
+	#-clear queue of states
+	#-force new queue of states
+
 	# Movement block (lowest priority)
 	if input.input_new_down("y") and input.y < 0:
 		frame_data = ["JMPS|5"]
@@ -242,6 +249,10 @@ func step_input_interpret(input: Input_Data):
 		self._stored_x = _cur_input["x"]
 
 	return frame_data
+
+
+func step_input_directionals():
+	return null
 
 
 func _subtick_state():
