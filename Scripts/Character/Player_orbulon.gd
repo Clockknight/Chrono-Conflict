@@ -64,6 +64,5 @@ func step_input_interpret(input: Input_Data):
 		# Super Block
 
 		if frame_data != null:
+			print(frame_data)
 			step_state_interpret(frame_data)
-
-		print(frame_data)

@@ -306,11 +306,13 @@ func _subtick_state():
 
 			_:
 				step_state_adopt(new_state)
+	else:
+		_state_queue.insert(0, new_state)
 
 
 func step_state_adopt(new_state_array):
 	_state = new_state_array[0]
-	_state_frames_left = new_state_array[1]
+	_state_frames_left = new_state_array[1] + 1
 
 
 func step_state_process(cur_move: MoveData):
