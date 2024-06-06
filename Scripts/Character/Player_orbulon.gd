@@ -44,11 +44,7 @@ func load_assets():
 
 
 func step_input_interpret(input: Input_Data):
-	if (
-		_state == en.State.FREE
-		or (_state_frames_left <= BUFFER_WINDOW and _state_queue == [])
-		or (self._state == en.State.JMPA)
-	):
+	if _state == en.State.FREE or (step_input_check_buffer()) or (self._state == en.State.JMPA):
 		var frame_data = null
 		# todo this doesnt need to be overwritten. The information relevant to processing this should all be in the framedata json
 		frame_data = super.step_input_interpret(input)
@@ -69,3 +65,5 @@ func step_input_interpret(input: Input_Data):
 
 		if frame_data != null:
 			step_state_interpret(frame_data)
+
+		print(frame_data)

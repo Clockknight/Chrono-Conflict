@@ -251,8 +251,14 @@ func step_input_interpret(input: Input_Data):
 	return frame_data
 
 
-func step_input_directionals():
-	return null
+func step_input_check_buffer():
+	var temp = _state_frames_left
+	for i in _state_queue:
+		temp += i[1]
+
+	if temp > BUFFER_WINDOW:
+		return false
+	return true
 
 
 func _subtick_state():
