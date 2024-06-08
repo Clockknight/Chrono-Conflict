@@ -46,7 +46,7 @@ var _grounded = false
 var _state = en.State.FREE
 
 # integers
-var _state_frames_left = 1
+var _state_frames_left = 0
 var _bottom_pos
 var _base_scaley
 var _base_scalex
@@ -99,9 +99,8 @@ func _configure(other_player, bounds, levels):
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
 	self.audio_levels = levels
-	print(audio_levels)
 
-	help_sidecheck()
+	_calc_side()
 
 	_up_string = update_dictionary("ui_p1up", "ui_p2up")
 	_down_string = update_dictionary("ui_p1down", "ui_p2down")
@@ -251,16 +250,6 @@ func step_input_interpret(input: Input_Data):
 	return frame_data
 
 
-func step_input_check_buffer():
-	var temp = _state_frames_left
-	for i in _state_queue:
-		temp += i[1]
-
-	if temp > BUFFER_WINDOW:
-		return false
-	return true
-
-
 func _subtick_state():
 	_debug_message(en.Level.FRAME, "State Tick")
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
@@ -270,14 +259,15 @@ func _subtick_state():
 
 	var new_state = _state_queue.pop_front()
 
-	if new_state == null:
-		_debug_message(en.Level.FRAME, "state queue empty - returning to free")
-		_state = en.State.FREE
-		return
-
 	if _state_frames_left <= 0:
 		_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
 		_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
+
+		if new_state == null:
+			_debug_message(en.Level.FRAME, "state queue empty - returning to free")
+			_state = en.State.FREE
+			_state_frames_left = 0
+			return
 		match new_state[0]:
 			# todo new states should not be queued if they are not possible
 			# ie these checks should be moved to input
@@ -312,7 +302,7 @@ func _subtick_state():
 
 func step_state_adopt(new_state_array):
 	_state = new_state_array[0]
-	_state_frames_left = new_state_array[1] + 1
+	_state_frames_left = new_state_array[1]
 
 
 func step_state_process(cur_move: MoveData):
@@ -482,53 +472,23 @@ func _subtick_move():
 
 	var collision_report = move_and_collide(self.directional_input)
 	step_move_check(collision_report)
-	help_sidecheck()
+	_calc_side()
 	return self.directional_input
 
 
 func step_move_check(report):
 	if report and _grounded:
 		var width = -collision.scale.x / 5
-		help_ground()
+		_calc_ground()
 		if _p1_side:
 			self.position.x += width
 			_grounded = true
 			step_move_check(move_and_collide(Vector2.ZERO))
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
 #		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
-		help_ground()
+		_calc_ground()
 	_calc_bottom_y()
 	return
-
-
-## Calls the collision box's method to figure out the bottom most pixel of this object
-func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
-	self._grounded = _bottom_pos >= 0
-
-	if _state == en.State.JMPA and self.directional_input.y < 0:
-		self._grounded = false
-
-	$Collision_Box.disable(!_grounded)
-
-
-func help_ground():
-	_calc_bottom_y()
-	self.position.y -= self._bottom_pos
-	if _state == en.State.JMPA:
-		_state = en.State.FREE
-		_jumps = 2
-	_calc_bottom_y()
-
-
-func help_sidecheck():
-	if _p1_side != (self.position.x < _other.position.x):
-		_p1_side = not _p1_side
-
-	if _grounded:
-		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
-			self.scale.x *= -1
-			self._flipped = not _flipped
 
 
 func _subtick_process():
@@ -546,6 +506,53 @@ func _subtick_process():
 	if _other._state != en.State.STUN:
 		self.combo = 0
 	_update_console()
+
+
+## Calls the collision box's method to figure out the bottom most pixel of this object
+func _calc_bottom_y():
+	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
+	self._grounded = _bottom_pos >= 0
+
+	if _state == en.State.JMPA and self.directional_input.y < 0:
+		self._grounded = false
+
+	$Collision_Box.disable(!_grounded)
+
+
+func _calc_ground():
+	_calc_bottom_y()
+	self.position.y -= self._bottom_pos
+	if _state == en.State.JMPA:
+		_state = en.State.FREE
+		_jumps = 2
+	_calc_bottom_y()
+
+
+func _calc_side():
+	if _p1_side != (self.position.x < _other.position.x):
+		_p1_side = not _p1_side
+
+	if _grounded:
+		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
+			self.scale.x *= -1
+			self._flipped = not _flipped
+
+
+func _calc_buffer():
+	if _calc_frames_left() > BUFFER_WINDOW:
+		return false
+	return true
+
+
+func _calc_frames_left():
+	var temp = _state_frames_left
+
+	if _state_queue != [null]:
+		for i in _state_queue:
+			temp += i[1]
+
+	print(temp)
+	return temp
 
 
 # Should take in an id, and then pout it in the queue of boxes to create
