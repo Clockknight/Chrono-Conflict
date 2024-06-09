@@ -538,6 +538,13 @@ func _calc_side():
 			self._flipped = not _flipped
 
 
+func _check_cancel():
+	print("not implemented")
+	# todo
+	# Check incoming move
+	# if the incoming move is higher priority, then cancel the current state and then queue new states
+
+
 func _calc_buffer():
 	if _calc_frames_left() > BUFFER_WINDOW:
 		return false
