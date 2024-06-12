@@ -72,6 +72,7 @@ var _move_queue = []
 var _box_queue = []
 var _state_queue = []
 var _input_queue = []
+
 var _input_history = []
 
 
@@ -289,7 +290,7 @@ func _subtick_state():
 
 					if occurences <= 0:
 						#spawn the box NOW
-						spawn_box(move[0])
+						_spawn_box(move[0])
 					else:
 						_box_queue.append(move[0] + "|" + str(occurences))
 				step_state_adopt(new_state)
@@ -545,7 +546,7 @@ func _check_cancel():
 	# if the incoming move is higher priority, then cancel the current state and then queue new states
 
 
-func _calc_buffer():
+func _check_buffer():
 	if _calc_frames_left() > BUFFER_WINDOW:
 		return false
 	return true
@@ -558,15 +559,22 @@ func _calc_frames_left():
 		for i in _state_queue:
 			temp += i[1]
 
-	print(temp)
 	return temp
+
+
+func _overwrite_box(move_id):
+	print("not implemented")
+	# todo
+	# check if the current state is active or recovery
+	# check if the current move has landed a hit
+	# check if the overwriting move level is higher or greater than the current move's
 
 
 # Should take in an id, and then pout it in the queue of boxes to create
 # the queue should tick up the appearance value each time the ACTV state begins
 # once a box in the queue has reached appearance 0, then it should build the box
-#func queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func queue_box(move_id):
+#func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func _queue_box(move_id):
 	#spawn box given array of variables describing it
 
 	for item in framedata[move_id]["boxes"]:
@@ -575,7 +583,7 @@ func queue_box(move_id):
 	step_state_interpret(framedata[move_id]["framedata"])
 
 
-func spawn_box(move_id):
+func _spawn_box(move_id):
 	var newBox = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
