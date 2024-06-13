@@ -9,6 +9,7 @@ var data
 
 func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
+	
 
 #func _on_area_entered(object: Hit_Box) -> void:
 #	if (object != null):

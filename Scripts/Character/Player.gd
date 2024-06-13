@@ -36,6 +36,7 @@ var _c_string = "ui_p1c"
 var _d_string = "ui_p1d"
 var _input_dict = {}
 var _cur_input
+var _input_tree = {}
 
 # configurations
 var _debug = false
@@ -92,6 +93,8 @@ func load_assets():
 	self.preloadSprite = load("res://Scenes/Boxes/Sprite_Box.tscn")
 	self.preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
 	self.preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
+
+	self._input_tree = self.framedata["tree"]
 
 
 func _configure(other_player, bounds, levels):
@@ -239,7 +242,7 @@ func step_input_interpret(input: Input_Data):
 	#-force new queue of states
 
 	# Movement block (lowest priority)
-	if input.input_new_down("y") and input.y < 0:
+	if input.input_new_down() and input.y < 0:
 		frame_data = ["JMPS|5"]
 		if self._grounded:
 			self._cur_x = 0
@@ -539,8 +542,9 @@ func _calc_side():
 			self._flipped = not _flipped
 
 
-func _check_cancel():
-	print("not implemented")
+func _check_cancel(incoming_move):
+	return true
+	# not implemented
 	# todo
 	# Check incoming move
 	# if the incoming move is higher priority, then cancel the current state and then queue new states

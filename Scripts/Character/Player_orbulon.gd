@@ -10,6 +10,7 @@ func _ready():
 	self._jumps_max = 2
 
 	self._max_health = 10.0
+	
 
 	super._ready()
 
@@ -48,15 +49,8 @@ func step_input_interpret(input: Input_Data):
 		# todo this doesnt need to be overwritten. The information relevant to processing this should all be in the framedata json
 		frame_data = super.step_input_interpret(input)
 
+		# todo redo this block of code so it calls a function to check the framedata instead of hardcoded moves
 		# Normal Block
-		if input.input_new_down("a"):
-			queue_box("5a")
-
-		#Command Normal Block
-#		if input.a == true and input.x *  int(_p1_side) > 0:
-#			queue_box()
-#			frame_data = ['ACTV|15','RECV|5']
-#
 
 		# Special Block
 
