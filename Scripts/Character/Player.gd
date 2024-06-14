@@ -171,7 +171,11 @@ func tick():
 func _subtick_input():
 	_debug_message(en.Level.FRAME, "Input Tick")
 	_cur_input = step_input_process()
-	step_input_interpret(_cur_input)
+	_step_input_interpret(_cur_input)
+
+	_check_buffer()
+
+	_check_cancel()
 
 
 func step_input_process():
@@ -231,7 +235,7 @@ func step_input_process():
 	return _cur_input
 
 
-func step_input_interpret(input: Input_Data):
+func _step_input_interpret(input: Input_Data):
 	var frame_data = null
 
 	#Code will have to check if player is currently in active/recovery frames
