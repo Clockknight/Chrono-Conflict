@@ -69,7 +69,7 @@ var gravity
 var terminal_speed
 
 # queues
-var _move_queue = []
+var _harm_queue = []
 var _box_queue = []
 var _state_queue = []
 var _input_queue = []
@@ -171,11 +171,8 @@ func tick():
 func _subtick_input():
 	_debug_message(en.Level.FRAME, "Input Tick")
 	_cur_input = step_input_process()
-	_step_input_interpret(_cur_input)
-
-	_check_buffer()
-
-	_check_cancel()
+	var framedata = _step_input_interpret(_cur_input)
+	_step_input_addon(framedata)
 
 
 func step_input_process():
@@ -237,25 +234,24 @@ func step_input_process():
 
 func _step_input_interpret(input: Input_Data):
 	var frame_data = null
+	# todo
+	# Check what motion inputs have been input
+	#
 
-	#Code will have to check if player is currently in active/recovery frames
-	#Will have to check if previous hit landed
-	#check if incoming move is OK to cancel to
-	#If all are true, then:
-	#-clear queue of states
-	#-force new queue of states
-
-	# Movement block (lowest priority)
-	if input.input_new_down() and input.y < 0:
-		frame_data = ["JMPS|5"]
-		if self._grounded:
-			self._cur_x = 0
-		else:
-			self._cur_x = self._stored_x
-
-		self._stored_x = _cur_input["x"]
+	# check movement
 
 	return frame_data
+
+
+# Step to cancel into or queue up frame data of given move
+func _step_input_addon(framedata):
+	# First check if the inputted move cancels into the next
+	if _check_cancel(framedata):
+		_clear_queue()
+		_queue_box(framedata)
+	# then check if the current move can be buffered in, or otherwise needs to create a box
+	if _check_cancel(framedata) or _check_buffer():
+		_queue_box(framedata)
 
 
 func _subtick_state():
@@ -370,16 +366,16 @@ func _subtick_interact():
 		if _i is Box:
 			_i.tick()
 
-	if _move_queue != []:
-		_debug_message(en.Level.FRAME, "Interactions: " + str(_move_queue))
-		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_move_queue[0]))
-		var cur_move = _move_queue.pop_front()
+	if _harm_queue != []:
+		_debug_message(en.Level.FRAME, "Interactions: " + str(_harm_queue))
+		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_harm_queue[0]))
+		var cur_move = _harm_queue.pop_front()
 
-		while _move_queue != []:
-			if cur_move.priority < _move_queue[0].priority:
-				cur_move = _move_queue.pop_front()
+		while _harm_queue != []:
+			if cur_move.priority < _harm_queue[0].priority:
+				cur_move = _harm_queue.pop_front()
 			else:
-				_move_queue.pop_front()
+				_harm_queue.pop_front()
 
 		step_state_process(cur_move)
 	else:
@@ -387,7 +383,7 @@ func _subtick_interact():
 
 
 func hit(incoming_move: MoveData):
-	_move_queue.append(incoming_move)
+	_harm_queue.append(incoming_move)
 
 
 func clash(e1: Hit_Box, e2: Hit_Box):
@@ -636,6 +632,9 @@ func _debug_message(level, msg: String = ""):
 		level = en.Level.DEBUG
 
 	self.get_parent()._debug_message(level, msg, _p1_side)
+
+func _clear_queue():
+	_box_queue
 
 
 func _adjust_ui(value, elem):

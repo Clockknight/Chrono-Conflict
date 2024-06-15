@@ -10,7 +10,6 @@ func _ready():
 	self._jumps_max = 2
 
 	self._max_health = 10.0
-	
 
 	super._ready()
 
@@ -41,20 +40,3 @@ func load_assets():
 	]
 
 	super.load_assets()
-
-
-func step_input_interpret(input: Input_Data):
-	if _state == en.State.FREE or (_check_buffer()) or (self._state == en.State.JMPA):
-		var frame_data = null
-		# todo this doesnt need to be overwritten. The information relevant to processing this should all be in the framedata json
-		frame_data = super.step_input_interpret(input)
-
-		# todo redo this block of code so it calls a function to check the framedata instead of hardcoded moves
-		# Normal Block
-
-		# Special Block
-
-		# Super Block
-
-		if frame_data != null:
-			step_state_interpret(frame_data)
