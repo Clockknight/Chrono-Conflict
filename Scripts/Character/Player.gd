@@ -250,7 +250,7 @@ func _step_input_addon(framedata):
 		_clear_queue()
 		_queue_box(framedata)
 	# then check if the current move can be buffered in, or otherwise needs to create a box
-	if _check_cancel(framedata) or _check_buffer():
+	if _check_buffer():
 		_queue_box(framedata)
 
 
@@ -632,6 +632,7 @@ func _debug_message(level, msg: String = ""):
 		level = en.Level.DEBUG
 
 	self.get_parent()._debug_message(level, msg, _p1_side)
+
 
 func _clear_queue():
 	_box_queue
