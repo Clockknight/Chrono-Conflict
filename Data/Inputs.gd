@@ -66,7 +66,7 @@ func input_new_direction():
 	return false
 
 
-func report(full = true, history = 30):
+func report(history, motion_only = false, full = true):
 	var report = "\n\n" + str(duration)
 
 	if x == -1:
@@ -78,17 +78,18 @@ func report(full = true, history = 30):
 	elif y == -1:
 		report += "U"
 
-	if report != "":
-		report += " "
+	if not motion_only:
+		if report != "":
+			report += " "
 
-	if a:
-		report += "a"
-	if b:
-		report += "b"
-	if c:
-		report += "c"
-	if d:
-		report += "d"
+		if a:
+			report += "a"
+		if b:
+			report += "b"
+		if c:
+			report += "c"
+		if d:
+			report += "d"
 
 	if (full or history - duration > 0) and self.older != null:
 		return self.older.report(full, history - duration) + report

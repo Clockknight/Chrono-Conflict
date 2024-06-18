@@ -7,6 +7,8 @@ var framedata
 
 # Constants
 const BUFFER_WINDOW = en.Constants.BUFFER_WINDOW
+const SIMULTANEOUS_WINDOW = en.Constants.SIMULTANEOUS_WINDOW
+const HISTORY_WINDOW = en.Constants.HISTORY_WINDOW
 
 # Assets
 var audio_levels = []
@@ -35,7 +37,7 @@ var _b_string = "ui_p1b"
 var _c_string = "ui_p1c"
 var _d_string = "ui_p1d"
 var _input_dict = {}
-var _cur_input
+var _cur_input = Input_Data
 var _input_tree = {}
 
 # configurations
@@ -170,12 +172,13 @@ func tick():
 
 func _subtick_input():
 	_debug_message(en.Level.FRAME, "Input Tick")
-	_cur_input = step_input_process()
+	_cur_input = _step_input_process()
 	var framedata = _step_input_interpret(_cur_input)
-	_step_input_addon(framedata)
+	if framedata:
+		_step_input_addon(framedata)
 
 
-func step_input_process():
+func _step_input_process():
 	# Process all the queued inputs, and pass the resulting input to cur innput next
 	var x = 0
 	var y = 0
@@ -233,14 +236,26 @@ func step_input_process():
 
 
 func _step_input_interpret(input: Input_Data):
+	var tree = framedata["tree"]
 	var frame_data = null
-	# todo
-	# Check what motion inputs have been input
-	#
+	for motion in tree:
+		if _help_input_validate_motion(motion):
+			break
+	# check if button was pressed
+	# if it was, then check for motions
+	# motions are already stacked in framedata
+	# default to 5x
 
-	# check movement
-
+	# then, frame_data will equal whatever entry exists in framedata for Mx
 	return frame_data
+
+
+func _help_input_validate_motion(motion: String):
+	print(motion)
+
+
+func _get_motion_history():
+	print(_cur_input.report(HISTORY_WINDOW, true))
 
 
 # Step to cancel into or queue up frame data of given move
