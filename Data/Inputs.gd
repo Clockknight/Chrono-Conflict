@@ -46,13 +46,13 @@ func input_new_down():
 
 
 func input_new_button():
-	if self.a and not self.older.a:
+	if self.a and (self.older == null or not self.older.a):
 		return true
-	if self.b and not self.older.b:
+	if self.b and (self.older == null or not self.older.b):
 		return true
-	if self.c and not self.older.c:
+	if self.c and (self.older == null or not self.older.c):
 		return true
-	if self.d and not self.older.d:
+	if self.d and (self.older == null or not self.older.d):
 		return true
 	return false
 
@@ -66,7 +66,7 @@ func input_new_direction():
 	return false
 
 
-func report(history, motion_only = false, full = true):
+func report(history: int, motion_only = false, full = true):
 	var report = "\n\n" + str(duration)
 
 	if x == -1:
@@ -92,6 +92,20 @@ func report(history, motion_only = false, full = true):
 			report += "d"
 
 	if (full or history - duration > 0) and self.older != null:
-		return self.older.report(full, history - duration) + report
+		return report + self.older.report(history - duration, motion_only, full)
 	else:
 		return report
+
+
+func down():
+	var temp = ""
+	if a:
+		temp += ("a")
+	if b:
+		temp += ("b")
+	if c:
+		temp += ("c")
+	if d:
+		temp += ("d")
+
+	return temp

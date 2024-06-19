@@ -37,7 +37,7 @@ var _b_string = "ui_p1b"
 var _c_string = "ui_p1c"
 var _d_string = "ui_p1d"
 var _input_dict = {}
-var _cur_input = Input_Data
+var _cur_input
 var _input_tree = {}
 
 # configurations
@@ -238,20 +238,26 @@ func _step_input_process():
 func _step_input_interpret(input: Input_Data):
 	var tree = framedata["tree"]
 	var frame_data = null
+	var down = ""
+	var valid = false
+
+	if input.input_new_button():
+		down = input.down()
+
 	for motion in tree:
-		if _help_input_validate_motion(motion):
+		valid = _help_input_validate_motion(motion, down)
+		if valid:
+			frame_data = motion + down
 			break
-	# check if button was pressed
-	# if it was, then check for motions
-	# motions are already stacked in framedata
+
 	# default to 5x
 
 	# then, frame_data will equal whatever entry exists in framedata for Mx
 	return frame_data
 
 
-func _help_input_validate_motion(motion: String):
-	print(motion)
+func _help_input_validate_motion(motion: String, down):
+	print(str(motion) + down)
 
 
 func _get_motion_history():
