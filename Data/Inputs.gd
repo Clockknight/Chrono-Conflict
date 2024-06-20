@@ -3,6 +3,8 @@ extends Node
 
 var duration
 
+var directions = [[7, 4, 1], [8, 5, 2], [9, 6, 3]]
+
 var x
 var y
 
@@ -31,6 +33,7 @@ func _init(player, left = 0, up = 0, a = false, b = false, c = false, d = false)
 
 func compare(o):
 	if o != null and a == o.a and b == o.b and c == o.c and d == o.d and x == o.x and y == o.y:
+		#print(str(x) + " " + str(o.x))
 		o.duration += 1
 		return o
 	else:
@@ -66,17 +69,13 @@ func input_new_direction():
 	return false
 
 
-func report(history: int, motion_only = false, full = true):
-	var report = "\n\n" + str(duration)
+func report(history: int, p1_side: bool, motion_only = false, full = true):
+	var report = "\n\n" + str(duration) + " | "
 
-	if x == -1:
-		report += "L"
-	elif x == 1:
-		report += "R"
-	if y == 1:
-		report += "D"
-	elif y == -1:
-		report += "U"
+	x *= 1 if p1_side else -1
+	y *= 1 if p1_side else -1
+
+	report += str(directions[x + 1][y + 1])
 
 	if not motion_only:
 		if report != "":
@@ -92,7 +91,7 @@ func report(history: int, motion_only = false, full = true):
 			report += "d"
 
 	if (full or history - duration > 0) and self.older != null:
-		return report + self.older.report(history - duration, motion_only, full)
+		return report + self.older.report(history - duration, p1_side, motion_only, full)
 	else:
 		return report
 

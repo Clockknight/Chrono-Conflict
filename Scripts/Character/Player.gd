@@ -257,11 +257,11 @@ func _step_input_interpret(input: Input_Data):
 
 
 func _help_input_validate_motion(motion: String, down):
-	print(str(motion) + down)
+	1 == 1
 
 
 func _get_motion_history():
-	print(_cur_input.report(HISTORY_WINDOW, true))
+	print(_cur_input.report(HISTORY_WINDOW, self._p1_side, true))
 
 
 # Step to cancel into or queue up frame data of given move

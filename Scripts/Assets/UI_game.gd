@@ -46,7 +46,7 @@ func update_console(p1: bool, combo, state, direction, input, cx, sx, grounded, 
 	text += "\nCur x: " + str(cx) + " Stored x: " + str(sx)
 	text += "\nGrounded: " + str(grounded)
 	text += "\nJumps Remaining: " + str(jumps)
-	text += "\nInput: " + input.report(10, false, true)
+	text += "\nInput: " + input.report(10, p1, false, true)
 
 	(p1con if p1 else p2con).text = text
 
