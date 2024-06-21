@@ -239,15 +239,21 @@ func _step_input_interpret(input: Input_Data):
 	var tree = framedata["tree"]
 	var frame_data = null
 	var down = ""
-	var valid = false
+	var valid = ""
 
-	if input.input_new_button():
-		down = input.down()
+	if not input.input_new_button():
+		return frame_data
+
+	print(tree)
+
+	down = input.down()
 
 	for motion in tree:
-		valid = _help_input_validate_motion(motion, down)
-		if valid:
-			frame_data = motion + down
+		print(motion)
+		valid = _help_input_validate_attack(motion, down)
+		if valid != "":
+			frame_data = motion + valid
+			print(frame_data)
 			break
 
 	# default to 5x
@@ -256,12 +262,24 @@ func _step_input_interpret(input: Input_Data):
 	return frame_data
 
 
-func _help_input_validate_motion(motion: String, down):
-	1 == 1
+#function returns true if a button from down is validated in the config
+func _help_input_validate_attack(motion: String, down: String):
+	# check if any of the buttons pressed in down are in motion's config
+	for char in down:
+		if framedata["tree"][motion].contains(char):
+			if _help_input_get_motion(motion):
+				return char
+
+	return ""
 
 
-func _get_motion_history():
-	print(_cur_input.report(HISTORY_WINDOW, self._p1_side, true))
+# function checks if motion given was input
+func _help_input_get_motion(motion: String):
+	print("ping!")
+	return false
+	# get a history
+	# current input should be the same as the last input required
+	# check the rest of the directions
 
 
 # Step to cancel into or queue up frame data of given move
