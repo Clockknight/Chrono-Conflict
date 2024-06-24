@@ -38,3 +38,5 @@ enum Load { SCENE = 0, BUNDLE = 1, ASSET = 2 }
 enum AudioTypes { MASTER = 0, SFX = 1, DIA = 2, MUS = 3, CAL = 4 }
 
 enum Constants { BUFFER_WINDOW = 3, SIMULTANEOUS_WINDOW = 2, HISTORY_WINDOW = 30 }
+
+var Directions = {"2": "123", "4": "147", "6": "369", "8": "789"}

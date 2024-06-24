@@ -70,7 +70,7 @@ func input_new_direction():
 
 
 func report(history: int, p1_side: bool, motion_only = false, full = true):
-	var report = "\n\n" + str(duration) + " | "
+	var report = "" if motion_only else "\n\n" + str(duration) + " | "
 
 	x *= 1 if p1_side else -1
 	y *= 1 if p1_side else -1

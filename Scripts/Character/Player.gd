@@ -244,16 +244,12 @@ func _step_input_interpret(input: Input_Data):
 	if not input.input_new_button():
 		return frame_data
 
-	print(tree)
-
 	down = input.down()
 
 	for motion in tree:
-		print(motion)
-		valid = _help_input_validate_attack(motion, down)
+		valid = _help_input_validate_attack(down, tree[motion], motion)
 		if valid != "":
 			frame_data = motion + valid
-			print(frame_data)
 			break
 
 	# default to 5x
@@ -263,10 +259,10 @@ func _step_input_interpret(input: Input_Data):
 
 
 #function returns true if a button from down is validated in the config
-func _help_input_validate_attack(motion: String, down: String):
+func _help_input_validate_attack(down: String, valid: String, motion: String):
 	# check if any of the buttons pressed in down are in motion's config
 	for char in down:
-		if framedata["tree"][motion].contains(char):
+		if valid.contains(char):
 			if _help_input_get_motion(motion):
 				return char
 
@@ -275,7 +271,24 @@ func _help_input_validate_attack(motion: String, down: String):
 
 # function checks if motion given was input
 func _help_input_get_motion(motion: String):
-	print("ping!")
+	var history = self._cur_input.report(HISTORY_WINDOW, self._p1_side, true, false)
+	var i = motion.length() - 1
+
+	if not history.begins_with(motion[i]):
+		return false
+
+	for char in history:
+		if int(motion[i]) % 2 == 0:
+			if en.Directions[motion[i]].contains(char):
+				i -= 1
+		else:
+			if motion[i] == char:
+				i -= 1
+
+		if i < 0:
+			print("debug")
+			return true
+
 	return false
 	# get a history
 	# current input should be the same as the last input required
