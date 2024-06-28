@@ -301,6 +301,10 @@ func _step_input_addon(framedata):
 	if _check_cancel(framedata):
 		_clear_queue()
 		_queue_box(framedata)
+
+		# check if the current state is active or recovery
+		# check if the current move has landed a hit
+		# check if the overwriting move level is higher or greater than the current move's
 	# then check if the current move can be buffered in, or otherwise needs to create a box
 	if _check_buffer():
 		_queue_box(framedata)
@@ -339,7 +343,7 @@ func _subtick_state():
 			en.State.ACTV:
 				# Should tick down all the queued boxes, and spawn in any that have zero left
 				var occurences
-				for i in range(1, _box_queue.size()):
+				for i in range(0, _box_queue.size()):
 					var move = _box_queue.pop_front().split("|")
 					occurences = int(move[1]) - 1
 
@@ -618,20 +622,13 @@ func _calc_frames_left():
 	return temp
 
 
-func _overwrite_box(move_id):
-	print("not implemented")
-	# todo
-	# check if the current state is active or recovery
-	# check if the current move has landed a hit
-	# check if the overwriting move level is higher or greater than the current move's
-
-
 # Should take in an id, and then pout it in the queue of boxes to create
 # the queue should tick up the appearance value each time the ACTV state begins
 # once a box in the queue has reached appearance 0, then it should build the box
 #func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 func _queue_box(move_id):
 	#spawn box given array of variables describing it
+	print("stuff")
 
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
