@@ -286,7 +286,6 @@ func _help_input_get_motion(motion: String):
 				i -= 1
 
 		if i < 0:
-			print("debug")
 			return true
 
 	return false
@@ -628,7 +627,6 @@ func _calc_frames_left():
 #func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 func _queue_box(move_id):
 	#spawn box given array of variables describing it
-	print("stuff")
 
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
@@ -684,7 +682,7 @@ func _debug_message(level, msg: String = ""):
 
 
 func _clear_queue():
-	_box_queue
+	_box_queue = []
 
 
 func _adjust_ui(value, elem):
