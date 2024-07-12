@@ -305,7 +305,7 @@ func _step_input_addon(framedata):
 		# check if the current move has landed a hit
 		# check if the overwriting move level is higher or greater than the current move's
 	# then check if the current move can be buffered in, or otherwise needs to create a box
-	if _check_buffer():
+	elif _check_buffer():
 		_queue_box(framedata)
 
 
@@ -683,6 +683,8 @@ func _debug_message(level, msg: String = ""):
 
 func _clear_queue():
 	_box_queue = []
+	_state = en.State.FREE
+	_state_frames_left = 1
 
 
 func _adjust_ui(value, elem):
