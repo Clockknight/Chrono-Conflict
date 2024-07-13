@@ -39,6 +39,7 @@ var _d_string = "ui_p1d"
 var _input_dict = {}
 var _cur_input
 var _input_tree = {}
+var _last_move
 
 # configurations
 var _debug = false
@@ -173,9 +174,9 @@ func tick():
 func _subtick_input():
 	_debug_message(en.Level.FRAME, "Input Tick")
 	_cur_input = _step_input_process()
-	var framedata = _step_input_interpret(_cur_input)
-	if framedata:
-		_step_input_addon(framedata)
+	var move_name = _step_input_interpret(_cur_input)
+	if move_name:
+		_step_input_addon(move_name)
 
 
 func _step_input_process():
@@ -237,25 +238,25 @@ func _step_input_process():
 
 func _step_input_interpret(input: Input_Data):
 	var tree = framedata["tree"]
-	var frame_data = null
+	var framedata_name = null
 	var down = ""
 	var valid = ""
 
 	if not input.input_new_button():
-		return frame_data
+		return framedata_name
 
 	down = input.down()
 
 	for motion in tree:
 		valid = _help_input_validate_attack(down, tree[motion], motion)
 		if valid != "":
-			frame_data = motion + valid
+			framedata_name = motion + valid
 			break
 
 	# default to 5x
 
-	# then, frame_data will equal whatever entry exists in framedata for Mx
-	return frame_data
+	# then, framedata_name will equal whatever entry exists in framedata for Mx
+	return framedata_name
 
 
 #function returns true if a button from down is validated in the config
@@ -295,7 +296,7 @@ func _help_input_get_motion(motion: String):
 
 
 # Step to cancel into or queue up frame data of given move
-func _step_input_addon(framedata):
+func _step_input_addon(move_name):
 	# First check if the inputted move cancels into the next
 	if _check_cancel(framedata):
 		_clear_queue()
