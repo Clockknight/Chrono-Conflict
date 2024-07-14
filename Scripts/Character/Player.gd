@@ -40,6 +40,7 @@ var _input_dict = {}
 var _cur_input
 var _input_tree = {}
 var _last_move
+var _last_interacted = false
 
 # configurations
 var _debug = false
@@ -366,11 +367,9 @@ func step_state_adopt(new_state_array):
 
 
 func step_state_process(cur_move: MoveData):
-	match step_block_check(cur_move):
+	match _check_state_block(cur_move):
 		en.Hit.HURT:
-			self._other.play_sound(cur_move.hit, en.AudioTypes.SFX)
-			_other._debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
-			_other.combo += 1
+			_other.acknowledge_hit(cur_move)
 			self._health -= cur_move.damage
 			var pct = float(_health / _max_health)
 			_adjust_ui(pct, en.Elem.HEALTH)
@@ -382,8 +381,7 @@ func step_state_process(cur_move: MoveData):
 			self._state = cur_move.state
 			self.directional_input = cur_move.hit_direction * (-1 if _p1_side else 1)
 		en.Hit.BLCK:
-			#block for blocking
-			self._other.play_sound(cur_move.block)
+			_other.acknowledge_block(cur_move)
 	step_state_interpret([], cur_move.state, cur_move.duration)
 
 
@@ -449,7 +447,7 @@ func clash(e1: Hit_Box, e2: Hit_Box):
 		_debug_message(en.Level.EVENT, "Clash detected")
 
 
-func step_block_check(move: MoveData):
+func _check_state_block(move: MoveData):
 	var hit
 	# if unblock hit = true
 	if _state != en.State.FREE and _state != en.State.JMPA:
@@ -599,11 +597,13 @@ func _calc_side():
 
 
 func _check_cancel(incoming_move):
-	return true
-	# not implemented
 	# todo
-	# Check incoming move
-	# if the incoming move is higher priority, then cancel the current state and then queue new states
+
+	# if current move hit or was blocked
+	# and current state is in RECV
+	# return dict[cur_move].prio < dict[incoming_move].prio
+
+	return true
 
 
 func _check_buffer():
@@ -704,3 +704,15 @@ func _update_console():
 	var h = self._jumps
 
 	self.get_parent().update_console(a, b, c, d, e, f1, f2, g, h)
+
+
+func acknowledge_hit(cur_move):
+	play_sound(cur_move.hit, en.AudioTypes.SFX)
+	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
+	combo += 1
+	_last_interacted = true
+
+
+func acknowledge_block(cur_move):
+	play_sound(cur_move.block, en.AudioTypes.SFX)
+	_last_interacted = true
