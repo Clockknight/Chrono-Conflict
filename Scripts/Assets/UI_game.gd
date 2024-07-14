@@ -39,13 +39,17 @@ func tick_timer():
 	#call manager timeout function
 
 
-func update_console(p1: bool, combo, state, direction, input, cx, sx, grounded, jumps):
+func update_console(
+	p1: bool, combo, state, direction, input, cx, sx, grounded, jumps, move, interacted
+):
 	var text = "Combo: " + str(combo)
 	text += "\nState: " + str(en.State.keys()[state])
 	text += "\nMovement: " + str(direction)
 	text += "\nCur x: " + str(cx) + " Stored x: " + str(sx)
 	text += "\nGrounded: " + str(grounded)
 	text += "\nJumps Remaining: " + str(jumps)
+	text += "\nLast Move Input: " + str(move)
+	text += "\nInteracted?: " + str(interacted)
 	text += "\nInput: " + input.report(10, p1, false, true)
 
 	(p1con if p1 else p2con).text = text

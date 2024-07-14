@@ -299,9 +299,9 @@ func _help_input_get_motion(motion: String):
 # Step to cancel into or queue up frame data of given move
 func _step_input_addon(move_name):
 	# First check if the inputted move cancels into the next
-	if _check_cancel(framedata):
+	if _check_cancel(move_name):
 		_clear_queue()
-		_queue_box(framedata)
+		_queue_box(move_name)
 
 		# check if the current state is active or recovery
 		# check if the current move has landed a hit
@@ -344,6 +344,7 @@ func _subtick_state():
 			en.State.ACTV:
 				# Should tick down all the queued boxes, and spawn in any that have zero left
 				var occurences
+				_last_interacted = false
 				for i in range(0, _box_queue.size()):
 					var move = _box_queue.pop_front().split("|")
 					occurences = int(move[1]) - 1
@@ -702,8 +703,10 @@ func _update_console():
 	var f2 = self._stored_x
 	var g = self._grounded
 	var h = self._jumps
+	var j = self._last_move
+	var k = self._last_interacted
 
-	self.get_parent().update_console(a, b, c, d, e, f1, f2, g, h)
+	self.get_parent().update_console(a, b, c, d, e, f1, f2, g, h, j, k)
 
 
 func acknowledge_hit(cur_move):

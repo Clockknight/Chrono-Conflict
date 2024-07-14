@@ -144,8 +144,12 @@ func adjust_ui(p1, new_val, item: int):
 			UI.adjust_health(p1 == self.p1, new_val)
 
 
-func update_console(p1, combo, state, direction, input, cx, sx, grounded, jumps):
-	UI.update_console(p1 == self.p1, combo, state, direction, input, cx, sx, grounded, jumps)
+func update_console(
+	p1, combo, state, direction, input, cx, sx, grounded, jumps, lastmove, interacted
+):
+	UI.update_console(
+		p1 == self.p1, combo, state, direction, input, cx, sx, grounded, jumps, lastmove, interacted
+	)
 
 
 func _debug_message(level: int, msg: String, p1: bool):
