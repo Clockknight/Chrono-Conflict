@@ -39,7 +39,7 @@ var _d_string = "ui_p1d"
 var _input_dict = {}
 var _cur_input
 var _input_tree = {}
-var _last_move
+var _last_move = ""
 var _last_interacted = false
 
 # configurations
@@ -630,6 +630,7 @@ func _calc_frames_left():
 func _queue_box(move_id):
 	#spawn box given array of variables describing it
 
+	_last_move = move_id
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
 
@@ -693,6 +694,18 @@ func _adjust_ui(value, elem):
 	self.get_parent().adjust_ui(self, value, elem)
 
 
+func acknowledge_hit(cur_move):
+	play_sound(cur_move.hit, en.AudioTypes.SFX)
+	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
+	combo += 1
+	_last_interacted = true
+
+
+func acknowledge_block(cur_move):
+	play_sound(cur_move.block, en.AudioTypes.SFX)
+	_last_interacted = true
+
+
 func _update_console():
 	var a = self
 	var b = self.combo
@@ -707,15 +720,3 @@ func _update_console():
 	var k = self._last_interacted
 
 	self.get_parent().update_console(a, b, c, d, e, f1, f2, g, h, j, k)
-
-
-func acknowledge_hit(cur_move):
-	play_sound(cur_move.hit, en.AudioTypes.SFX)
-	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
-	combo += 1
-	_last_interacted = true
-
-
-func acknowledge_block(cur_move):
-	play_sound(cur_move.block, en.AudioTypes.SFX)
-	_last_interacted = true
