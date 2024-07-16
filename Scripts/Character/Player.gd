@@ -308,7 +308,7 @@ func _step_input_addon(move_name):
 		# check if the overwriting move level is higher or greater than the current move's
 	# then check if the current move can be buffered in, or otherwise needs to create a box
 	elif _check_buffer():
-		_queue_box(framedata)
+		_queue_box(move_name)
 
 
 func _subtick_state():
@@ -598,13 +598,11 @@ func _calc_side():
 
 
 func _check_cancel(incoming_move):
-	# todo
+	if _last_interacted and _state == en.State.RECV:
+		# return dict[cur_move].prio < dict[incoming_move].prio
+		return framedata[_last_move].level < framedata[incoming_move].level
 
-	# if current move hit or was blocked
-	# and current state is in RECV
-	# return dict[cur_move].prio < dict[incoming_move].prio
-
-	return true
+	return false
 
 
 func _check_buffer():
@@ -629,7 +627,6 @@ func _calc_frames_left():
 #func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 func _queue_box(move_id):
 	#spawn box given array of variables describing it
-
 	_last_move = move_id
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
