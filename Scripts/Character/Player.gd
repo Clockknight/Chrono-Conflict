@@ -97,7 +97,6 @@ func load_assets():
 	self.preloadSprite = load("res://Scenes/Boxes/Sprite_Box.tscn")
 	self.preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
 	self.preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
-
 	self._input_tree = self.framedata["tree"]
 
 
