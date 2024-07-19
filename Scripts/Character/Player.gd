@@ -613,8 +613,8 @@ func _check_buffer():
 func _calc_frames_left():
 	var temp = _state_frames_left
 
-	if _state_queue != [null]:
-		for i in _state_queue:
+	for i in _state_queue:
+		if i != null:
 			temp += i[1]
 
 	return temp
