@@ -328,35 +328,37 @@ func _subtick_state():
 			_state = en.State.FREE
 			_state_frames_left = 0
 			return
-		match new_state[0]:
-			# todo new states should not be queued if they are not possible
-			# ie these checks should be moved to input
-			# this function should just be for making the actual changes
-			en.State.JMPS:
-				if _jumps > 0:
-					_jumps -= 1
-					$Collision_Box.disable(true)
-					_grounded = false
-					_debug_message(en.Level.FRAME, "jump started")
-					self.directional_input.y = -1 * self.vertical_speed
+		if new_state[0] != _state:
+			var occurences
+			for i in range(0, _box_queue.size()):
+				var move = _box_queue.pop_front().split("|")
+				occurences = int(move[1]) - 1
+
+				if occurences <= 0:
+					_last_interacted = false
+					#spawn the box NOW
+					_spawn_box(move[0])
+				else:
+					_box_queue.append(move[0] + "|" + str(occurences))
+
+			match new_state[0]:
+				# todo new states should not be queued if they are not possible
+				# ie these checks should be moved to input
+				# this function should just be for making the actual changes
+				en.State.JMPS:
+					if _jumps > 0:
+						_jumps -= 1
+						$Collision_Box.disable(true)
+						_grounded = false
+						_debug_message(en.Level.FRAME, "jump started")
+						self.directional_input.y = -1 * self.vertical_speed
+						step_state_adopt(new_state)
+				en.State.STUN:
+					# If you're getting stunned, get rid of everything else.
+					_box_queue = []
+				_:
 					step_state_adopt(new_state)
-			en.State.ACTV:
-				# Should tick down all the queued boxes, and spawn in any that have zero left
-				var occurences
-				_last_interacted = false
-				for i in range(0, _box_queue.size()):
-					var move = _box_queue.pop_front().split("|")
-					occurences = int(move[1]) - 1
 
-					if occurences <= 0:
-						#spawn the box NOW
-						_spawn_box(move[0])
-					else:
-						_box_queue.append(move[0] + "|" + str(occurences))
-				step_state_adopt(new_state)
-
-			_:
-				step_state_adopt(new_state)
 	else:
 		_state_queue.insert(0, new_state)
 
