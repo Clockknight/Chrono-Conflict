@@ -636,11 +636,17 @@ func _queue_box(move_id):
 
 
 func _spawn_box(move_id):
+	# todo make this actually read off of values in frame data
+	# todo make this check for projectiles then run a projectile spawn function
 	var newBox = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(10, 10, 10, 10, 10)
+
+
+func _spawn_projectile(move_id):
+	print("spawn projectile has not been implemented!")
 
 
 func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
