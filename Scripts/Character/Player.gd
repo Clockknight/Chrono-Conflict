@@ -77,6 +77,7 @@ var _harm_queue = []
 var _box_queue = []
 var _state_queue = []
 var _input_queue = []
+var _immediate_queue = []
 
 var _input_history = []
 
@@ -314,8 +315,6 @@ func _subtick_state():
 	_debug_message(en.Level.FRAME, "State Tick")
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
 	_state_frames_left -= 1
-	#if (_state == en.State.FREE or _state ==en.State.JMPA) and _state_queue == []:
-	#else:
 
 	var new_state = _state_queue.pop_front()
 
@@ -337,7 +336,8 @@ func _subtick_state():
 				if occurences <= 0:
 					_last_interacted = false
 					#spawn the box NOW
-					_spawn_box(move[0])
+					_immediate_queue.append(move[0])
+
 				else:
 					_box_queue.append(move[0] + "|" + str(occurences))
 
@@ -414,6 +414,9 @@ func step_state_interpret(
 
 func _subtick_box():
 	_debug_message(en.Level.FRAME, "Box Tick")
+	for move in _immediate_queue:
+		_immediate_queue.erase(move)
+		_spawn_box(move)
 
 
 func _subtick_interact():
