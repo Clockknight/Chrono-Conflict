@@ -335,9 +335,7 @@ func _subtick_state():
 
 				if occurences <= 0:
 					_last_interacted = false
-					#spawn the box NOW
 					_immediate_queue.append(move[0])
-
 				else:
 					_box_queue.append(move[0] + "|" + str(occurences))
 
@@ -414,9 +412,11 @@ func step_state_interpret(
 
 func _subtick_box():
 	_debug_message(en.Level.FRAME, "Box Tick")
+	var temp
 	for move in _immediate_queue:
+		temp = move.split("-")
 		_immediate_queue.erase(move)
-		_spawn_box(move)
+		_spawn_box(temp[0], temp[1])
 
 
 func _subtick_interact():
@@ -633,14 +633,14 @@ func _queue_box(move_id):
 	#spawn box given array of variables describing it
 	_last_move = move_id
 	for item in framedata[move_id]["boxes"]:
-		_box_queue.append(item + framedata[move_id]["boxes"][item]["queue_info"])
-
+		_box_queue.append(framedata[move_id]["boxes"][item]["queue_info"])
 	step_state_interpret(framedata[move_id]["framedata"])
 
 
-func _spawn_box(move_id):
+func _spawn_box(move_id, box_no):
 	# todo make this actually read off of values in frame data
 	# todo make this check for projectiles then run a projectile spawn function
+	var movedata = framedata[move_id]
 	var newBox = preloadHitBox.instantiate()
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
