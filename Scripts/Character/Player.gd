@@ -645,7 +645,8 @@ func _spawn_box(move_id, box_no):
 	self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
-	newBox.set_box(10, 10, 10, 10, 10)
+	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
+	print("whatever")
 
 
 func _spawn_projectile(move_id):

@@ -1,4 +1,4 @@
-class_name Collision_Box
+class_name Box_Collision
 extends CollisionShape2D
 
 var parent

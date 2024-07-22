@@ -1,8 +1,11 @@
-class_name Hurt_Box
+class_name Box_Hurt
 extends Box
+
 
 func box_check():
 	return "Hurt_Box"
+
+
 """
 #func _init() -> void:
 	
