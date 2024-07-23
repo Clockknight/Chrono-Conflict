@@ -18,11 +18,11 @@ func _ready():
 
 func set_box(inc_data):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
-	super.set_box(a, b, c, d, e)
-	if inc_data == null:
-		self.data = MoveData.new(0, 5, 30, 50, 0, 10, 0, 0, 2, 1, en.Type.MID)
-	else:
-		self.data = inc_data
+	super.set_box(inc_data)
+	"
+func _init(priority: int, damage: int, duration: int, 
+hit_dir_x, hit_dir_y, blk_dir_x, blk_dir_y, whiff_id, block_id, hit_id, type:int, state: int=en.State.STUN):"
+	self.data = inc_data
 
 
 func tick():
