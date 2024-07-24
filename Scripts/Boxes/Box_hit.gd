@@ -1,4 +1,4 @@
-class_name Box_hit
+class_name Box_Hit
 extends Box
 
 var overlaps = []

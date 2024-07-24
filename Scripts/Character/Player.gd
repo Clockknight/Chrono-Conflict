@@ -95,7 +95,7 @@ func load_assets():
 	# Should be overwritten as part of character specific script
 	self.i = load("res://Data/Inputs.gd")
 	self.SFx_Audio = load("res://Scenes/Assets/Audio_SFx.tscn")
-	self.preloadSprite = load("res://Scenes/Boxes/Sprite_Box.tscn")
+	self.preloadSprite = load("res://Scenes/Boxes/Box_Sprite.tscn")
 	self.preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
 	self.preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
 	self._input_tree = self.framedata["tree"]
@@ -445,7 +445,7 @@ func hit(incoming_move: MoveData):
 	_harm_queue.append(incoming_move)
 
 
-func clash(e1: Hit_Box, e2: Hit_Box):
+func clash(e1: Box_Hit, e2: Box_Hit):
 	if not _p1_side:
 		e1.queue_free()
 		e2.queue_free()
@@ -642,11 +642,14 @@ func _spawn_box(move_id, box_no):
 	# todo make this check for projectiles then run a projectile spawn function
 	var movedata = framedata[move_id]
 	var newBox = preloadHitBox.instantiate()
-	self.add_child(newBox)
+	match movedata["type"]:
+		"projectile":
+			spawn_projectile(move_id, box - no)
+		"normal":
+			self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
-	print("whatever")
 
 
 func _spawn_projectile(move_id):
@@ -675,7 +678,7 @@ func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
 
 
 func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
-	var newSprite: Sprite_Box = preloadSprite.instantiate()
+	var newSprite: Box_Sprite = preloadSprite.instantiate()
 	self.add_child(newSprite)
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
