@@ -54,4 +54,4 @@ func tick():
 
 
 func box_check():
-	return "Hit_Box"
+	return "Box_Hit"

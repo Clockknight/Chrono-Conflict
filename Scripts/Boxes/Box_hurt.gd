@@ -3,7 +3,7 @@ extends Box
 
 
 func box_check():
-	return "Hurt_Box"
+	return "Box_Hurt"
 
 
 """
