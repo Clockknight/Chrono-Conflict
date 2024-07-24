@@ -85,7 +85,7 @@ var _input_history = []
 func _ready():
 	self._base_scaley = scale.y
 	self._base_scalex = scale.x
-	self.collision = self.get_node("Collision_Box")
+	self.collision = self.get_node("Box_Collision")
 	self._health = _max_health
 
 	load_assets()
@@ -101,12 +101,13 @@ func load_assets():
 	self._input_tree = self.framedata["tree"]
 
 
-func _configure(other_player, bounds, levels):
+func _configure(other_player, bounds, levels, place):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
 	self.audio_levels = levels
+	self.position.x = place
 
 	_calc_side()
 
@@ -346,7 +347,7 @@ func _subtick_state():
 				en.State.JMPS:
 					if _jumps > 0:
 						_jumps -= 1
-						$Collision_Box.disable(true)
+						$Box_Collision.disable(true)
 						_grounded = false
 						_debug_message(en.Level.FRAME, "jump started")
 						self.directional_input.y = -1 * self.vertical_speed
@@ -509,7 +510,7 @@ func _subtick_move():
 			self.directional_input.x = 0
 
 	if not _grounded:
-		#get_node("Collision_Box").disabled = true
+		#get_node("Box_Collision").disabled = true
 		self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
 		if self._state == en.State.JMPS:
 			self.directional_input.x = self._cur_x * self.horizontal_speed
@@ -561,7 +562,7 @@ func _subtick_process():
 	#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
 	#TODO how to tell if previous state was free or stun?
 	# if bool check for if state just changed?
-	$Sprite2D.set_texture(_state_sprites[_state])
+	$Sprite.set_texture(_state_sprites[_state])
 	#_debug_messageen.Level.EVENT, "_state value: " + str(_state))
 	#if _state == en.State.FREE:
 	#elif _state == en.State.STUN:
@@ -573,13 +574,13 @@ func _subtick_process():
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Collision_Box.calc_height() * abs(self.scale.y)
+	_bottom_pos = self.position.y + $Box_Collision.calc_height() * abs(self.scale.y)
 	self._grounded = _bottom_pos >= 0
 
 	if _state == en.State.JMPA and self.directional_input.y < 0:
 		self._grounded = false
 
-	$Collision_Box.disable(!_grounded)
+	$Box_Collision.disable(!_grounded)
 
 
 func _calc_ground():
@@ -644,7 +645,7 @@ func _spawn_box(move_id, box_no):
 	var newBox = preloadHitBox.instantiate()
 	match movedata["type"]:
 		"projectile":
-			spawn_projectile(move_id, box - no)
+			_spawn_projectile(move_id, box_no)
 		"normal":
 			self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
@@ -652,7 +653,7 @@ func _spawn_box(move_id, box_no):
 	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
 
 
-func _spawn_projectile(move_id):
+func _spawn_projectile(move_id, box_no):
 	print("spawn projectile has not been implemented!")
 
 
@@ -692,7 +693,7 @@ func _debug_message(level, msg: String = ""):
 		print(typeof(level) != TYPE_INT)
 		level = en.Level.DEBUG
 
-	self.get_parent()._debug_message(level, msg, _p1_side)
+	self.get_parent().get_parent()._debug_message(level, msg, _p1_side)
 
 
 func _clear_queue():
@@ -730,4 +731,4 @@ func _update_console():
 	var j = self._last_move
 	var k = self._last_interacted
 
-	self.get_parent().update_console(a, b, c, d, e, f1, f2, g, h, j, k)
+	self.get_parent().get_parent().update_console(a, b, c, d, e, f1, f2, g, h, j, k)

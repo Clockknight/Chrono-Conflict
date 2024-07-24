@@ -54,15 +54,17 @@ func _ready():
 	print(UI.scale.y)
 
 	for player in self.get_children():
-		if player.get_class() == "CharacterBody2D":
+		if player.get_class() == "Node":
 			if not p1:
-				p1 = player
+				p1 = player.find_child("Character")
 			else:
-				p2 = player
+				p2 = player.find_child("Character")
 
 	# run config function on each, setting their control strings as needed depending on which is p1/p2
-	p1._configure(p2, _stage_boundaries, levels)
-	p2._configure(p1, _stage_boundaries, levels)
+	# todo make a stage json
+	#
+	p1._configure(p2, _stage_boundaries, levels, -200)
+	p2._configure(p1, _stage_boundaries, levels, 200)
 
 	#Timer section
 	_timer = Timer.new()

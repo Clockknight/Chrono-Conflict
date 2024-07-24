@@ -28,10 +28,8 @@ texture = ExtResource("7")
 script = ExtResource("3")
 
 [node name="Character_Orbulon" parent="manager" instance=ExtResource("1")]
-position = Vector2(-126, 101)
 
 [node name="Character_Orbulon2" parent="manager" instance=ExtResource("1")]
-position = Vector2(165, -47)
 
 [node name="UI" type="CanvasLayer" parent="manager"]
 scale = Vector2(1, 1.2)

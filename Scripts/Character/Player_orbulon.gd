@@ -19,7 +19,7 @@ func load_assets():
 	if FileAccess.file_exists(temp):
 		temp = FileAccess.get_file_as_string(temp)
 		self.framedata = JSON.parse_string(temp)
-
+ 
 	self.sprites = [load("res://sprites/pow.png")]
 	self._base_sprite = load("res://sprites/icon.png")
 	self.sfxs = [
