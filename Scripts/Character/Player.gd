@@ -647,6 +647,8 @@ func _spawn_box(move_id, box_no):
 		"projectile":
 			_spawn_projectile(move_id, box_no)
 		"normal":
+			#todo replace with a spawn projectile equivalent
+			#actually, replace both with something else since we're already on spawn box
 			self.add_child(newBox)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
