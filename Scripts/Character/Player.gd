@@ -645,11 +645,11 @@ func _spawn_box(move_id, box_no):
 	var newBox = preloadHitBox.instantiate()
 	match movedata["type"]:
 		"projectile":
-			_spawn_projectile(move_id, box_no)
+			_produce_projectile(move_id, box_no)
 		"normal":
 			#todo replace with a spawn projectile equivalent
 			#actually, replace both with something else since we're already on spawn box
-			self.add_child(newBox)
+			_produce_box(move_id, move_no)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
