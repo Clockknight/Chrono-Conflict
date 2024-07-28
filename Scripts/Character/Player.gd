@@ -649,14 +649,17 @@ func _spawn_box(move_id, box_no):
 		"normal":
 			#todo replace with a spawn projectile equivalent
 			#actually, replace both with something else since we're already on spawn box
-			_produce_box(move_id, move_no)
+			_produce_box(move_id, box_no)
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
 
 
-func _spawn_projectile(move_id, box_no):
-	print("spawn projectile has not been implemented!")
+func _produce_projectile(move_id, box_no):
+	print("produce projectile has not been implemented!")
+	
+func _produce_box(move_id, box_no):
+	print("produce box has not been implemented!")
 
 
 func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
