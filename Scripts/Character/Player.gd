@@ -13,9 +13,10 @@ const HISTORY_WINDOW = en.Constants.HISTORY_WINDOW
 # Assets
 var audio_levels = []
 var SFx_Audio
-var preloadHitBox
-var preloadHurtBox
+var preloadBoxHit
+var preloadBoxHurt
 var preloadSprite
+var preloadBoxProjectile
 var sprites
 var _base_sprite
 var sfxs
@@ -96,8 +97,9 @@ func load_assets():
 	self.i = load("res://Data/Inputs.gd")
 	self.SFx_Audio = load("res://Scenes/Assets/Audio_SFx.tscn")
 	self.preloadSprite = load("res://Scenes/Boxes/Box_Sprite.tscn")
-	self.preloadHitBox = load("res://Scenes/Boxes/Box_Hit.tscn")
-	self.preloadHurtBox = load("res://Scenes/Boxes/Box_Hurt.tscn")
+	self.preloadBoxHit = load("res://Scenes/Boxes/Box_Hit.tscn")
+	self.preloadBoxHurt = load("res://Scenes/Boxes/Box_Hurt.tscn")
+	self.preloadBoxProjectile = load("res://Scenes/Boxes/Box_Projectile.tscn")
 	self._input_tree = self.framedata["tree"]
 
 
@@ -642,23 +644,24 @@ func _spawn_box(move_id, box_no):
 	# todo make this actually read off of values in frame data
 	# todo make this check for projectiles then run a projectile spawn function
 	var movedata = framedata[move_id]
-	var newBox = preloadHitBox.instantiate()
+	var newBox
 	match movedata["type"]:
 		"projectile":
-			_produce_projectile(move_id, box_no)
+			newBox = _produce_projectile()
 		"normal":
-			_produce_box(move_id, box_no)
+			newBox = _produce_normal()
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
 
 
-func _produce_projectile(move_id, box_no):
-	print("produce projectile has not been implemented!")
+func _produce_projectile():
+	# todo create object in parent > projectiles
+	var obj = self.preloadBoxProjectile.instantiate()
 
 
-func _produce_box(move_id, box_no):
-	print("produce box has not been implemented!")
+func _produce_normal():
+	var obj = self.preloadBoxHit.instantiate()
 
 
 func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
