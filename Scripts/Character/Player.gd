@@ -24,8 +24,8 @@ var _state_sprites
 
 # nodes
 var collision: CollisionShape2D
-var container_normal: Node
-var container_projectile: Node
+var container_normals: Node
+var container_projectiles: Node
 
 # 2d Vectors
 var directional_input = Vector2.ZERO
@@ -661,13 +661,13 @@ func _spawn_box(move_id, box_no):
 func _produce_projectile():
 	# todo create object in parent > projectiles
 	var obj = self.preloadBoxProjectile.instantiate()
-
+	obj.owner = self.container_projectiles
 	return obj
 
 
 func _produce_normal():
 	var obj = self.preloadBoxHit.instantiate()
-
+	obj.owner = self.container_normals
 	return obj
 
 
