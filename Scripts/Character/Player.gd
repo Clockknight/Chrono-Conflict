@@ -657,11 +657,11 @@ func _spawn_box(move_id, box_no):
 
 func _produce_projectile():
 	# todo create object in parent > projectiles
-	var obj = self.preloadBoxProjectile.instantiate()
+	return self.preloadBoxProjectile.instantiate()
 
 
 func _produce_normal():
-	var obj = self.preloadBoxHit.instantiate()
+	return self.preloadBoxHit.instantiate()
 
 
 func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
