@@ -24,6 +24,8 @@ var _state_sprites
 
 # nodes
 var collision: CollisionShape2D
+var container_normal: Node
+var container_projectile: Node
 
 # 2d Vectors
 var directional_input = Vector2.ZERO
@@ -86,8 +88,10 @@ var _input_history = []
 func _ready():
 	self._base_scaley = scale.y
 	self._base_scalex = scale.x
-	self.collision = self.get_node("Box_Collision")
+	self.collision = $Box_Collision
 	self._health = _max_health
+	self.container_projectile = $"../Projectiles"
+	self.container_normal = $Normals
 
 	load_assets()
 
@@ -512,7 +516,6 @@ func _subtick_move():
 			self.directional_input.x = 0
 
 	if not _grounded:
-		#get_node("Box_Collision").disabled = true
 		self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
 		if self._state == en.State.JMPS:
 			self.directional_input.x = self._cur_x * self.horizontal_speed
@@ -657,11 +660,15 @@ func _spawn_box(move_id, box_no):
 
 func _produce_projectile():
 	# todo create object in parent > projectiles
-	return self.preloadBoxProjectile.instantiate()
+	var obj = self.preloadBoxProjectile.instantiate()
+
+	return obj
 
 
 func _produce_normal():
-	return self.preloadBoxHit.instantiate()
+	var obj = self.preloadBoxHit.instantiate()
+
+	return obj
 
 
 func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
@@ -700,7 +707,7 @@ func _debug_message(level, msg: String = ""):
 		print(typeof(level) != TYPE_INT)
 		level = en.Level.DEBUG
 
-	self.get_parent().get_parent()._debug_message(level, msg, _p1_side)
+	$"../.."._debug_message(level, msg, _p1_side)
 
 
 func _clear_queue():
@@ -710,7 +717,7 @@ func _clear_queue():
 
 
 func _adjust_ui(value, elem):
-	self.get_parent().adjust_ui(self, value, elem)
+	$"..".adjust_ui(self, value, elem)
 
 
 func acknowledge_hit(cur_move):
@@ -738,4 +745,4 @@ func _update_console():
 	var j = self._last_move
 	var k = self._last_interacted
 
-	self.get_parent().get_parent().update_console(a, b, c, d, e, f1, f2, g, h, j, k)
+	$"../..".update_console(a, b, c, d, e, f1, f2, g, h, j, k)
