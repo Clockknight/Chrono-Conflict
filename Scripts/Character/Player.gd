@@ -90,8 +90,8 @@ func _ready():
 	self._base_scalex = scale.x
 	self.collision = $Box_Collision
 	self._health = _max_health
-	self.container_projectile = $"../Projectiles"
-	self.container_normal = $Normals
+	self.container_projectiles = $"../Projectiles"
+	self.container_normals = $Normals
 
 	load_assets()
 
