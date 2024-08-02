@@ -9,6 +9,7 @@ func _init() -> void:
 
 
 func set_box(data):
+	self.data = data
 	self.position = Vector2(data["posx"], data["posy"])
 	self.scale = Vector2(data["scalex"], data["scaley"])
 	self._frames_remaining = data["lifespan"]
