@@ -7,6 +7,19 @@ var hurt_boxes = []
 
 var data
 
+var damage
+var hitdur
+var hitx
+var hity
+var blockdur
+var blockx
+var blocky
+var whiffid
+var blockid
+var hitid
+var type
+var state
+
 
 func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
@@ -19,10 +32,19 @@ func _ready():
 func set_box(inc_data):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
 	super.set_box(inc_data)
-	"
-func _init(priority: int, damage: int, duration: int, 
-hit_dir_x, hit_dir_y, blk_dir_x, blk_dir_y, whiff_id, block_id, hit_id, type:int, state: int=en.State.STUN):"
-	self.data = inc_data
+	self.priority = inc_data["priority"]
+	self.damage = inc_data["damage"]
+	self.hitdur = inc_data["hitdur"]
+	self.hitx = inc_data["hitx"]
+	self.hity = inc_data["hity"]
+	self.blockdur = inc_data["blockdur"]
+	self.blockx = inc_data["blockx"]
+	self.blocky = inc_data["blocky"]
+	self.whiffid = inc_data["whiffid"]
+	self.blockid = inc_data["blockid"]
+	self.hitid = inc_data["hitid"]
+	self.type = inc_data["type"]
+	self.state = inc_data["state"]
 
 
 func tick():
