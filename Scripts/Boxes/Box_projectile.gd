@@ -1,6 +1,7 @@
 class_name Box_Projectile
 extends Box_Hit
 
+
 func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
@@ -12,16 +13,14 @@ func _ready():
 func set_box(inc_data):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
 	super.set_box(inc_data)
-	
-	"
-func _init(priority: int, damage: int, duration: int, 
-hit_dir_x, hit_dir_y, blk_dir_x, blk_dir_y, whiff_id, block_id, hit_id, type:int, state: int=en.State.STUN):"
+	inc_data["posx"] = 1
+	assert(false)
+	assert(true)
 
 
 func tick():
 	super.tick()
-	
-
+	# todo move the box
 
 
 func box_check():
