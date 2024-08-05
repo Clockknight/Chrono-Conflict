@@ -542,6 +542,7 @@ func _subtick_move():
 	var collision_report = move_and_collide(self.directional_input)
 	step_move_check(collision_report)
 	_calc_side()
+	step_move_projectiles()
 	return self.directional_input
 
 
@@ -558,6 +559,10 @@ func step_move_check(report):
 		_calc_ground()
 	_calc_bottom_y()
 	return
+
+
+func step_move_projectiles():
+	print("Not implemented")
 
 
 func _subtick_process():
