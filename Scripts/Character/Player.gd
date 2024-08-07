@@ -566,16 +566,8 @@ func step_move_projectiles():
 
 func _subtick_process():
 	_debug_message(en.Level.FRAME, "Subtick Process")
-	# look at list of interactions, compare highest priority value on list of interactions against other
-	# if the number is uneven, process the lowest value of priorities, until all interactions are settled
-	#in the case of multiple, prioritize preserving the one with the highest amount first, then duration
 	#TODO how to tell if previous state was free or stun?
-	# if bool check for if state just changed?
 	$Sprite.set_texture(_state_sprites[_state])
-	#_debug_messageen.Level.EVENT, "_state value: " + str(_state))
-	#if _state == en.State.FREE:
-	#elif _state == en.State.STUN:
-	#	$Sprite.set_texture()
 	if _other._state != en.State.STUN:
 		self.combo = 0
 	_update_console()
