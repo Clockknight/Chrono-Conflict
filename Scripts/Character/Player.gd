@@ -657,13 +657,13 @@ func _spawn_box(move_id, box_no):
 func _produce_projectile():
 	# todo create object in parent > projectiles
 	var obj = self.preloadBoxProjectile.instantiate()
-	obj.owner = self.container_projectiles
+	container_projectiles.add_child(obj)
 	return obj
 
 
 func _produce_normal():
 	var obj = self.preloadBoxHit.instantiate()
-	obj.owner = self.container_normals
+	container_normals.add_child(obj)
 	return obj
 
 
