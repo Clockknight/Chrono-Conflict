@@ -555,7 +555,6 @@ func step_move_check(report):
 			_grounded = true
 			step_move_check(move_and_collide(Vector2.ZERO))
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
-#		_debug_message( en.Level.ERROR, "Player's position is below the floor: " + str(_bottom_pos))
 		_calc_ground()
 	_calc_bottom_y()
 	return
