@@ -1,26 +1,34 @@
 class_name Box_Projectile
 extends Box_Hit
 
+var velocityx
+var velocityy
+var accelx
+var accely
+
 
 func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 
-#func _on_area_entered(object: Hit_Box) -> void:
-#	if (object != null):
-
-
 func set_box(inc_data):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
 	super.set_box(inc_data)
-	inc_data["posx"] = 1
-	assert(false)
-	assert(true)
+	velocityx = inc_data["velocityx"]
+	velocityy = inc_data["velocityy"]
+	accelx = inc_data["accelx"]
+	accely = inc_data["accely"]
 
 
 func tick():
 	super.tick()
 	# todo move the box
+	velocityx += accelx
+	self.position.x += velocityx
+
+	velocityy += accely
+	self.position.y += velocityy
+	# delete if outside of horiz bounds
 
 
 func box_check():
