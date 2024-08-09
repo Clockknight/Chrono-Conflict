@@ -426,6 +426,46 @@ func _subtick_box():
 		_spawn_box(temp[0], temp[1])
 
 
+# Should take in an id, and then pout it in the queue of boxes to create
+# the queue should tick up the appearance value each time the ACTV state begins
+# once a box in the queue has reached appearance 0, then it should build the box
+#func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func _queue_box(move_id):
+	#spawn box given array of variables describing it
+	_last_move = move_id
+	for item in framedata[move_id]["boxes"]:
+		_box_queue.append(framedata[move_id]["boxes"][item]["queue_info"])
+	step_state_interpret(framedata[move_id]["framedata"])
+
+
+func _spawn_box(move_id, box_no):
+	# todo make this actually read off of values in frame data
+	# todo make this check for projectiles then run a projectile spawn function
+	var movedata = framedata[move_id]
+	var newBox
+	match movedata["type"]:
+		"projectile":
+			newBox = _produce_projectile()
+		"normal":
+			newBox = _produce_normal()
+	self.play_sound(0, en.AudioTypes.SFX)
+	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
+	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
+
+
+func _produce_projectile():
+	# todo create object in parent > projectiles
+	var obj = self.preloadBoxProjectile.instantiate()
+	container_projectiles.add_child(obj)
+	return obj
+
+
+func _produce_normal():
+	var obj = self.preloadBoxHit.instantiate()
+	container_normals.add_child(obj)
+	return obj
+
+
 func _subtick_interact():
 	_debug_message(en.Level.FRAME, "Interact Tick")
 	for _i in self.get_children():
@@ -625,46 +665,6 @@ func _calc_frames_left():
 			temp += i[1]
 
 	return temp
-
-
-# Should take in an id, and then pout it in the queue of boxes to create
-# the queue should tick up the appearance value each time the ACTV state begins
-# once a box in the queue has reached appearance 0, then it should build the box
-#func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func _queue_box(move_id):
-	#spawn box given array of variables describing it
-	_last_move = move_id
-	for item in framedata[move_id]["boxes"]:
-		_box_queue.append(framedata[move_id]["boxes"][item]["queue_info"])
-	step_state_interpret(framedata[move_id]["framedata"])
-
-
-func _spawn_box(move_id, box_no):
-	# todo make this actually read off of values in frame data
-	# todo make this check for projectiles then run a projectile spawn function
-	var movedata = framedata[move_id]
-	var newBox
-	match movedata["type"]:
-		"projectile":
-			newBox = _produce_projectile()
-		"normal":
-			newBox = _produce_normal()
-	self.play_sound(0, en.AudioTypes.SFX)
-	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
-	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
-
-
-func _produce_projectile():
-	# todo create object in parent > projectiles
-	var obj = self.preloadBoxProjectile.instantiate()
-	container_projectiles.add_child(obj)
-	return obj
-
-
-func _produce_normal():
-	var obj = self.preloadBoxHit.instantiate()
-	container_normals.add_child(obj)
-	return obj
 
 
 func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
