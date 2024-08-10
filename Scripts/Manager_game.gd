@@ -13,7 +13,7 @@ var levels = [1.0, 1.0, 1.0, 1.0, 1.0]
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 1
+var _framerate = 15
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = en.Level.ERROR
@@ -44,14 +44,9 @@ func _ready():
 	print(size)
 	#For setting ground borders
 	self.get_parent().get_node("groundline").scale.x = _stage_boundaries / 31
-	# find all children (there should be 2)
-	# Find the two player objects
-	# assign p1/p2 arbitrarily for now
 
 	UI.scale.x = size[0] / 1920.0
-	print(UI.scale.x)
 	UI.scale.y = size[1] / 1080.0
-	print(UI.scale.y)
 
 	for player in self.get_children():
 		if player.get_class() == "Node":
@@ -62,7 +57,6 @@ func _ready():
 
 	# run config function on each, setting their control strings as needed depending on which is p1/p2
 	# todo make a stage json
-	#
 	p1._configure(p2, _stage_boundaries, levels, -200)
 	p2._configure(p1, _stage_boundaries, levels, 200)
 

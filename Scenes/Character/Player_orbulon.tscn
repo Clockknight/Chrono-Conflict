@@ -7,6 +7,8 @@
 
 [node name="Character_Orbulon" type="Node"]
 
+[node name="Projectiles" type="Node" parent="."]
+
 [node name="Character" type="CharacterBody2D" parent="."]
 scale = Vector2(2, 1)
 script = ExtResource("2")
@@ -25,5 +27,3 @@ position = Vector2(35, 15)
 scale = Vector2(2, 4)
 
 [node name="Normals" type="Node" parent="Character"]
-
-[node name="Projectiles" type="Node" parent="."]
