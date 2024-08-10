@@ -25,10 +25,6 @@ func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 
-#func _on_area_entered(object: Hit_Box) -> void:
-#	if (object != null):
-
-
 func set_box(inc_data):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
 	super.set_box(inc_data)
@@ -48,6 +44,8 @@ func set_box(inc_data):
 
 
 func tick():
+	super.tick()
+
 	#check for hurt boxes
 	overlaps = get_overlapping_areas()
 	if overlaps != []:
@@ -66,8 +64,6 @@ func tick():
 			for box in hit_boxes:
 				self.get_parent()._other.clash(self, box)
 				self.queue_free()
-
-	super.tick()
 
 
 func box_check():
