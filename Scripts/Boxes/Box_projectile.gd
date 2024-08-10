@@ -22,7 +22,6 @@ func set_box(inc_data):
 
 func tick():
 	super.tick()
-	# todo move the box
 	velocityx += accelx
 	self.position.x += velocityx
 

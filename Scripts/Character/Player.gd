@@ -601,7 +601,8 @@ func step_move_check(report):
 
 
 func step_move_projectiles():
-	print("Not implemented")
+	for box in container_projectiles.get_children():
+		box.tick()
 
 
 func _subtick_process():
