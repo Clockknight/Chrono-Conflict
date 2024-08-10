@@ -10,12 +10,11 @@ var active_sprite
 var highlighted = false
 var activated = false
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	sprite_child = $Sprite2D
 	
-
-
 # function for instantiation that loads a sprite for when button is selected, unselected, and being used (pressing A / Enter / Start etc) and also the next scene to load if selected
 func init(leaf_id, dimensions, leafx, leafy):
 	self.highlighted_sprite = load(self.get_parent().highlighted_sprite)
@@ -41,15 +40,10 @@ func _init_scale(dimensions):
 	$Label.position.x = -.25 * $Label.size.x * dimensions[0]
 	$Label.position.y = -.25 * $Label.size.y * dimensions[1]'
 	
-		
 # function for checking which sprite to use
 func sprite_check():
 	if sprite_child != null:
 		sprite_child.set_texture(active_sprite if activated else (highlighted_sprite if self.highlighted else unhighlighted_sprite))
-	
-	
-	
-
 	
 # function for updating selected/unselected state that calls sprite check
 func highlight_toggle():

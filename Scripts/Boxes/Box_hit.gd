@@ -44,8 +44,6 @@ func set_box(inc_data):
 
 
 func tick():
-	super.tick()
-
 	#check for hurt boxes
 	overlaps = get_overlapping_areas()
 	if overlaps != []:
@@ -64,6 +62,8 @@ func tick():
 			for box in hit_boxes:
 				self.get_parent()._other.clash(self, box)
 				self.queue_free()
+
+	super.tick()
 
 
 func box_check():

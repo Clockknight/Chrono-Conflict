@@ -5,7 +5,7 @@
 
 [sub_resource type="RectangleShape2D" id="1"]
 
-[node name="Hit_Box" type="Area2D"]
+[node name="Box_Hit" type="Area2D"]
 script = ExtResource("2")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
