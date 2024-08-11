@@ -22,12 +22,16 @@ func set_box(inc_data):
 
 func tick():
 	super.tick()
+
+
+func subtick_move():
 	velocityx += accelx
 	self.position.x += velocityx
 
 	velocityy += accely
 	self.position.y += velocityy
-	# delete if outside of horiz bounds
+
+	# todo delete if outside of horiz bounds
 
 
 func box_check():

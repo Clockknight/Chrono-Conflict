@@ -89,6 +89,7 @@ func _ready():
 	self._base_scaley = scale.y
 	self._base_scalex = scale.x
 	self.collision = $Box_Collision
+	self.collision.parent = self
 	self._health = _max_health
 	self.container_projectiles = $"../Projectiles"
 	self.container_normals = $Normals
@@ -257,25 +258,25 @@ func _step_input_interpret(input: Input_Data):
 
 	for motion in tree:
 		valid = _help_input_validate_attack(down, tree[motion], motion)
-		if valid != "":
+		if valid:
 			framedata_name = motion + valid
 			break
 
-	# default to 5x
+	if valid != "":
+		framedata_name = "5" + valid
 
 	# then, framedata_name will equal whatever entry exists in framedata for Mx
 	return framedata_name
 
 
-#function returns true if a button from down is validated in the config
+# function should return
 func _help_input_validate_attack(down: String, valid: String, motion: String):
-	# check if any of the buttons pressed in down are in motion's config
-	for char in down:
+	for char in down.reverse():
 		if valid.contains(char):
 			if _help_input_get_motion(motion):
 				return char
 
-	return ""
+	return false
 
 
 # function checks if motion given was input
@@ -469,8 +470,12 @@ func _produce_normal():
 func _subtick_interact():
 	_debug_message(en.Level.FRAME, "Interact Tick")
 	for _i in self.get_children():
+		#_calc_bottom_y()
 		if _i is Box:
 			_i.tick()
+
+	for _i in container_projectiles.get_children():
+		_i.tick()
 
 	if _harm_queue != []:
 		_debug_message(en.Level.FRAME, "Interactions: " + str(_harm_queue))
@@ -602,7 +607,7 @@ func step_move_check(report):
 
 func step_move_projectiles():
 	for box in container_projectiles.get_children():
-		box.tick()
+		box.subtick_move()
 
 
 func _subtick_process():
