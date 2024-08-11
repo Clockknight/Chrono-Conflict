@@ -5,8 +5,6 @@ var overlaps = []
 var hit_boxes = []
 var hurt_boxes = []
 
-var data
-
 var damage
 var hitdur
 var hitx
@@ -25,9 +23,9 @@ func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 
-func set_box(inc_data):
+func set_box(inc_data, character):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
-	super.set_box(inc_data)
+	super.set_box(inc_data, character)
 	self.priority = inc_data["priority"]
 	self.damage = inc_data["damage"]
 	self.hitdur = inc_data["hitdur"]
@@ -48,7 +46,7 @@ func tick():
 	overlaps = get_overlapping_areas()
 	if overlaps != []:
 		for e in overlaps:
-			if e.get_parent() != self.get_parent():
+			if e.character != self.character:
 				if e.box_check() == "Hurt_Box":
 					hurt_boxes.append(e)
 				elif e.box_check() == "Hit_Box":
@@ -56,11 +54,11 @@ func tick():
 
 		if hurt_boxes != []:
 			for box in hurt_boxes:
-				self.get_parent()._other.hit(self.data)
+				self.character._other.hit(self.data)
 				self.queue_free()
 		elif hit_boxes != []:
 			for box in hit_boxes:
-				self.get_parent()._other.clash(self, box)
+				self.character._other.clash(self, box)
 				self.queue_free()
 
 	super.tick()

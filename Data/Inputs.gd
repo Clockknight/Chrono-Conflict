@@ -41,7 +41,7 @@ func compare(o):
 		return self
 
 
-func input_new_down():
+func input_new_get_down():
 	if self.older == null or duration > 1:
 		return false
 
@@ -72,10 +72,7 @@ func input_new_direction():
 func report(history: int, p1_side: bool, motion_only = false, full = true):
 	var report = "" if motion_only else "\n\n" + str(duration) + " | "
 
-	x *= 1 if p1_side else -1
-	y *= 1 if p1_side else -1
-
-	report += str(directions[x + 1][y + 1])
+	report += get_direction(p1_side)
 
 	if not motion_only:
 		if report != "":
@@ -96,7 +93,7 @@ func report(history: int, p1_side: bool, motion_only = false, full = true):
 		return report
 
 
-func down():
+func get_down():
 	var temp = ""
 	if a:
 		temp += ("a")
@@ -108,3 +105,10 @@ func down():
 		temp += ("d")
 
 	return temp
+
+
+func get_direction(p1_side):
+	x *= 1 if p1_side else -1
+	y *= 1 if p1_side else -1
+
+	return str(directions[x + 1][y + 1])

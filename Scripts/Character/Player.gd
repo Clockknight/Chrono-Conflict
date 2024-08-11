@@ -26,6 +26,7 @@ var _state_sprites
 var collision: CollisionShape2D
 var container_normals: Node
 var container_projectiles: Node
+var container_hurts: Node
 
 # 2d Vectors
 var directional_input = Vector2.ZERO
@@ -92,7 +93,8 @@ func _ready():
 	self.collision.parent = self
 	self._health = _max_health
 	self.container_projectiles = $"../Projectiles"
-	self.container_normals = $Normals
+	self.container_normals = $"./Normals"
+	self.container_hurts = $"./Hurts"
 
 	load_assets()
 
@@ -245,6 +247,9 @@ func _step_input_process():
 	return _cur_input
 
 
+# Return move if valid
+# if no valid motion with inputs pressed, return 5x
+# else return null
 func _step_input_interpret(input: Input_Data):
 	var tree = framedata["tree"]
 	var framedata_name = null
@@ -254,16 +259,17 @@ func _step_input_interpret(input: Input_Data):
 	if not input.input_new_button():
 		return framedata_name
 
-	down = input.down()
+	down = input.get_down().reverse()
 
-	for motion in tree:
-		valid = _help_input_validate_attack(down, tree[motion], motion)
-		if valid:
-			framedata_name = motion + valid
+	if down != "":
+		for motion in tree:
+			valid = _help_input_validate_attack(down, tree[motion], motion)
+			if valid:
+				framedata_name = motion + valid
+				break
+		for c in down:
+			framedata_name = "5" + c
 			break
-
-	if valid != "":
-		framedata_name = "5" + valid
 
 	# then, framedata_name will equal whatever entry exists in framedata for Mx
 	return framedata_name
@@ -271,12 +277,12 @@ func _step_input_interpret(input: Input_Data):
 
 # function should return
 func _help_input_validate_attack(down: String, valid: String, motion: String):
-	for char in down.reverse():
+	for char in down:
 		if valid.contains(char):
 			if _help_input_get_motion(motion):
 				return char
 
-	return false
+	return ""
 
 
 # function checks if motion given was input
@@ -449,9 +455,11 @@ func _spawn_box(move_id, box_no):
 			newBox = _produce_projectile()
 		"normal":
 			newBox = _produce_normal()
+		"hurt":
+			newBox = _produce_hurt()
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
-	newBox.set_box(movedata["boxes"][move_id + "-" + box_no])
+	newBox.set_box(movedata["boxes"][move_id + "-" + str(box_no)], self)
 
 
 func _produce_projectile():
@@ -467,9 +475,16 @@ func _produce_normal():
 	return obj
 
 
+func _produce_hurt():
+	var obj = self.preloadBoxHurt.instantiate()
+	container_hurts.add_child(obj)
+	return obj
+
+
 func _subtick_interact():
 	_debug_message(en.Level.FRAME, "Interact Tick")
-	for _i in self.get_children():
+	print("hwat")
+	for _i in container_normals.get_children():
 		#_calc_bottom_y()
 		if _i is Box:
 			_i.tick()

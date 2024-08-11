@@ -11,9 +11,9 @@ func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 
-func set_box(inc_data):
+func set_box(inc_data, parent):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
-	super.set_box(inc_data)
+	super.set_box(inc_data, parent)
 	velocityx = inc_data["velocityx"]
 	velocityy = inc_data["velocityy"]
 	accelx = inc_data["accelx"]
