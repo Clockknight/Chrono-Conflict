@@ -5,6 +5,7 @@ var overlaps = []
 var hit_boxes = []
 var hurt_boxes = []
 
+var atkpriority
 var damage
 var hitdur
 var hitx
@@ -23,10 +24,10 @@ func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 
-func set_box(inc_data, character):
+func set_box(inc_data, incharacter):
 	#func set_box(posx, posy, scalex, scaley, lifespan):
-	super.set_box(inc_data, character)
-	self.priority = inc_data["priority"]
+	super.set_box(inc_data, incharacter)
+	self.atkpriority = inc_data["atkpriority"]
 	self.damage = inc_data["damage"]
 	self.hitdur = inc_data["hitdur"]
 	self.hitx = inc_data["hitx"]

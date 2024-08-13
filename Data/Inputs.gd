@@ -19,16 +19,16 @@ var older
 var player
 
 
-func _init(player, left = 0, up = 0, a = false, b = false, c = false, d = false):
+func _init(inplayer, left = 0, up = 0, ina = false, inb = false, inc = false, ind = false):
 	self.duration = 1
 
 	self.x = left
 	self.y = up
-	self.a = a
-	self.b = b
-	self.c = c
-	self.d = d
-	self.player = player
+	self.a = ina
+	self.b = inb
+	self.c = inc
+	self.d = ind
+	self.player = inplayer
 
 
 func compare(o):
@@ -70,27 +70,27 @@ func input_new_direction():
 
 
 func report(history: int, p1_side: bool, motion_only = false, full = true):
-	var report = "" if motion_only else "\n\n" + str(duration) + " | "
+	var reporttext = "" if motion_only else "\n\n" + str(duration) + " | "
 
-	report += get_direction(p1_side)
+	reporttext += get_direction(p1_side)
 
 	if not motion_only:
-		if report != "":
-			report += " "
+		if reporttext != "":
+			reporttext += " "
 
 		if a:
-			report += "a"
+			reporttext += "a"
 		if b:
-			report += "b"
+			reporttext += "b"
 		if c:
-			report += "c"
+			reporttext += "c"
 		if d:
-			report += "d"
+			reporttext += "d"
 
 	if (full or history - duration > 0) and self.older != null:
-		return report + self.older.report(history - duration, p1_side, motion_only, full)
+		return reporttext + self.older.report(history - duration, p1_side, motion_only, full)
 	else:
-		return report
+		return reporttext
 
 
 func get_down():

@@ -1,8 +1,7 @@
 class_name Box
 extends Area2D
 
-var _frames_remaining = -1
-
+var _frames_remaining
 var character
 var data
 
@@ -11,12 +10,12 @@ func _init() -> void:
 	pass
 
 
-func set_box(data, character):
-	self.data = data
+func set_box(indata, incharacter):
+	self.data = indata
 	self.position = Vector2(data["posx"], data["posy"])
 	self.scale = Vector2(data["scalex"], data["scaley"])
 	self._frames_remaining = data["lifespan"]
-	self.character = character
+	self.character = incharacter
 
 
 func tick():

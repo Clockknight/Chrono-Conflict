@@ -83,8 +83,6 @@ var _state_queue = []
 var _input_queue = []
 var _immediate_queue = []
 
-var _input_history = []
-
 
 func _ready():
 	self._base_scaley = scale.y
@@ -277,10 +275,10 @@ func _step_input_interpret(input: Input_Data):
 
 # function should return
 func _help_input_validate_attack(down: String, valid: String, motion: String):
-	for char in down:
-		if valid.contains(char):
+	for down_button in down:
+		if valid.contains(down_button):
 			if _help_input_get_motion(motion):
-				return char
+				return down_button
 
 	return ""
 
@@ -483,8 +481,7 @@ func _produce_hurt():
 
 func _subtick_interact():
 	_debug_message(en.Level.FRAME, "Interact Tick")
-	print("hwat")
-	for _i in container_normals.get_children():
+	for _i in self.get_children():
 		#_calc_bottom_y()
 		if _i is Box:
 			_i.tick()
@@ -681,9 +678,9 @@ func _check_buffer():
 func _calc_frames_left():
 	var temp = _state_frames_left
 
-	for i in _state_queue:
-		if i != null:
-			temp += i[1]
+	for queued_state in _state_queue:
+		if queued_state != null:
+			temp += queued_state[1]
 
 	return temp
 

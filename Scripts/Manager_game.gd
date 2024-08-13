@@ -17,13 +17,12 @@ var _framerate = 15
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = en.Level.ERROR
-
+var frame_passed = false
 var size
-
 var diff_vector
-
 var _left_max
 var _right_max
+
 const diff_x_max = 1000
 const diff_x_min = 400
 const diff_y_max = 300
@@ -41,7 +40,6 @@ func _ready():
 	_background = _camera.get_node("Background")
 	UI = self.get_node("UI")
 	size = get_viewport().size
-	print(size)
 	#For setting ground borders
 	self.get_parent().get_node("groundline").scale.x = _stage_boundaries / 31
 
@@ -77,7 +75,15 @@ func _ready():
 	_fps.set_one_shot(false)  # Make sure it loops
 	_fps.start()
 
+	p1.tick()
+
 	pass
+
+
+func _process(delta):
+	if frame_passed:
+		p1.tick()
+	frame_passed = false
 
 
 #Func to update state
@@ -89,7 +95,7 @@ func _ready():
 func _on_timer_timeout():
 	if p1 == null:
 		return
-	_tick_players()
+	frame_passed = true
 	_tick_camera()
 
 	frames += 1
@@ -99,13 +105,6 @@ func _on_fps_timeout():
 #	print(frames)
 	UI.tick_timer()
 	frames = 0
-
-
-func _tick_players():
-# move tick all children
-# collisions and jumps n stuff
-
-	p1.tick()
 
 
 func _tick_camera():
@@ -134,24 +133,34 @@ func _tick_camera():
 	_background.scale = _camera.zoom * 2
 
 
-func adjust_ui(p1, new_val, item: int):
+func adjust_ui(inp1, new_val, item: int):
 	match item:
 		en.Elem.HEALTH:
-			UI.adjust_health(p1 == self.p1, new_val)
+			UI.adjust_health(inp1 == self.p1, new_val)
 
 
 func update_console(
-	p1, combo, state, direction, input, cx, sx, grounded, jumps, lastmove, interacted
+	inp1, combo, state, direction, input, cx, sx, grounded, jumps, lastmove, interacted
 ):
 	UI.update_console(
-		p1 == self.p1, combo, state, direction, input, cx, sx, grounded, jumps, lastmove, interacted
+		inp1 == self.p1,
+		combo,
+		state,
+		direction,
+		input,
+		cx,
+		sx,
+		grounded,
+		jumps,
+		lastmove,
+		interacted
 	)
 
 
-func _debug_message(level: int, msg: String, p1: bool):
+func _debug_message(level: int, msg: String, inp1: bool):
 	if (
 		(
-			((p1 and debug_state_for_p1n2[0]) or ((not p1) and debug_state_for_p1n2[1]))
+			((inp1 and debug_state_for_p1n2[0]) or ((not inp1) and debug_state_for_p1n2[1]))
 			and (level >= _min_level and _min_level != en.Level.DEBUG)
 		)
 		or (level == en.Level.DEBUG and level == _min_level)
