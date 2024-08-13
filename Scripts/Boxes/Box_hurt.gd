@@ -3,4 +3,4 @@ extends Box
 
 
 func box_check():
-	return "Box_Hurt"
+	return "Hurt"

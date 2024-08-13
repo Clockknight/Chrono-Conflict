@@ -35,4 +35,4 @@ func subtick_move():
 
 
 func box_check():
-	return "Box_Projectile"
+	return "Projectile"

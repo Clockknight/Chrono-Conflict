@@ -481,7 +481,7 @@ func _produce_hurt():
 
 func _subtick_interact():
 	_debug_message(en.Level.FRAME, "Interact Tick")
-	for _i in self.get_children():
+	for _i in container_normals.get_children():
 		#_calc_bottom_y()
 		if _i is Box:
 			_i.tick()
@@ -505,7 +505,7 @@ func _subtick_interact():
 		_debug_message(en.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
 
 
-func hit(incoming_move: MoveData):
+func hit(incoming_move):
 	_harm_queue.append(incoming_move)
 
 

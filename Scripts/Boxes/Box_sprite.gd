@@ -23,4 +23,4 @@ func set_sprite(displacement: Vector2, duration: int, image_texture):
 
 
 func box_check():
-	return "Box_Sprite"
+	return "Sprite"

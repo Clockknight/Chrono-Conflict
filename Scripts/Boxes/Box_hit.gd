@@ -2,8 +2,8 @@ class_name Box_Hit
 extends Box
 
 var overlaps = []
-var hit_boxes = []
-var hurt_boxes = []
+var hits = []
+var hurts = []
 
 var atkpriority
 var damage
@@ -48,17 +48,17 @@ func tick():
 	if overlaps != []:
 		for e in overlaps:
 			if e.character != self.character:
-				if e.box_check() == "Hurt_Box":
-					hurt_boxes.append(e)
-				elif e.box_check() == "Hit_Box":
-					hit_boxes.append(e)
+				if e.box_check() == "Hurt":
+					hurts.append(e)
+				elif e.box_check() == "Hit":
+					hits.append(e)
 
-		if hurt_boxes != []:
-			for box in hurt_boxes:
+		if hurts != []:
+			for box in hurts:
 				self.character._other.hit(self.data)
 				self.queue_free()
-		elif hit_boxes != []:
-			for box in hit_boxes:
+		elif hits != []:
+			for box in hits:
 				self.character._other.clash(self, box)
 				self.queue_free()
 
@@ -66,4 +66,4 @@ func tick():
 
 
 func box_check():
-	return "Box_Hit"
+	return "Hit"

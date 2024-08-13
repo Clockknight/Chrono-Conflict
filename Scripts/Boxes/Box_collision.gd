@@ -15,10 +15,10 @@ func calc_height():
 	return self.shape.extents.y * self.scale.y
 
 
-func get_box():
-	return "Box_Collision"
-
 
 func disable(disable_toggle):
 	self.disabled = disable_toggle
 	self.visible = not disable_toggle
+
+func get_box():
+	return "Collision"
