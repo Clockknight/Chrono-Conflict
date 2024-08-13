@@ -265,9 +265,10 @@ func _step_input_interpret(input: Input_Data):
 			if valid:
 				framedata_name = motion + valid
 				break
-		for c in down:
-			framedata_name = "5" + c
-			break
+		if framedata_name == null:
+			for c in down:
+				framedata_name = "5" + c
+				break
 
 	# then, framedata_name will equal whatever entry exists in framedata for Mx
 	return framedata_name
@@ -378,7 +379,7 @@ func step_state_adopt(new_state_array):
 	_state_frames_left = new_state_array[1]
 
 
-func step_state_process(cur_move: MoveData):
+func step_state_process(cur_move):
 	match _check_state_block(cur_move):
 		en.Hit.HURT:
 			_other.acknowledge_hit(cur_move)
@@ -390,11 +391,12 @@ func step_state_process(cur_move: MoveData):
 				self._health = 0
 				self.step_die()
 
-			self._state = cur_move.state
-			self.directional_input = cur_move.hit_direction * (-1 if _p1_side else 1)
+			self._state = en.State[cur_move.state]
+			self._state_frames_left = cur_move.hitdur
+			self.directional_input = Vector2(cur_move.hitx * (-1 if _p1_side else 1), cur_move.hity)
 		en.Hit.BLCK:
 			_other.acknowledge_block(cur_move)
-	step_state_interpret([], cur_move.state, cur_move.duration)
+	step_state_interpret([], en.State[cur_move.state], cur_move.hitdur)
 
 
 func step_die():
@@ -516,7 +518,7 @@ func clash(e1: Box_Hit, e2: Box_Hit):
 		_debug_message(en.Level.EVENT, "Clash detected")
 
 
-func _check_state_block(move: MoveData):
+func _check_state_block(move):
 	var hit
 	# if unblock hit = true
 	if _state != en.State.FREE and _state != en.State.JMPA:
@@ -731,11 +733,11 @@ func _clear_queue():
 
 
 func _adjust_ui(value, elem):
-	$"..".adjust_ui(self, value, elem)
+	$"../..".adjust_ui(self, value, elem)
 
 
 func acknowledge_hit(cur_move):
-	play_sound(cur_move.hit, en.AudioTypes.SFX)
+	play_sound(cur_move.hitid, en.AudioTypes.SFX)
 	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
 	combo += 1
 	_last_interacted = true

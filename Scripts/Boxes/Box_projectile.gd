@@ -20,10 +20,6 @@ func set_box(inc_data, parent):
 	accely = inc_data["accely"]
 
 
-func tick():
-	super.tick()
-
-
 func subtick_move():
 	velocityx += accelx
 	self.position.x += velocityx
