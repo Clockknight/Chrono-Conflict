@@ -537,7 +537,7 @@ func _check_state_block(move):
 	if hit == true:
 		if _state == en.State.STRT or _state == en.State.ACTV:
 			return en.Hit.CNTR
-		if _state == en.State.JMPS and move.type == en.Type.GRB:
+		if _state == en.State.JMPS and en.Type[move.type] == en.Type.GRB:
 			return en.Hit.BLCK
 		return en.Hit.HURT
 	# returns 1 if t is holding back, -1 if not
@@ -550,8 +550,8 @@ func _check_state_block(move):
 
 func step_low_check(move):
 	if (
-		(move.type == en.Type.LOW and self._cur_input.y == 1)
-		or (move.type == en.Type.HIG and self._cur_input.y == -1)
+		(en.Type[move.type] == en.Type.LOW and self._cur_input.y == 1)
+		or (en.Type[move.type] == en.Type.HIG and self._cur_input.y == -1)
 	):
 		return false
 	return true
@@ -744,7 +744,7 @@ func acknowledge_hit(cur_move):
 
 
 func acknowledge_block(cur_move):
-	play_sound(cur_move.block, en.AudioTypes.SFX)
+	play_sound(cur_move.blockid, en.AudioTypes.SFX)
 	_last_interacted = true
 
 
