@@ -18,6 +18,7 @@ func set_box(inc_data, parent):
 	velocityy = inc_data["velocityy"]
 	accelx = inc_data["accelx"]
 	accely = inc_data["accely"]
+	self.position = parent.position
 
 
 func subtick_move():
