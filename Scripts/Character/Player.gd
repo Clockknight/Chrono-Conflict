@@ -324,6 +324,26 @@ func _step_input_addon(move_name):
 		_queue_box(move_name)
 
 
+func _check_cancel(incoming_move):
+	if _last_interacted and _state == en.State.RECV:
+		# return dict[cur_move].prio < dict[incoming_move].prio
+		return framedata[_last_move].level < framedata[incoming_move].level
+
+	return false
+
+
+func _check_buffer():
+	if _calc_frames_left() > BUFFER_WINDOW:
+		return false
+	return true
+
+
+func _clear_queue():
+	_box_queue = []
+	_state = en.State.FREE
+	_state_frames_left = 1
+
+
 func _subtick_state():
 	_debug_message(en.Level.FRAME, "State Tick")
 	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
@@ -397,6 +417,18 @@ func step_state_process(cur_move):
 		en.Hit.BLCK:
 			_other.acknowledge_block(cur_move)
 	step_state_interpret([], en.State[cur_move.state], cur_move.hitdur)
+
+
+func acknowledge_hit(cur_move):
+	play_sound(cur_move.hitid, en.AudioTypes.SFX)
+	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
+	combo += 1
+	_last_interacted = true
+
+
+func acknowledge_block(cur_move):
+	play_sound(cur_move.blockid, en.AudioTypes.SFX)
+	_last_interacted = true
 
 
 func step_die():
@@ -619,6 +651,26 @@ func step_move_check(report):
 	return
 
 
+func _calc_ground():
+	_calc_bottom_y()
+	self.position.y -= self._bottom_pos
+	if _state == en.State.JMPA:
+		_state = en.State.FREE
+		_jumps = 2
+	_calc_bottom_y()
+
+
+## Calls the collision box's method to figure out the bottom most pixel of this object
+func _calc_bottom_y():
+	_bottom_pos = self.position.y + $Box_Collision.calc_height() * abs(self.scale.y)
+	self._grounded = _bottom_pos >= 0
+
+	if _state == en.State.JMPA and self.directional_input.y < 0:
+		self._grounded = false
+
+	$Box_Collision.disable(!_grounded)
+
+
 func step_move_projectiles():
 	for box in container_projectiles.get_children():
 		box.subtick_move()
@@ -633,26 +685,6 @@ func _subtick_process():
 	_update_console()
 
 
-## Calls the collision box's method to figure out the bottom most pixel of this object
-func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Box_Collision.calc_height() * abs(self.scale.y)
-	self._grounded = _bottom_pos >= 0
-
-	if _state == en.State.JMPA and self.directional_input.y < 0:
-		self._grounded = false
-
-	$Box_Collision.disable(!_grounded)
-
-
-func _calc_ground():
-	_calc_bottom_y()
-	self.position.y -= self._bottom_pos
-	if _state == en.State.JMPA:
-		_state = en.State.FREE
-		_jumps = 2
-	_calc_bottom_y()
-
-
 func _calc_side():
 	if _p1_side != (self.position.x < _other.position.x):
 		_p1_side = not _p1_side
@@ -661,20 +693,6 @@ func _calc_side():
 		if (_p1_side and _flipped) or (not _p1_side and not _flipped):
 			self.scale.x *= -1
 			self._flipped = not _flipped
-
-
-func _check_cancel(incoming_move):
-	if _last_interacted and _state == en.State.RECV:
-		# return dict[cur_move].prio < dict[incoming_move].prio
-		return framedata[_last_move].level < framedata[incoming_move].level
-
-	return false
-
-
-func _check_buffer():
-	if _calc_frames_left() > BUFFER_WINDOW:
-		return false
-	return true
 
 
 func _calc_frames_left():
@@ -726,26 +744,8 @@ func _debug_message(level, msg: String = ""):
 	$"../.."._debug_message(level, msg, _p1_side)
 
 
-func _clear_queue():
-	_box_queue = []
-	_state = en.State.FREE
-	_state_frames_left = 1
-
-
 func _adjust_ui(value, elem):
 	$"../..".adjust_ui(self, value, elem)
-
-
-func acknowledge_hit(cur_move):
-	play_sound(cur_move.hitid, en.AudioTypes.SFX)
-	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
-	combo += 1
-	_last_interacted = true
-
-
-func acknowledge_block(cur_move):
-	play_sound(cur_move.blockid, en.AudioTypes.SFX)
-	_last_interacted = true
 
 
 func _update_console():
