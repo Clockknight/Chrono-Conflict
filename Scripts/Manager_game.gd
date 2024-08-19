@@ -80,12 +80,6 @@ func _ready():
 	pass
 
 
-func _process(delta):
-	if frame_passed:
-		p1.tick()
-	frame_passed = false
-
-
 #Func to update state
 # using type of move, normal, special, etc
 # hitstun / special animation
@@ -95,7 +89,8 @@ func _process(delta):
 func _on_timer_timeout():
 	if p1 == null:
 		return
-	frame_passed = true
+
+	p1.tick()
 	_tick_camera()
 
 	frames += 1
