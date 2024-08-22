@@ -240,9 +240,10 @@ func _step_input_process():
 		y = clamp(y, -1, 1)
 
 	new_input = i.new(self, x, y, a, b, c, d)
-	_cur_input = new_input.compare(_cur_input)
+	if _p1_side:
+		print(x)
 
-	return _cur_input
+	return new_input.compare(_cur_input)
 
 
 # Return move if valid
