@@ -182,7 +182,12 @@ func tick():
 
 func _subtick_input():
 	_debug_message(en.Level.FRAME, "Input Tick")
-	_cur_input = _step_input_process()
+	# todo remove
+	# This is just here for decoding purposes
+	if not _p1_side:
+		_cur_input = _step_input_process()
+	else:
+		_cur_input = _step_input_process()
 	var move_name = _step_input_interpret(_cur_input)
 	if move_name:
 		_step_input_addon(move_name)
@@ -240,8 +245,6 @@ func _step_input_process():
 		y = clamp(y, -1, 1)
 
 	new_input = i.new(self, x, y, a, b, c, d)
-	if _p1_side:
-		print(x)
 
 	return new_input.compare(_cur_input)
 
