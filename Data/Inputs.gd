@@ -118,6 +118,6 @@ func get_down():
 
 func get_direction(inp1_side):
 	var directionx = x * (1 if inp1_side else -1)
-	var directiony = y * (1 if inp1_side else -1)
+	var directiony = y
 
 	return str(directions[directionx + 1][directiony + 1])
