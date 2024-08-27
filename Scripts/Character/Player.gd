@@ -184,10 +184,7 @@ func _subtick_input():
 	_debug_message(en.Level.FRAME, "Input Tick")
 	# todo remove
 	# This is just here for decoding purposes
-	if not _p1_side:
-		_cur_input = _step_input_process()
-	else:
-		_cur_input = _step_input_process()
+	_cur_input = _step_input_process()
 	var move_name = _step_input_interpret(_cur_input)
 	if move_name:
 		_step_input_addon(move_name)
@@ -520,7 +517,6 @@ func _produce_hurt():
 func _subtick_interact():
 	_debug_message(en.Level.FRAME, "Interact Tick")
 	for _i in container_normals.get_children():
-		#_calc_bottom_y()
 		if _i is Box:
 			_i.tick()
 

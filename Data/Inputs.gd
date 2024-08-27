@@ -54,7 +54,7 @@ func self_newest_input():
 
 
 func input_new_button():
-	if not self_newest_input():
+	if self_newest_input():
 		return false
 	if self.a and (not self.older.a):
 		return true
