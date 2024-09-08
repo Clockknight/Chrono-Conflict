@@ -18,6 +18,7 @@ func set_box(indata, incharacter):
 	self._frames_remaining = data["lifespan"]
 	self.character = incharacter
 	self.p1 = incharacter._p1_side
+	self.scale /= incharacter.scale
 
 
 func tick():
