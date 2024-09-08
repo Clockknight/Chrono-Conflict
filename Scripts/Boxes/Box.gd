@@ -4,6 +4,7 @@ extends Area2D
 var _frames_remaining
 var character
 var data
+var p1
 
 
 func _init() -> void:
@@ -16,6 +17,7 @@ func set_box(indata, incharacter):
 	self.scale = Vector2(data["scalex"], data["scaley"])
 	self._frames_remaining = data["lifespan"]
 	self.character = incharacter
+	self.p1 = incharacter._p1_side
 
 
 func tick():
