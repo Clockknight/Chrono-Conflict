@@ -475,7 +475,7 @@ func _queue_box(move_id):
 	# TODO should fix box dimensions being based off of player dimensions (only a problem with crouching for now but obviously bad)
 	_last_move = move_id
 	for item in framedata[move_id]["boxes"]:
-		_box_queue.append(framedata[move_id]["boxes"][item]["queue_info"])
+		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
 	step_state_interpret(framedata[move_id]["framedata"])
 
 
