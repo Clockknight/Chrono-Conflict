@@ -21,7 +21,7 @@ func init(leaf_id, dimensions, leafx, leafy):
 	self.unhighlighted_sprite = load(self.get_parent().unhighlighted_sprite)
 	self.active_sprite = load(self.get_parent().active_sprite)
 	
-	self.position = Vector2(leafx, leafy)
+	self.position = Vector2(leafx * dimensions[0], leafy * dimensions[1])  
 	self.name = leaf_id
 		
 	
