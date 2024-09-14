@@ -6,7 +6,7 @@ var _controls_dictionary = Dictionary()
 var _menu_stack = []
 var _active_menu
 
-var levels = [0.1, 1.0, 1.0, 1.0, 1.0]
+var levels = [0.5, 1.0, 1.0, 1.0, 1.0]
 
 var _up1_string
 var _up2_string
