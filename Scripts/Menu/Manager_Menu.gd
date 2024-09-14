@@ -2,14 +2,14 @@ extends CanvasLayer
 
 var Prefab_menu = load("res://Scenes/Menu/Menu.tscn")
 var dict_location = "res://Data/controls.cfg"
-var _controls_dictionary  = Dictionary()
+var _controls_dictionary = Dictionary()
 var _menu_stack = []
-var _active_menu 
+var _active_menu
 
-var levels = [1.0,1.0,1.0,1.0,1.0]
+var levels = [0.1, 1.0, 1.0, 1.0, 1.0]
 
-var _up1_string 
-var _up2_string 
+var _up1_string
+var _up2_string
 var _down1_string
 var _down2_string
 var _left1_string
@@ -21,53 +21,55 @@ var _a2_string
 var _b1_string
 var _b2_string
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_configure()
 	build_menu()
-	
-	
-	
-	
+
+
 # Should check for new inputs from user like checking for attacks
 # On up, down or a1 from either user, change boxes appropriately
 func _configure():
 	_load_controls()
-	
+
 	_up1_string = _update_dictionary("ui_p1up")
 	_up2_string = _update_dictionary("ui_p2up")
-	_down1_string= _update_dictionary("ui_p1down")
-	_down2_string= _update_dictionary("ui_p2down")
-	_left1_string =_update_dictionary("ui_p1left")
-	_left2_string =_update_dictionary("ui_p2left")
-	_right1_string=_update_dictionary("ui_p1right")
-	_right2_string=_update_dictionary("ui_p2right")
-	_a1_string=_update_dictionary("ui_p1a")
-	_a2_string=_update_dictionary("ui_p2a")
-	_b1_string=_update_dictionary("ui_p1b")
-	_b2_string=_update_dictionary("ui_p2b")
-	
+	_down1_string = _update_dictionary("ui_p1down")
+	_down2_string = _update_dictionary("ui_p2down")
+	_left1_string = _update_dictionary("ui_p1left")
+	_left2_string = _update_dictionary("ui_p2left")
+	_right1_string = _update_dictionary("ui_p1right")
+	_right2_string = _update_dictionary("ui_p2right")
+	_a1_string = _update_dictionary("ui_p1a")
+	_a2_string = _update_dictionary("ui_p2a")
+	_b1_string = _update_dictionary("ui_p1b")
+	_b2_string = _update_dictionary("ui_p2b")
+
 	_save_controls()
-	
-func _update_dictionary(res:String):
+
+
+func _update_dictionary(res: String):
 	if InputMap.action_get_events(res).pop_front().physical_keycode == 0:
 		_controls_dictionary[InputMap.action_get_events(res).pop_front().keycode] = res
 	else:
 		_controls_dictionary[InputMap.action_get_events(res).pop_front().physical_keycode] = res
-	
+
 	return res
 
 
 func _load_controls():
 	if FileAccess.file_exists(dict_location):
-		var file = FileAccess.get_file_as_string(dict_location)	
+		var file = FileAccess.get_file_as_string(dict_location)
 		var content = JSON.parse_string(file)
 		if content != null:
 			_controls_dictionary = content
-	
+
+
 func _save_controls():
 	var file = FileAccess.open(dict_location, FileAccess.WRITE)
-	file.store_string(JSON.stringify(_controls_dictionary, '	'))
+	file.store_string(JSON.stringify(_controls_dictionary, "	"))
+
 
 func _unhandled_input(event):
 	if event is InputEventKey and event.pressed:
@@ -99,35 +101,37 @@ func _unhandled_input(event):
 					back()
 
 
-func build_menu(menu_id="Main"):
+func build_menu(menu_id = "Main"):
 	if menu_id == null:
 		# this shouldnt ever be called
 		return
-	
+
 	if _active_menu != null and _active_menu.label == "Matchmaking":
 		if menu_id == "1":
 			_active_menu.load_scene("res://Scenes/map_test.tscn")
 			return
-			
+
 	#instantiate a menu
 	var new_menu = Prefab_menu.instantiate()
 	self.add_child(new_menu)
 	new_menu.init(menu_id)
-	$Camera.offset.x += new_menu.width if _menu_stack == [] else new_menu.width/2 + _menu_stack[0].width/2
+	$Camera.offset.x += (
+		new_menu.width if _menu_stack == [] else new_menu.width / 2 + _menu_stack[0].width / 2
+	)
 	if _menu_stack != []:
-		_menu_stack[-1].reposition(true) 
+		_menu_stack[-1].reposition(true)
 	_menu_stack.append(new_menu)
 	new_menu.position.x += $Camera.offset.x
 	#add menu to stack
 	#update active_menu
 	_active_menu = new_menu
-	
+
 
 func back():
 	$Camera.offset.x -= _menu_stack[-1].dimensions[0]
 	_menu_stack[-1].back(_menu_stack)
-	
+
 	if _menu_stack != []:
 		_active_menu = _menu_stack[-1]
-	
+
 	_active_menu.deactivate()

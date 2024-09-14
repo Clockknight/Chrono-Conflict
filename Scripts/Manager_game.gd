@@ -32,7 +32,9 @@ var debug_state_for_p1n2 = [true, false]
 
 
 func _ready():
-	var temp = get_tree().current_scene.get_node("Menu Manager")
+	var temp = get_tree()
+	#todo volume problem is here
+	temp = temp.get_current_scene().get_node("Menu Manager")
 	if temp != null:
 		self.levels = temp.levels
 
