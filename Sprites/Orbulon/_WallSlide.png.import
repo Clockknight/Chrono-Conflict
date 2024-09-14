@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyo3nodo28676"
-path="res://.godot/imported/5a.png-cd206d1df8c214c883f8fdf038cdc993.ctex"
+uid="uid://bc5g2a67w8aos"
+path="res://.godot/imported/_WallSlide.png-33f3954e7915d56887bd212edc625898.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/Orbulon/5a.png"
-dest_files=["res://.godot/imported/5a.png-cd206d1df8c214c883f8fdf038cdc993.ctex"]
+source_file="res://Sprites/Orbulon/_WallSlide.png"
+dest_files=["res://.godot/imported/_WallSlide.png-33f3954e7915d56887bd212edc625898.ctex"]
 
 [params]
 
