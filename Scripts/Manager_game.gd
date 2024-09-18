@@ -35,7 +35,7 @@ func _ready():
 	var temp = get_tree()
 	#todo volume problem is here
 	temp = temp.get_current_scene()
-	if temp != null:
+	if temp != null and temp.name == "Menu Manager":
 		self.levels = temp.levels
 
 	_camera = self.get_parent().get_node("Camera2D")
