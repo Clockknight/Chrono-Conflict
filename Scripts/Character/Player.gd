@@ -66,6 +66,7 @@ var _max_health
 var _health
 var _jumps_max
 var _jumps = 0
+var _jump_dist 
 var combo = 0
 
 # floats
@@ -603,9 +604,12 @@ func _subtick_move():
 			self.scale.y = _base_scaley * .5
 			self.directional_input.x = 0
 			self.directional_input.y += self._base_scaley
+		elif _cur_input.y < 0:
+			self.directional_input.y -= _jump_dist	
 		if _state == en.State.ACTV:
 			self.directional_input.x = 0
 			self.directional_input.x = 0
+		
 
 	if not _grounded:
 		self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
