@@ -189,6 +189,9 @@ func _subtick_input():
 	var move_name = _step_input_interpret(_cur_input)
 	if move_name:
 		_step_input_addon(move_name)
+	else:
+		_step_input_movement()
+	
 
 
 func _step_input_process():
@@ -345,6 +348,15 @@ func _clear_queue():
 	_state = en.State.FREE
 	_state_frames_left = 1
 
+func _step_input_movement():
+	#This step assumes that the player is not attempting to use an attack
+	
+	if _cur_input.y > 0:
+		self.scale.y = _base_scaley * .5
+		self.directional_input.x = 0
+		self.directional_input.y += self._base_scaley
+	elif _cur_input.y < 0:
+		self.directional_input.y -= _jump_dist
 
 func _subtick_state():
 	_debug_message(en.Level.FRAME, "State Tick")
@@ -600,12 +612,6 @@ func _subtick_move():
 			#Y movement
 			self.directional_input.x = 0
 			self.directional_input.y = 0
-		if _cur_input.y > 0:
-			self.scale.y = _base_scaley * .5
-			self.directional_input.x = 0
-			self.directional_input.y += self._base_scaley
-		elif _cur_input.y < 0:
-			self.directional_input.y -= _jump_dist	
 		if _state == en.State.ACTV:
 			self.directional_input.x = 0
 			self.directional_input.x = 0
