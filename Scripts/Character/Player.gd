@@ -350,17 +350,9 @@ func _clear_queue():
 
 func _step_input_influence():
 	#This step assumes that the player is not attempting to use an attack
-	
-	if _cur_input.y > 0:
-		self.scale.y = _base_scaley * .5
-		self.directional_input.x = 0
-		self.directional_input.y += self._base_scaley
-	elif _cur_input.y < 0:
-		self.directional_input.y -= _jump_dist
-		
-		
 	_calc_bottom_y()
 	if _grounded:
+		_jumps = _jumps_max
 		# todo refactor this so the repeated .xs are not necessary
 		if _state == en.State.FREE:
 			#Y movement
@@ -370,6 +362,14 @@ func _step_input_influence():
 			self.directional_input.x = 0
 			self.directional_input.x = 0
 		
+	
+	if _cur_input.y > 0:
+		self.scale.y = _base_scaley * .5
+		self.directional_input.x = 0
+		self.directional_input.y += self._base_scaley
+	elif _cur_input.y < 0 and _jumps > 0:
+		self.directional_input.y =-1 * _jump_dist
+		_jumps -= 1
 
 	if not _grounded:
 		self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
@@ -674,7 +674,7 @@ func _calc_ground():
 	_calc_bottom_y()
 
 
-## Calls the collision box's method to figure out the bottom most pixel of this object
+## Calls the collision box's method to figure out the bottom most pixel of this object. Also evaluates if the player is grounded.
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + $Box_Collision.calc_height() * abs(self.scale.y)
 	self._grounded = _bottom_pos >= 0
