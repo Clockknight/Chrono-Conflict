@@ -397,7 +397,7 @@ func _step_input_influence():
 
 func _subtick_state():
 	_debug_message(en.Level.FRAME, "State Tick")
-	# this tick is for dealing with the players' state. More specifically, a frame by frame check to see if the current state has expired, and if so, which state should be next?
+	# this tick is for dealing with the players' state. More specifically, a frameN by frame check to see if the current state has expired, and if so, which state should be next?
 	_state_frames_left -= 1
 
 	var new_state = _state_queue.pop_front()
@@ -693,7 +693,8 @@ func step_move_projectiles():
 func _subtick_process():
 	_debug_message(en.Level.FRAME, "Subtick Process")
 	#TODO how to tell if previous state was free or stun?
-	$Sprite.set_texture(_state_sprites[_state])
+	#$Sprite.set_texture(_state_sprites[_state])
+	$Sprite/AnimationPlayer.play("idle")
 	if _other._state != en.State.STUN:
 		self.combo = 0
 	_update_console()
