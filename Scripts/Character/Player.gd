@@ -94,6 +94,8 @@ func _ready():
 	self.container_projectiles = $"../Projectiles"
 	self.container_normals = $"./Normals"
 	self.container_hurts = $"./Hurts"
+	
+	
 
 	load_assets()
 
@@ -109,13 +111,14 @@ func load_assets():
 	self._input_tree = self.framedata["tree"]
 
 
-func _configure(other_player, bounds, levels, place):
+func _configure(other_player, bounds, levels, xdisp, ydisp):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
 	self.audio_levels = levels
-	self.position.x = place
+	self.position.x = xdisp
+	self.position.y = ydisp
 
 	_calc_side()
 
@@ -676,7 +679,8 @@ func _calc_ground():
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object. Also evaluates if the player is grounded.
 func _calc_bottom_y():
-	_bottom_pos = self.position.y + $Box_Collision.calc_height() * abs(self.scale.y)
+	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y
+	
 	self._grounded = _bottom_pos >= 0
 
 	if _state == en.State.JMPA and self.directional_input.y < 0:

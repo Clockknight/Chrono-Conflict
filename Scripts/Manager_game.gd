@@ -13,7 +13,7 @@ var levels = [1.0, 1.0, 1.0, 1.0, 1.0]
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 15
+var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = en.Level.ERROR
@@ -57,8 +57,8 @@ func _ready():
 
 	# run config function on each, setting their control strings as needed depending on which is p1/p2
 	# todo make a stage json
-	p1._configure(p2, _stage_boundaries, levels, -200)
-	p2._configure(p1, _stage_boundaries, levels, 200)
+	p1._configure(p2, _stage_boundaries, levels, -200, -500)
+	p2._configure(p1, _stage_boundaries, levels, 200, 0)
 
 	#Timer section
 	_timer = Timer.new()
