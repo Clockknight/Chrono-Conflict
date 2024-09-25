@@ -19,5 +19,5 @@ texture = ExtResource("3")
 [node name="Collision_Box_Sprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.501961)
 position = Vector2(-2.38419e-07, 0)
-scale = Vector2(0.312, 0.312)
+scale = Vector2(0.113, 0.335)
 texture = ExtResource("2")
