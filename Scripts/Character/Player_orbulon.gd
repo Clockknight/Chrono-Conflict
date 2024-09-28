@@ -8,7 +8,7 @@ func _ready():
 	self.gravity = 10
 	self.terminal_speed = 100.0
 	self._jumps_max = 2
-	self._jump_dist = 30
+	self._jump_dist = 100
 
 	self._max_health = 10.0
 

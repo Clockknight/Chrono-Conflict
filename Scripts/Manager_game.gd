@@ -137,7 +137,7 @@ func adjust_ui(inp1, new_val, item: int):
 
 
 func update_console(
-	inp1, combo, state, direction, input, cx, sx, grounded, jumps, lastmove, interacted
+	inp1, combo, state, direction, input, sx, xpos, ypos, grounded, jumps, lastmove, interacted
 ):
 	UI.update_console(
 		inp1 == self.p1,
@@ -145,8 +145,9 @@ func update_console(
 		state,
 		direction,
 		input,
-		cx,
 		sx,
+		xpos,
+		ypos,
 		grounded,
 		jumps,
 		lastmove,

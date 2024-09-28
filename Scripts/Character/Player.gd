@@ -681,9 +681,14 @@ func _calc_ground():
 func _calc_bottom_y():
 	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y
 	
+	if _p1_side: 
+		print("AHHHHHHHHH")
+		print(self.position.y)
+		print(" ",  ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y)
+		print(_bottom_pos)
 	self._grounded = _bottom_pos >= 0
 
-	if _state == en.State.JMPA and self.directional_input.y < 0:
+	if _state == en.State.JMPA:
 		self._grounded = false
 
 	$Box_Collision.disable(!_grounded)
@@ -773,11 +778,12 @@ func _update_console():
 	var c = self._state
 	var d = self.directional_input
 	var e = self._cur_input
-	var f1 = self._cur_x
 	var f2 = self._stored_x
+	var l1 = self.Transform.position.x
+	var l2 = self._bottom_pos
 	var g = self._grounded
 	var h = self._jumps
 	var j = self._last_move
 	var k = self._last_interacted
 
-	$"../..".update_console(a, b, c, d, e, f1, f2, g, h, j, k)
+	$"../..".update_console(a, b, c, d, e, f2, l1, l2, g, h, j, k)

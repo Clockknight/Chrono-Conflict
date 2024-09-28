@@ -17,7 +17,10 @@ func calc_height():
 
 
 func disable(disable_toggle):
-	self.disabled = disable_toggle
+	if not disable_toggle:
+		print("AHHHHHHHHHHHHHHHH")
+		
+	#self.disabled = disable_toggle
 	self.visible = not disable_toggle
 
 func get_box():
