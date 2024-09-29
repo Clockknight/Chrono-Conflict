@@ -779,7 +779,7 @@ func _update_console():
 	var d = self.directional_input
 	var e = self._cur_input
 	var f2 = self._stored_x
-	var l1 = self.Transform.position.x
+	var l1 = self.position.x
 	var l2 = self._bottom_pos
 	var g = self._grounded
 	var h = self._jumps
