@@ -784,6 +784,8 @@ func _update_console():
 	var g = self._grounded
 	var h = self._jumps
 	var j = self._last_move
+	var m = str(self._box_queue)
 	var k = self._last_interacted
 
-	$"../..".update_console(a, b, c, d, e, f2, l1, l2, g, h, j, k)
+	$"../..".update_console(a, b, c, d, e, f2, l1, l2, g, h, j, m, k)
+	#func update_console(p1: bool, combo, state, direction, input, sx, xpos, ypos, grounded, jumps, move, boxqueue, interacted):
