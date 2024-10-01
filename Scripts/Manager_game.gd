@@ -13,7 +13,7 @@ var levels = [1.0, 1.0, 1.0, 1.0, 1.0]
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 60
+var _framerate = 1
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = en.Level.ERROR
@@ -137,7 +137,7 @@ func adjust_ui(inp1, new_val, item: int):
 
 
 func update_console(
-	inp1, combo, state, direction, input, sx, xpos, ypos, grounded, jumps, lastmove, boxqueue, interacted
+	inp1, combo, state, direction, input, storedx, xposition, yposition, grounded, jumps, lastmove, interacted, boxqueue 
 ):
 	UI.update_console(
 		inp1 == self.p1,
@@ -145,9 +145,9 @@ func update_console(
 		state,
 		direction,
 		input,
-		sx,
-		xpos,
-		ypos,
+		storedx,
+		xposition,
+		yposition,
 		grounded,
 		jumps,
 		lastmove,

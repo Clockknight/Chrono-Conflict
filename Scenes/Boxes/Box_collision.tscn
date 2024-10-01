@@ -4,20 +4,19 @@
 [ext_resource type="Texture2D" uid="uid://bfkrj767fujyo" path="res://Sprites/collisionbox.png" id="2"]
 [ext_resource type="Texture2D" uid="uid://c0ocrj67h731e" path="res://Sprites/mark.png" id="3"]
 
-[sub_resource type="RectangleShape2D" id="1"]
-size = Vector2(7.23077, 21.3846)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p08cr"]
+size = Vector2(63, 64)
 
 [node name="Collision_Box" type="CollisionShape2D"]
-shape = SubResource("1")
+shape = SubResource("RectangleShape2D_p08cr")
 script = ExtResource("1")
 
 [node name="Mark_Sprite" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(0, 10)
-scale = Vector2(0.195, 0.195)
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("3")
 
 [node name="Collision_Box_Sprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.501961)
-position = Vector2(-2.38419e-07, 0)
-scale = Vector2(0.113, 0.335)
 texture = ExtResource("2")

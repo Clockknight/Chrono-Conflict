@@ -40,15 +40,15 @@ func tick_timer():
 
 
 func update_console(
-	p1: bool, combo, state, direction, input, sx, xpos, ypos, grounded, jumps, move, boxqueue, interacted
+	p1: bool, combo, state, direction, input, storedx, xposition, yposition, grounded, jumps, lastmove, boxqueue, interacted
 ):
 	var text = "Combo: " + str(combo)
 	text += "\nState: " + str(en.State.keys()[state])
 	text += "\nMovement: " + str(direction)
-	text += "\nStored x: " + str(sx) +" Y:" + str(ypos)
+	text += "\nStored x: " + str(storedx) +" Y:" + str(yposition)
 	text += "\nGrounded: " + str(grounded)
 	text += "\nJumps Remaining: " + str(jumps)
-	text += "\nLast Move Input: " + str(move)
+	text += "\nLast Move Input: " + str(lastmove)
 	text += "\nInteracted?: " + str(interacted)
 	text += "\nQueued:" + boxqueue
 	text += "\nInput: " + input.report(10, p1, false, true)

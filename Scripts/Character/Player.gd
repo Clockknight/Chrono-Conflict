@@ -66,7 +66,7 @@ var _max_health
 var _health
 var _jumps_max
 var _jumps = 0
-var _jump_dist 
+var _jump_dist
 var combo = 0
 
 # floats
@@ -89,7 +89,7 @@ func _ready():
 	self._base_scaley = scale.y
 	self._base_scalex = scale.x
 	self.collision = $Box_Collision
-	self.collision.parent = self
+	self.collision.parentcharacter = self
 	self._health = _max_health
 	self.container_projectiles = $"../Projectiles"
 	self.container_normals = $"./Normals"
@@ -353,7 +353,7 @@ func _clear_queue():
 
 func _step_input_influence():
 	#This step assumes that the player is not attempting to use an attack
-	_calc_bottom_y()
+	_calc_move_bottom_y()
 	if _grounded:
 		_jumps = _jumps_max
 		# todo refactor this so the repeated .xs are not necessary
@@ -655,35 +655,43 @@ func _subtick_move():
 
 
 func step_move_check(report):
-	if report and _grounded:
+	_calc_move_ground()
+	
+	if report == null:
+		return
+	if _grounded:
 		var width = -collision.scale.x / 5
-		_calc_ground()
 		if _p1_side:
 			self.position.x += width
 			_grounded = true
 			step_move_check(move_and_collide(Vector2.ZERO))
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
-		_calc_ground()
-	_calc_bottom_y()
+		_calc_move_ground()
+	_calc_move_bottom_y()
 	return
 
 
-func _calc_ground():
-	_calc_bottom_y()
+func _calc_move_ground():
+	_calc_move_bottom_y()
+	if not _p1_side:
+		print("test" + str(_bottom_pos))
 	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
 		_jumps = 2
-	_calc_bottom_y()
+	_calc_move_bottom_y()
 
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object. Also evaluates if the player is grounded.
-func _calc_bottom_y():
+func _calc_move_bottom_y():
 	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y
 	
-	if _p1_side: 
-		print("AHHHHHHHHH")
+	if not _p1_side:
+		print("verbose bottom calc" + $"..".name)
 		print(self.position.y)
+		print($Box_Collision.calc_height())
+		print($Box_Collision.position.y)
+		print(($Box_Collision.calc_height() + $Box_Collision.position.y))
 		print(" ",  ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y)
 		print(_bottom_pos)
 	self._grounded = _bottom_pos >= 0
@@ -773,19 +781,18 @@ func _adjust_ui(value, elem):
 
 
 func _update_console():
-	var a = self
-	var b = self.combo
-	var c = self._state
-	var d = self.directional_input
-	var e = self._cur_input
-	var f2 = self._stored_x
-	var l1 = self.position.x
-	var l2 = self._bottom_pos
-	var g = self._grounded
-	var h = self._jumps
-	var j = self._last_move
-	var m = str(self._box_queue)
-	var k = self._last_interacted
+	var player = self
+	var combocount = self.combo
+	var state = self._state
+	var direction = self.directional_input
+	var input = self._cur_input
+	var storedx = self._stored_x
+	var xposition = self.position.x
+	var yposition = self._bottom_pos
+	var grounded = self._grounded
+	var jumps = self._jumps
+	var lastmove = self._last_move
+	var interacted = self._last_interacted
+	var boxqueue = str(self._box_queue)
 
-	$"../..".update_console(a, b, c, d, e, f2, l1, l2, g, h, j, m, k)
-	#func update_console(p1: bool, combo, state, direction, input, sx, xpos, ypos, grounded, jumps, move, boxqueue, interacted):
+	$"../..".update_console(player, combocount, state, direction, input, storedx, xposition, yposition, grounded, jumps, lastmove, interacted,boxqueue)

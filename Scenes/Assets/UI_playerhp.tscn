@@ -1,25 +1,25 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://hm3fl4snvhse"]
 
-[ext_resource path="res://Sprites/HP_have.png" type="Texture2D" id=1]
-[ext_resource path="res://Sprites/HP_lose.png" type="Texture2D" id=2]
-[ext_resource path="res://Sprites/HP_gone.png" type="Texture2D" id=3]
+[ext_resource type="Texture2D" uid="uid://dtqjy8gwlyx0l" path="res://Sprites/HP_have.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://dkist2qahi3vi" path="res://Sprites/HP_lose.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://bvmts182g6nf7" path="res://Sprites/HP_gone.png" id="3"]
 
 [node name="p1hp" type="Node2D"]
-position = Vector2( 50, 25 )
-scale = Vector2( 2, 1 )
+position = Vector2(50, 25)
+scale = Vector2(2, 1)
 
 [node name="have" type="Sprite2D" parent="."]
 z_index = 100
-texture = ExtResource( 1 )
+texture = ExtResource("1")
 centered = false
 
 [node name="lose" type="Sprite2D" parent="."]
 z_index = 50
-texture = ExtResource( 2 )
+texture = ExtResource("2")
 centered = false
 
 [node name="gone" type="Sprite2D" parent="."]
-texture = ExtResource( 3 )
+texture = ExtResource("3")
 centered = false
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]

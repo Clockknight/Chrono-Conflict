@@ -3,7 +3,7 @@ extends Player
 
 
 func _ready():
-	self.horizontal_speed = 25
+	self.horizontal_speed = 50
 	self.vertical_speed = 80.0
 	self.gravity = 10
 	self.terminal_speed = 100.0
