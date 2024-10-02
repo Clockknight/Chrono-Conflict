@@ -160,31 +160,31 @@ func tick():
 	# Read Inputs and save the input for this frame for later use
 
 	# Parse inputs
-	_subtick_input()
-	_other._subtick_input()
+	_input_subtick()
+	_other._input_subtick()
 
 	# Assign state based on inputs / interactions
-	_subtick_state()
-	_other._subtick_state()
+	_state_subtick()
+	_other._state_subtick()
 
 	# Spawn boxes based on inputs / State
 	_subtick_box()
 	_other._subtick_box()
 
 	#move self and move projectiles, which should move child boxes as well
-	_subtick_move()
-	_other._subtick_move()
+	_move_subtick()
+	_other._move_subtick()
 
 	# Check interactions with boxes
-	_subtick_interact()
-	_other._subtick_interact()
+	_interact_subtick()
+	_other._interact_subtick()
 
 	# miscellaneous processing of various actions
-	_subtick_process()
-	_other._subtick_process()
+	_process_subtick()
+	_other._process_subtick()
 
 
-func _subtick_input():
+func _input_subtick():
 	_debug_message(en.Level.FRAME, "Input Tick")
 	# todo remove
 	# This is just here for decoding purposes
@@ -269,7 +269,7 @@ func _step_input_interpret(input: Input_Data):
 
 	if down != "":
 		for motion in tree:
-			valid = _help_input_validate_attack(down, tree[motion], motion)
+			valid = _input_help_validate_attack(down, tree[motion], motion)
 			if valid:
 				framedata_name = motion + valid
 				break
@@ -283,17 +283,17 @@ func _step_input_interpret(input: Input_Data):
 
 
 # function should return
-func _help_input_validate_attack(down: String, valid: String, motion: String):
+func _input_help_validate_attack(down: String, valid: String, motion: String):
 	for down_button in down:
 		if valid.contains(down_button):
-			if _help_input_get_motion(motion):
+			if _input_help_get_motion(motion):
 				return down_button
 
 	return ""
 
 
 # function checks if motion given was input
-func _help_input_get_motion(motion: String):
+func _input_help_get_motion(motion: String):
 	var history = self._cur_input.report(HISTORY_WINDOW, self._p1_side, true, false)
 	var i = motion.length() - 1
 
@@ -320,19 +320,19 @@ func _help_input_get_motion(motion: String):
 # Step to cancel into or queue up frame data of given move
 func _step_input_addon(move_name):
 	# First check if the inputted move cancels into the next
-	if _check_cancel(move_name):
-		_clear_queue()
-		_queue_box(move_name)
+	if _input_check_cancel(move_name):
+		_input_clear_queue()
+		_input_queue_box(move_name)
 
 		# check if the current state is active or recovery
 		# check if the current move has landed a hit
 		# check if the overwriting move level is higher or greater than the current move's
 	# then check if the current move can be buffered in, or otherwise needs to create a box
-	elif _check_buffer():
-		_queue_box(move_name)
+	elif _input_check_buffer():
+		_input_queue_box(move_name)
 
 
-func _check_cancel(incoming_move):
+func _input_check_cancel(incoming_move):
 	if _last_interacted and _state == en.State.RECV:
 		# return dict[cur_move].prio < dict[incoming_move].prio
 		return framedata[_last_move].level < framedata[incoming_move].level
@@ -340,20 +340,20 @@ func _check_cancel(incoming_move):
 	return false
 
 
-func _check_buffer():
+func _input_check_buffer():
 	if _calc_frames_left() > BUFFER_WINDOW:
 		return false
 	return true
 
 
-func _clear_queue():
+func _input_clear_queue():
 	_box_queue = []
 	_state = en.State.FREE
 	_state_frames_left = 1
 
 func _step_input_influence():
 	#This step assumes that the player is not attempting to use an attack
-	_calc_move_bottom_y()
+	_move_calc_bottom_y()
 	if _grounded:
 		_jumps = _jumps_max
 		# todo refactor this so the repeated .xs are not necessary
@@ -398,7 +398,7 @@ func _step_input_influence():
 			* sign(self.position.x)
 		)
 
-func _subtick_state():
+func _state_subtick():
 	_debug_message(en.Level.FRAME, "State Tick")
 	# this tick is for dealing with the players' state. More specifically, a frameN by frame check to see if the current state has expired, and if so, which state should be next?
 	_state_frames_left -= 1
@@ -437,24 +437,24 @@ func _subtick_state():
 						_grounded = false
 						_debug_message(en.Level.FRAME, "jump started")
 						self.directional_input.y = -1 * self.vertical_speed
-						step_state_adopt(new_state)
+						_state_step_adopt(new_state)
 				en.State.STUN:
 					# If you're getting stunned, get rid of everything else.
 					_box_queue = []
 				_:
-					step_state_adopt(new_state)
+					_state_step_adopt(new_state)
 
 	else:
 		_state_queue.insert(0, new_state)
 
 
-func step_state_adopt(new_state_array):
+func _state_step_adopt(new_state_array):
 	_state = new_state_array[0]
 	_state_frames_left = new_state_array[1]
 
 
-func step_state_process(cur_move):
-	match _check_state_block(cur_move):
+func _state_step_process(cur_move):
+	match _state_check_block(cur_move):
 		en.Hit.HURT:
 			_other.acknowledge_hit(cur_move)
 			self._health -= cur_move.damage
@@ -470,7 +470,7 @@ func step_state_process(cur_move):
 			self.directional_input = Vector2(cur_move.hitx * (-1 if _p1_side else 1), cur_move.hity)
 		en.Hit.BLCK:
 			_other.acknowledge_block(cur_move)
-	step_state_interpret([], en.State[cur_move.state], cur_move.hitdur)
+	_state_step_interpret([], en.State[cur_move.state], cur_move.hitdur)
 
 
 func acknowledge_hit(cur_move):
@@ -489,11 +489,11 @@ func step_die():
 	_debug_message(en.Level.EVENT, "I am Defeated!.")
 
 
-func step_state_interpret(
+func _state_step_interpret(
 	incoming: Array = [], incoming_state: int = en.State.FREE, incoming_duration: int = 0
 ):
 	#if _state_queue != []:
-	#_debug_message(en.Level.EVENT, 'step_state_interpret() called when _state_queue not empty')
+	#_debug_message(en.Level.EVENT, '_state_step_interpret() called when _state_queue not empty')
 	if incoming != []:
 		for s in incoming:
 			s = s.split("|")
@@ -506,7 +506,7 @@ func step_state_interpret(
 			_debug_message(en.Level.ERROR, "State with duration of 0 passed in!")
 		_state_queue.append([incoming_state, incoming_duration])
 		return
-	_debug_message(en.Level.ERROR, "Empty state passed to step_state_interpret")
+	_debug_message(en.Level.ERROR, "Empty state passed to _state_step_interpret")
 	return
 
 
@@ -516,59 +516,59 @@ func _subtick_box():
 	for move in _immediate_queue:
 		temp = move.split("-")
 		_immediate_queue.erase(move)
-		_spawn_box(temp[0], temp[1])
+		_box_spawn_box(temp[0], temp[1])
 
 
 # Should take in an id, and then pout it in the queue of boxes to create
 # the queue should tick up the appearance value each time the ACTV state begins
 # once a box in the queue has reached appearance 0, then it should build the box
-#func _queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func _queue_box(move_id):
+#func _input_queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func _input_queue_box(move_id):
 	#spawn box given array of variables describing it
 	# TODO should fix box dimensions being based off of player dimensions (only a problem with crouching for now but obviously bad)
 	_last_move = move_id
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
-	step_state_interpret(framedata[move_id]["framedata"])
+	_state_step_interpret(framedata[move_id]["framedata"])
 
 
-func _spawn_box(move_id, box_no):
+func _box_spawn_box(move_id, box_no):
 	# todo make this actually read off of values in frame data
 	# todo make this check for projectiles then run a projectile spawn function
 	var movedata = framedata[move_id]
 	var newBox
 	match movedata["type"]:
 		"projectile":
-			newBox = _produce_projectile()
+			newBox = _box_produce_projectile()
 		"normal":
-			newBox = _produce_normal()
+			newBox = _box_produce_normal()
 		"hurt":
-			newBox = _produce_hurt()
+			newBox = _box_produce_hurt()
 	self.play_sound(0, en.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(movedata["boxes"][move_id + "-" + str(box_no)], self)
 
 
-func _produce_projectile():
+func _box_produce_projectile():
 	# todo create object in parent > projectiles
 	var obj = self.preloadBoxProjectile.instantiate()
 	container_projectiles.add_child(obj)
 	return obj
 
 
-func _produce_normal():
+func _box_produce_normal():
 	var obj = self.preloadBoxHit.instantiate()
 	container_normals.add_child(obj)
 	return obj
 
 
-func _produce_hurt():
+func _box_produce_hurt():
 	var obj = self.preloadBoxHurt.instantiate()
 	container_hurts.add_child(obj)
 	return obj
 
 
-func _subtick_interact():
+func _interact_subtick():
 	_debug_message(en.Level.FRAME, "Interact Tick")
 	for _i in container_normals.get_children():
 		if _i is Box:
@@ -588,7 +588,7 @@ func _subtick_interact():
 			else:
 				_harm_queue.pop_front()
 
-		step_state_process(cur_move)
+		_state_step_process(cur_move)
 	else:
 		_debug_message(en.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
 
@@ -604,7 +604,7 @@ func clash(e1: Box_Hit, e2: Box_Hit):
 		_debug_message(en.Level.EVENT, "Clash detected")
 
 
-func _check_state_block(move):
+func _state_check_block(move):
 	var hit
 	# if unblock hit = true
 	if _state != en.State.FREE and _state != en.State.JMPA:
@@ -643,19 +643,19 @@ func step_low_check(move):
 	return true
 
 
-func _subtick_move():
+func _move_subtick():
 	_debug_message(en.Level.FRAME, "Move Tick")
 	
 
 	var collision_report = move_and_collide(self.directional_input)
-	step_move_check(collision_report)
+	move_step_check(collision_report)
 	_calc_side()
-	step_move_projectiles()
+	move_step_projectiles()
 	return self.directional_input
 
 
-func step_move_check(report):
-	_calc_move_ground()
+func move_step_check(report):
+	_move_calc_ground()
 	
 	if report == null:
 		return
@@ -664,26 +664,26 @@ func step_move_check(report):
 		if _p1_side:
 			self.position.x += width
 			_grounded = true
-			step_move_check(move_and_collide(Vector2.ZERO))
+			move_step_check(move_and_collide(Vector2.ZERO))
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
-		_calc_move_ground()
-	_calc_move_bottom_y()
+		_move_calc_ground()
+	_move_calc_bottom_y()
 	return
 
 
-func _calc_move_ground():
-	_calc_move_bottom_y()
+func _move_calc_ground():
+	_move_calc_bottom_y()
 	if not _p1_side:
 		print("test" + str(_bottom_pos))
 	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
 		_jumps = 2
-	_calc_move_bottom_y()
+	_move_calc_bottom_y()
 
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object. Also evaluates if the player is grounded.
-func _calc_move_bottom_y():
+func _move_calc_bottom_y():
 	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y
 	
 	if not _p1_side:
@@ -702,12 +702,12 @@ func _calc_move_bottom_y():
 	$Box_Collision.disable(!_grounded)
 
 
-func step_move_projectiles():
+func move_step_projectiles():
 	for box in container_projectiles.get_children():
 		box.subtick_move()
 
 
-func _subtick_process():
+func _process_subtick():
 	_debug_message(en.Level.FRAME, "Subtick Process")
 	#TODO how to tell if previous state was free or stun?
 	#$Sprite.set_texture(_state_sprites[_state])
