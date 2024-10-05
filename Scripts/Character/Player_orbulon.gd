@@ -43,8 +43,8 @@ func load_assets():
 	super.load_assets()
 
 
-func _subtick_box():
+func _box_subtick():
 	if container_hurts.get_children() == []:
-		_spawn_box("hurt", 0)
+		_box_spawn_box("hurt", 0)
 
-	super._subtick_box()
+	super._box_subtick()

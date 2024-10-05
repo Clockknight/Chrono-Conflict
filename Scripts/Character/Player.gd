@@ -111,7 +111,7 @@ func load_assets():
 	self._input_tree = self.framedata["tree"]
 
 
-func _configure(other_player, bounds, levels, xdisp, ydisp):
+func configure(other_player, bounds, levels, xdisp, ydisp):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
 	_jumps = _jumps_max
@@ -168,8 +168,8 @@ func tick():
 	_other._state_subtick()
 
 	# Spawn boxes based on inputs / State
-	_subtick_box()
-	_other._subtick_box()
+	_box_subtick()
+	_other._box_subtick()
 
 	#move self and move projectiles, which should move child boxes as well
 	_move_subtick()
@@ -188,16 +188,16 @@ func _input_subtick():
 	_debug_message(en.Level.FRAME, "Input Tick")
 	# todo remove
 	# This is just here for decoding purposes
-	_cur_input = _step_input_process()
-	var move_name = _step_input_interpret(_cur_input)
+	_cur_input = _input_step_process()
+	var move_name = _input_step_interpret(_cur_input)
 	if move_name:
-		_step_input_addon(move_name)
+		_input_step_addon(move_name)
 	else:
-		_step_input_influence()
+		_input_step_influence()
 	
 
 
-func _step_input_process():
+func _input_step_process():
 	# Process all the queued inputs, and pass the resulting input to cur innput next
 	var x = 0
 	var y = 0
@@ -256,7 +256,7 @@ func _step_input_process():
 # Return move if valid
 # if no valid motion with inputs pressed, return 5x
 # else return null
-func _step_input_interpret(input: Input_Data):
+func _input_step_interpret(input: Input_Data):
 	var tree = framedata["tree"]
 	var framedata_name = null
 	var down = ""
@@ -318,7 +318,7 @@ func _input_help_get_motion(motion: String):
 
 
 # Step to cancel into or queue up frame data of given move
-func _step_input_addon(move_name):
+func _input_step_addon(move_name):
 	# First check if the inputted move cancels into the next
 	if _input_check_cancel(move_name):
 		_input_clear_queue()
@@ -351,7 +351,7 @@ func _input_clear_queue():
 	_state = en.State.FREE
 	_state_frames_left = 1
 
-func _step_input_influence():
+func _input_step_influence():
 	#This step assumes that the player is not attempting to use an attack
 	_move_calc_bottom_y()
 	if _grounded:
@@ -463,7 +463,7 @@ func _state_step_process(cur_move):
 
 			if self._health <= 0:
 				self._health = 0
-				self.step_die()
+				self.state_step_die()
 
 			self._state = en.State[cur_move.state]
 			self._state_frames_left = cur_move.hitdur
@@ -471,6 +471,34 @@ func _state_step_process(cur_move):
 		en.Hit.BLCK:
 			_other.acknowledge_block(cur_move)
 	_state_step_interpret([], en.State[cur_move.state], cur_move.hitdur)
+
+
+func _state_check_block(move):
+	var hit
+	# if unblock hit = true
+	if _state != en.State.FREE and _state != en.State.JMPA:
+		hit = true
+	elif int(self._cur_input.x) == 0:
+		hit = true
+	elif int(self._cur_input.x) == int((int(_p1_side) - .5) * -2):
+		hit = false
+	elif int(self._cur_input.x) == int((int(_p1_side) - .5) * 2):
+		hit = true
+
+	if hit == false:
+		if step_low_check(move):
+			return en.Hit.BLCK
+		hit = true
+	if hit == true:
+		if _state == en.State.STRT or _state == en.State.ACTV:
+			return en.Hit.CNTR
+		if _state == en.State.JMPS and en.Type[move.type] == en.Type.GRB:
+			return en.Hit.BLCK
+		return en.Hit.HURT
+	# returns 1 if t is holding back, -1 if not
+	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * step_low_check(move)
+	#int(self._cur_input.x)
+
 
 
 func acknowledge_hit(cur_move):
@@ -485,7 +513,7 @@ func acknowledge_block(cur_move):
 	_last_interacted = true
 
 
-func step_die():
+func state_step_die():
 	_debug_message(en.Level.EVENT, "I am Defeated!.")
 
 
@@ -510,7 +538,7 @@ func _state_step_interpret(
 	return
 
 
-func _subtick_box():
+func _box_subtick():
 	_debug_message(en.Level.FRAME, "Box Tick")
 	var temp
 	for move in _immediate_queue:
@@ -604,33 +632,6 @@ func clash(e1: Box_Hit, e2: Box_Hit):
 		_debug_message(en.Level.EVENT, "Clash detected")
 
 
-func _state_check_block(move):
-	var hit
-	# if unblock hit = true
-	if _state != en.State.FREE and _state != en.State.JMPA:
-		hit = true
-	elif int(self._cur_input.x) == 0:
-		hit = true
-	elif int(self._cur_input.x) == int((int(_p1_side) - .5) * -2):
-		hit = false
-	elif int(self._cur_input.x) == int((int(_p1_side) - .5) * 2):
-		hit = true
-
-	if hit == false:
-		if step_low_check(move):
-			return en.Hit.BLCK
-		hit = true
-	if hit == true:
-		if _state == en.State.STRT or _state == en.State.ACTV:
-			return en.Hit.CNTR
-		if _state == en.State.JMPS and en.Type[move.type] == en.Type.GRB:
-			return en.Hit.BLCK
-		return en.Hit.HURT
-	# returns 1 if t is holding back, -1 if not
-	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * step_low_check(move)
-	#int(self._cur_input.x)
-
-
 #	 is -1, 0, or 1. If it's 0, then it's failed.
 
 
@@ -686,14 +687,14 @@ func _move_calc_ground():
 func _move_calc_bottom_y():
 	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y
 	
-	if not _p1_side:
-		print("verbose bottom calc" + $"..".name)
-		print(self.position.y)
-		print($Box_Collision.calc_height())
-		print($Box_Collision.position.y)
-		print(($Box_Collision.calc_height() + $Box_Collision.position.y))
-		print(" ",  ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y)
-		print(_bottom_pos)
+	#if not _p1_side:
+		#print("verbose bottom calc" + $"..".name)
+		#print(self.position.y)
+		#print($Box_Collision.calc_height())
+		#print($Box_Collision.position.y)
+		#print(($Box_Collision.calc_height() + $Box_Collision.position.y))
+		#print(" ",  ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y)
+		#print(_bottom_pos)
 	self._grounded = _bottom_pos >= 0
 
 	if _state == en.State.JMPA:
