@@ -58,7 +58,6 @@ _data = {
 [node name="Projectiles" type="Node" parent="."]
 
 [node name="Character" type="CharacterBody2D" parent="."]
-position = Vector2(0, 21.475)
 scale = Vector2(4, 2)
 script = ExtResource("2")
 

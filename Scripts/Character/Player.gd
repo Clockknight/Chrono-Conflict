@@ -675,7 +675,7 @@ func move_step_check(report):
 func _move_calc_ground():
 	_move_calc_bottom_y()
 	if not _p1_side:
-		print("test" + str(_bottom_pos))
+		print("test" + str(_bottom_pos) + "p1?" +str(_p1_side))
 	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
@@ -685,7 +685,7 @@ func _move_calc_ground():
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object. Also evaluates if the player is grounded.
 func _move_calc_bottom_y():
-	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y
+	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y * (1 if _p1_side else -1)
 	
 	#if not _p1_side:
 		#print("verbose bottom calc" + $"..".name)
