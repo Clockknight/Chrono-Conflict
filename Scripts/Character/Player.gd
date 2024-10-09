@@ -685,7 +685,7 @@ func _move_calc_ground():
 
 ## Calls the collision box's method to figure out the bottom most pixel of this object. Also evaluates if the player is grounded.
 func _move_calc_bottom_y():
-	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y * (1 if _p1_side else -1)
+	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * abs(self.scale.y)
 	
 	#if not _p1_side:
 		#print("verbose bottom calc" + $"..".name)
