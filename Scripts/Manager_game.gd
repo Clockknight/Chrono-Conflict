@@ -32,16 +32,16 @@ var debug_state_for_p1n2 = [true, false]
 
 
 func _ready():
-	var temp = get_tree()
-	#todo volume problem is here
-	temp = temp.get_current_scene()
-	if temp != null and temp.name == "Menu Manager":
-		self.levels = temp.levels
+	var rootnode = get_tree()
+	rootnode = rootnode.get_current_scene()
+	if rootnode != null and rootnode.name == "Menu Manager":
+		self.levels = rootnode.levels
 
 	_camera = self.get_parent().get_node("Camera2D")
 	_background = _camera.get_node("Background")
 	UI = self.get_node("UI")
 	size = get_viewport().size
+		
 	#For setting ground borders
 	self.get_parent().get_node("groundline").scale.x = _stage_boundaries / 31
 
@@ -60,6 +60,8 @@ func _ready():
 	p1.configure(p2, _stage_boundaries, levels, -200, -500)
 	p2.configure(p1, _stage_boundaries, levels, 200, 0)
 
+
+		
 	#Timer section
 	_timer = Timer.new()
 	add_child(_timer)
@@ -91,6 +93,8 @@ func _ready():
 func _on_timer_timeout():
 	if p1 == null:
 		return
+	
+	get_tree().get_current_scene().find_child("loading").visible = false
 
 	p1.tick()
 	_tick_camera()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dunoe4ffcb88w"]
+[gd_scene load_steps=9 format=3 uid="uid://dunoe4ffcb88w"]
 
 [ext_resource type="PackedScene" uid="uid://57xfr64q8e8f" path="res://Scenes/Character/Player_orbulon.tscn" id="1"]
 [ext_resource type="Texture2D" uid="uid://dp1ltami8bvkk" path="res://Sprites/icon.png" id="2"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://hm3fl4snvhse" path="res://Scenes/Assets/UI_playerhp.tscn" id="5"]
 [ext_resource type="PackedScene" uid="uid://bf7tqwr52fr4c" path="res://Scenes/Assets/Console_player.tscn" id="6"]
 [ext_resource type="Texture2D" uid="uid://biwvie638qtt4" path="res://Sprites/skyline.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://bvw52w3s671fl" path="res://Sprites/loading.jpeg" id="8_6wgmn"]
 
 [node name="Scene" type="Node2D"]
 
@@ -65,3 +66,9 @@ offset_right = 949.0
 offset_bottom = 39.0
 scale = Vector2(3, 3)
 text = "10"
+
+[node name="loading" type="Sprite2D" parent="manager/UI"]
+z_index = 100
+position = Vector2(962.5, 540.833)
+scale = Vector2(1.28333, 2.16333)
+texture = ExtResource("8_6wgmn")
