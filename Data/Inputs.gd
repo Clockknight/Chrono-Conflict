@@ -49,12 +49,12 @@ func input_new_get_down():
 	return input_new_button() or input_new_direction()
 
 
-func self_newest_input():
+func self_first_input():
 	return self.older == null
 
 
 func input_new_button():
-	if self_newest_input():
+	if self_first_input() or self.duration > 1:
 		return false
 	if self.a and (not self.older.a):
 		return true
@@ -68,7 +68,7 @@ func input_new_button():
 
 
 func input_new_direction():
-	if not self_newest_input():
+	if not self_first_input():
 		return false
 	if self.x != self.older.x:
 		return true

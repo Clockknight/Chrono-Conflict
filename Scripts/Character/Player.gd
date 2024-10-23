@@ -257,13 +257,17 @@ func _input_step_process():
 # if no valid motion with inputs pressed, return 5x
 # else return null
 func _input_step_interpret(input: Input_Data):
+	if not input.input_new_button():
+		return null
+	
 	var tree = framedata["tree"]
 	var framedata_name = null
 	var down = ""
 	var valid = ""
+	
+	
 
-	if not input.input_new_button():
-		return framedata_name
+	
 
 	down = input.get_down().reverse()
 
