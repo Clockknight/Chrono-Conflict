@@ -30,6 +30,7 @@ var container_hurts: Node
 
 # 2d Vectors
 var directional_input = Vector2.ZERO
+var current_position = Vector2.ZERO
 
 # inputs
 var _up_string = "ui_p1up"
@@ -117,8 +118,9 @@ func configure(other_player, bounds, levels, xdisp, ydisp):
 	_jumps = _jumps_max
 	self._stage_bounds = bounds
 	self.audio_levels = levels
-	self.position.x = xdisp
-	self.position.y = ydisp
+	
+	current_position = Vector2(xdisp, ydisp)
+	move_and_collide(current_position)
 
 	_calc_side()
 
@@ -653,6 +655,7 @@ func _move_subtick():
 	
 
 	var collision_report = move_and_collide(self.directional_input)
+	self.current_position += directional_input
 	move_step_check(collision_report)
 	_calc_side()
 	move_step_projectiles()
@@ -668,6 +671,7 @@ func move_step_check(report):
 		var width = -collision.scale.x / 5
 		if _p1_side:
 			self.position.x += width
+			self.current_position[0] += width
 			_grounded = true
 			move_step_check(move_and_collide(Vector2.ZERO))
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
@@ -678,8 +682,7 @@ func move_step_check(report):
 
 func _move_calc_ground():
 	_move_calc_bottom_y()
-	if not _p1_side:
-		print("test" + str(_bottom_pos) + "p1?" +str(_p1_side))
+	self.current_position[1] -= self._bottom_pos
 	self.position.y -= self._bottom_pos
 	if _state == en.State.JMPA:
 		_state = en.State.FREE
@@ -792,7 +795,7 @@ func _update_console():
 	var direction = self.directional_input
 	var input = self._cur_input
 	var storedx = self._stored_x
-	var xposition = self.position.x
+	var xposition = self.current_position[0]
 	var yposition = self._bottom_pos
 	var grounded = self._grounded
 	var jumps = self._jumps

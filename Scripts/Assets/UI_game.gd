@@ -44,6 +44,7 @@ func update_console(
 ):
 	var text = "Combo: " + str(combo)
 	text += "\nState: " + str(en.State.keys()[state])
+	text += "\nPosition " + str(xposition) + ", " + str(yposition)
 	text += "\nMovement: " + str(direction)
 	text += "\nStored x: " + str(storedx) +" Y:" + str(yposition)
 	text += "\nGrounded: " + str(grounded)
