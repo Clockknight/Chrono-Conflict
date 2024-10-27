@@ -188,8 +188,6 @@ func tick():
 
 func _input_subtick():
 	_debug_message(en.Level.FRAME, "Input Tick")
-	# todo remove
-	# This is just here for decoding purposes
 	_cur_input = _input_step_process()
 	var move_name = _input_step_interpret(_cur_input)
 	if move_name:
@@ -258,19 +256,20 @@ func _input_step_process():
 # Return move if valid
 # if no valid motion with inputs pressed, return 5x
 # else return null
-func _input_step_interpret(input: Input_Data):
-	if not input.input_new_button():
-		return null
+func _input_step_interpret(input: Input_Data):	
 	
 	var tree = framedata["tree"]
 	var framedata_name = null
 	var down = ""
 	var valid = ""
 	
+	if not input.input_new_button():
+		var direction = int(input.get_direction(self._p1_side)[-1])
+		if direction >= 7:
+			return 'jump'
+		return null
 	
-
 	
-
 	down = input.get_down().reverse()
 
 	if down != "":
@@ -368,7 +367,6 @@ func _input_step_influence():
 			self.directional_input.x = 0
 			self.directional_input.y = 0
 		if _state == en.State.ACTV:
-			self.directional_input.x = 0
 			self.directional_input.x = 0
 		
 	
@@ -568,7 +566,6 @@ func _input_queue_box(move_id):
 
 func _box_spawn_box(move_id, box_no):
 	# todo make this actually read off of values in frame data
-	# todo make this check for projectiles then run a projectile spawn function
 	var movedata = framedata[move_id]
 	var newBox
 	match movedata["type"]:
@@ -584,7 +581,6 @@ func _box_spawn_box(move_id, box_no):
 
 
 func _box_produce_projectile():
-	# todo create object in parent > projectiles
 	var obj = self.preloadBoxProjectile.instantiate()
 	container_projectiles.add_child(obj)
 	return obj
