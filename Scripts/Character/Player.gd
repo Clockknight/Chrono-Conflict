@@ -168,14 +168,15 @@ func tick():
 	# Assign state based on inputs / interactions
 	_state_subtick()
 	_other._state_subtick()
+	
+	#move self and move projectiles, which should move child boxes as well
+	_move_subtick()
+	_other._move_subtick()
 
 	# Spawn boxes based on inputs / State
 	_box_subtick()
 	_other._box_subtick()
 
-	#move self and move projectiles, which should move child boxes as well
-	_move_subtick()
-	_other._move_subtick()
 
 	# Check interactions with boxes
 	_interact_subtick()
@@ -541,111 +542,6 @@ func _state_step_interpret(
 	_debug_message(en.Level.ERROR, "Empty state passed to _state_step_interpret")
 	return
 
-
-func _box_subtick():
-	_debug_message(en.Level.FRAME, "Box Tick")
-	var temp
-	for move in _immediate_queue:
-		temp = move.split("-")
-		_immediate_queue.erase(move)
-		_box_spawn_box(temp[0], temp[1])
-
-
-# Should take in an id, and then pout it in the queue of boxes to create
-# the queue should tick up the appearance value each time the ACTV state begins
-# once a box in the queue has reached appearance 0, then it should build the box
-#func _input_queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func _input_queue_box(move_id):
-	#spawn box given array of variables describing it
-	# TODO should fix box dimensions being based off of player dimensions (only a problem with crouching for now but obviously bad)
-	_last_move = move_id
-	for item in framedata[move_id]["boxes"]:
-		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
-	_state_step_interpret(framedata[move_id]["framedata"])
-
-
-func _box_spawn_box(move_id, box_no):
-	# todo make this actually read off of values in frame data
-	var movedata = framedata[move_id]
-	var newBox
-	match movedata["type"]:
-		"projectile":
-			newBox = _box_produce_projectile()
-		"normal":
-			newBox = _box_produce_normal()
-		"hurt":
-			newBox = _box_produce_hurt()
-	self.play_sound(0, en.AudioTypes.SFX)
-	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
-	newBox.set_box(movedata["boxes"][move_id + "-" + str(box_no)], self)
-
-
-func _box_produce_projectile():
-	var obj = self.preloadBoxProjectile.instantiate()
-	container_projectiles.add_child(obj)
-	return obj
-
-
-func _box_produce_normal():
-	var obj = self.preloadBoxHit.instantiate()
-	container_normals.add_child(obj)
-	return obj
-
-
-func _box_produce_hurt():
-	var obj = self.preloadBoxHurt.instantiate()
-	container_hurts.add_child(obj)
-	return obj
-
-
-func _interact_subtick():
-	_debug_message(en.Level.FRAME, "Interact Tick")
-	for _i in container_normals.get_children():
-		if _i is Box:
-			_i.tick()
-
-	for _i in container_projectiles.get_children():
-		_i.tick()
-
-	if _harm_queue != []:
-		_debug_message(en.Level.FRAME, "Interactions: " + str(_harm_queue))
-		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_harm_queue[0]))
-		var cur_move = _harm_queue.pop_front()
-
-		while _harm_queue != []:
-			if cur_move.priority < _harm_queue[0].priority:
-				cur_move = _harm_queue.pop_front()
-			else:
-				_harm_queue.pop_front()
-
-		_state_step_process(cur_move)
-	else:
-		_debug_message(en.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
-
-
-func hit(incoming_move):
-	_harm_queue.append(incoming_move)
-
-
-func clash(e1: Box_Hit, e2: Box_Hit):
-	if not _p1_side:
-		e1.queue_free()
-		e2.queue_free()
-		_debug_message(en.Level.EVENT, "Clash detected")
-
-
-#	 is -1, 0, or 1. If it's 0, then it's failed.
-
-
-func step_low_check(move):
-	if (
-		(en.Type[move.type] == en.Type.LOW and self._cur_input.y == 1)
-		or (en.Type[move.type] == en.Type.HIG and self._cur_input.y == -1)
-	):
-		return false
-	return true
-
-
 func _move_subtick():
 	_debug_message(en.Level.FRAME, "Move Tick")
 	
@@ -709,6 +605,119 @@ func _move_calc_bottom_y():
 func move_step_projectiles():
 	for box in container_projectiles.get_children():
 		box.subtick_move()
+
+func _box_subtick():
+	_debug_message(en.Level.FRAME, "Box Tick")
+	var temp
+	for move in _immediate_queue:
+		temp = move.split("-")
+		_immediate_queue.erase(move)
+		_box_spawn_box(temp[0], temp[1])
+		
+	_box_subtick_each()
+	
+	
+
+
+# Should take in an id, and then pout it in the queue of boxes to create
+# the queue should tick up the appearance value each time the ACTV state begins
+# once a box in the queue has reached appearance 0, then it should build the box
+#func _input_queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func _input_queue_box(move_id):
+	#spawn box given array of variables describing it
+	# TODO should fix box dimensions being based off of player dimensions (only a problem with crouching for now but obviously bad)
+	_last_move = move_id
+	for item in framedata[move_id]["boxes"]:
+		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
+	_state_step_interpret(framedata[move_id]["framedata"])
+
+
+func _box_spawn_box(move_id, box_no):
+	# todo make this actually read off of values in frame data
+	var movedata = framedata[move_id]
+	var newBox
+	match movedata["type"]:
+		"projectile":
+			newBox = _box_produce_projectile()
+		"normal":
+			newBox = _box_produce_normal()
+		"hurt":
+			newBox = _box_produce_hurt()
+	self.play_sound(0, en.AudioTypes.SFX)
+	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
+	newBox.set_box(movedata["boxes"][move_id + "-" + str(box_no)], self)
+
+
+func _box_produce_projectile():
+	var obj = self.preloadBoxProjectile.instantiate()
+	container_projectiles.add_child(obj)
+	return obj
+
+
+func _box_produce_normal():
+	var obj = self.preloadBoxHit.instantiate()
+	container_normals.add_child(obj)
+	return obj
+
+
+func _box_produce_hurt():
+	var obj = self.preloadBoxHurt.instantiate()
+	container_hurts.add_child(obj)
+	return obj
+	
+	
+func _box_subtick_each():
+	for _i in container_normals.get_children():
+		if _i is Box:
+			_i.tick()
+
+	for _i in container_projectiles.get_children():
+		_i.tick()
+
+
+func _interact_subtick():
+	_debug_message(en.Level.FRAME, "Interact Tick")
+
+	if _harm_queue != []:
+		_debug_message(en.Level.FRAME, "Interactions: " + str(_harm_queue))
+		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_harm_queue[0]))
+		var cur_move = _harm_queue.pop_front()
+
+		while _harm_queue != []:
+			if cur_move.priority < _harm_queue[0].priority:
+				cur_move = _harm_queue.pop_front()
+			else:
+				_harm_queue.pop_front()
+
+		_state_step_process(cur_move)
+	else:
+		_debug_message(en.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
+
+
+func interact_hit(incoming_move):
+	_harm_queue.append(incoming_move)
+
+
+func clash(e1: Box_Hit, e2: Box_Hit):
+	if not _p1_side:
+		e1.queue_free()
+		e2.queue_free()
+		_debug_message(en.Level.EVENT, "Clash detected")
+
+
+#	 is -1, 0, or 1. If it's 0, then it's failed.
+
+
+func step_low_check(move):
+	if (
+		(en.Type[move.type] == en.Type.LOW and self._cur_input.y == 1)
+		or (en.Type[move.type] == en.Type.HIG and self._cur_input.y == -1)
+	):
+		return false
+	return true
+
+
+
 
 
 func _process_subtick():

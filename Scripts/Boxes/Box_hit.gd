@@ -55,7 +55,7 @@ func tick():
 
 		if hurts != []:
 			for box in hurts:
-				self.character._other.hit(self.data)
+				self.character._other.interact_hit(self.data)
 				self.queue_free()
 		elif hits != []:
 			for box in hits:
