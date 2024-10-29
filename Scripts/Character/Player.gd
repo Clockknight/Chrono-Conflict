@@ -545,7 +545,7 @@ func _state_step_interpret(
 func _move_subtick():
 	_debug_message(en.Level.FRAME, "Move Tick")
 	
-
+	move_step_jump()
 	var collision_report = move_and_collide(self.directional_input)
 	self.current_position += directional_input
 	move_step_check(collision_report)
@@ -553,6 +553,10 @@ func _move_subtick():
 	move_step_projectiles()
 	return self.directional_input
 
+
+func move_step_jump():
+	#todo 
+	#AHHHHHHHHHHHHHHH
 
 func move_step_check(report):
 	_move_calc_ground()
