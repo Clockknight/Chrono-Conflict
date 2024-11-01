@@ -168,10 +168,6 @@ func tick():
 	# Assign state based on inputs / interactions
 	_state_subtick()
 	_other._state_subtick()
-	
-	#move self and move projectiles, which should move child boxes as well
-	_move_subtick()
-	_other._move_subtick()
 
 	# Spawn boxes based on inputs / State
 	_box_subtick()
@@ -181,6 +177,10 @@ func tick():
 	# Check interactions with boxes
 	_interact_subtick()
 	_other._interact_subtick()
+	
+	#move self and move projectiles, which should move child boxes as well
+	_move_subtick()
+	_other._move_subtick()
 
 	# miscellaneous processing of various actions
 	_process_subtick()
@@ -416,7 +416,10 @@ func _state_subtick():
 
 		if new_state == null:
 			_debug_message(en.Level.FRAME, "state queue empty - returning to free")
-			_state = en.State.FREE
+			if _state >= en.State.JMPB:
+				_state = en.State.JMPF
+			else:
+				_state = en.State.FREE
 			_state_frames_left = 0
 			return
 		if new_state[0] != _state:
@@ -435,8 +438,6 @@ func _state_subtick():
 				# todo new states should not be queued if they are not possible
 				# ie these checks should be moved to input
 				# this function should just be for making the actual changes
-				
-				# todo when current state is jmpa and nothing is left, go to jmpf
 				en.State.JMPS:
 					if _jumps > 0:
 						_jumps -= 1
@@ -547,7 +548,7 @@ func _state_step_interpret(
 func _move_subtick():
 	_debug_message(en.Level.FRAME, "Move Tick")
 	
-	move_step_jump()
+	move_step_state()
 	var collision_report = move_and_collide(self.directional_input)
 	self.current_position += directional_input
 	move_step_check(collision_report)
@@ -556,13 +557,19 @@ func _move_subtick():
 	return self.directional_input
 
 
-func move_step_jump():
-	if self._state:
-		print()
-	# if state is jumpa
+func move_step_state():
+	match self._state:
+		en.State.JMPB:
+			
+		en.State.JMPJ:
+			self.directional
+	# if state is jmpj
 	# set motion to go up, disable collisions
 	# todo also
 	# figure out the storing of x directions
+	
+	# if state is jumpa
+	
 
 func move_step_check(report):
 	_move_calc_ground()

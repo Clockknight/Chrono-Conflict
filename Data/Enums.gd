@@ -11,7 +11,8 @@ enum State {
 	JMPF = 7,  # Jump FREE
 	JMPS = 8,  # Jump STRT
 	JMPA = 9,  # Jump ACTV
-	JMPR = 10  # Jump RECV
+	JMPR = 10, # Jump RECV
+	JMPJ = 11  # Jump Jumping
 }
 
 enum Level {
