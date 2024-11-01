@@ -435,6 +435,8 @@ func _state_subtick():
 				# todo new states should not be queued if they are not possible
 				# ie these checks should be moved to input
 				# this function should just be for making the actual changes
+				
+				# todo when current state is jmpa and nothing is left, go to jmpf
 				en.State.JMPS:
 					if _jumps > 0:
 						_jumps -= 1
@@ -555,8 +557,12 @@ func _move_subtick():
 
 
 func move_step_jump():
-	#todo 
-	#AHHHHHHHHHHHHHHH
+	if self._state:
+		print()
+	# if state is jumpa
+	# set motion to go up, disable collisions
+	# todo also
+	# figure out the storing of x directions
 
 func move_step_check(report):
 	_move_calc_ground()
