@@ -67,7 +67,7 @@ var _max_health
 var _health
 var _jumps_max
 var _jumps = 0
-var _jump_dist
+var _jump_velocity
 var combo = 0
 
 # floats
@@ -376,7 +376,7 @@ func _input_step_influence():
 		self.directional_input.x = 0
 		self.directional_input.y += self._base_scaley
 	elif _cur_input.y < 0 and _jumps > 0:
-		self.directional_input.y =-1 * _jump_dist
+		self.directional_input.y =-1 * _jump_velocity
 		_jumps -= 1
 
 	if not _grounded:
@@ -558,11 +558,13 @@ func _move_subtick():
 
 
 func move_step_state():
+	print()
+	
 	match self._state:
 		en.State.JMPB:
-			
+			self.directional_input = Vector2.ZERO
 		en.State.JMPJ:
-			self.directional
+			self.directional_input = Vector2(_stored_x, _jump_velocity)
 	# if state is jmpj
 	# set motion to go up, disable collisions
 	# todo also
