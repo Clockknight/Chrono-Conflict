@@ -8,7 +8,7 @@ var _background
 var _timer
 var _fps
 
-var levels = [1.0, 1.0, 1.0, 1.0, 1.0]
+var levels = [0.5, 0.5, 0.5, 0.5, 0.5]
 
 var _camera_pos
 

@@ -564,10 +564,13 @@ func move_step_state():
 		en.State.JMPB:
 			self.directional_input = Vector2.ZERO
 		en.State.JMPJ:
-			self.directional_input = Vector2(_stored_x, _jump_velocity)
-	# if state is jmpj
-	# set motion to go up, disable collisions
-	# todo also
+			self.directional_input = Vector2(_stored_x, -1 * _jump_velocity)
+			self.collision.disabled = true
+			
+	if self._state > en.State.JMPJ:
+		self.directional_input[1] += gravity
+
+	# todo
 	# figure out the storing of x directions
 	
 	# if state is jumpa
@@ -593,11 +596,12 @@ func move_step_check(report):
 
 func _move_calc_ground():
 	_move_calc_bottom_y()
-	self.current_position[1] -= self._bottom_pos
-	self.position.y -= self._bottom_pos
-	if _state == en.State.JMPA:
-		_state = en.State.FREE
-		_jumps = 2
+	if self._grounded:
+		self.current_position[1] -= self._bottom_pos
+		self.position.y -= self._bottom_pos
+		if _state == en.State.JMPA:
+			_state = en.State.FREE
+			_jumps = 2
 	_move_calc_bottom_y()
 
 
