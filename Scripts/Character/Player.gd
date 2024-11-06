@@ -589,6 +589,7 @@ func move_step_check(report):
 			_grounded = true
 			move_step_check(move_and_collide(Vector2.ZERO))
 			
+			# skeleton of landing lag
 			if self._state == en.State.JMPA:
 				self._state = en.State.JMPR
 			elif self._state >= en.State.JMPB:
@@ -614,14 +615,6 @@ func _move_calc_ground():
 func _move_calc_bottom_y():
 	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * abs(self.scale.y)
 	
-	#if not _p1_side:
-		#print("verbose bottom calc" + $"..".name)
-		#print(self.position.y)
-		#print($Box_Collision.calc_height())
-		#print($Box_Collision.position.y)
-		#print(($Box_Collision.calc_height() + $Box_Collision.position.y))
-		#print(" ",  ($Box_Collision.calc_height() + $Box_Collision.position.y) * self.scale.y)
-		#print(_bottom_pos)
 	self._grounded = _bottom_pos >= 0
 
 	if _state == en.State.JMPA:
