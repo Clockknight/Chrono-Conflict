@@ -588,6 +588,11 @@ func move_step_check(report):
 			self.current_position[0] += width
 			_grounded = true
 			move_step_check(move_and_collide(Vector2.ZERO))
+			
+			if self._state == en.State.JMPA:
+				self._state = en.State.JMPR
+			elif self._state >= en.State.JMPB:
+				self._state = en.State.FREE
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
 		_move_calc_ground()
 	_move_calc_bottom_y()
