@@ -579,20 +579,18 @@ func move_step_state():
 func move_step_check(report):
 	_move_calc_ground()
 	
-	if report == null:
-		return
 	if _grounded:
 		var width = -collision.scale.x / 5
 		if _p1_side:
 			self.position.x += width
 			self.current_position[0] += width
 			_grounded = true
-			move_step_check(move_and_collide(Vector2.ZERO))
+			# move_step_check(move_and_collide(Vector2.ZERO))
 			
 			# skeleton of landing lag
 			if self._state == en.State.JMPA:
 				self._state = en.State.JMPR
-			elif self._state >= en.State.JMPB:
+			elif self._state > en.State.JMPB:
 				self._state = en.State.FREE
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
 		_move_calc_ground()
