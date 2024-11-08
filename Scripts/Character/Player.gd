@@ -62,6 +62,7 @@ var _base_scaley
 var _base_scalex
 var _stage_bounds
 var _stored_x = 0
+var _jump_x = 0
 var _cur_x = 0
 var _max_health
 var _health
@@ -606,6 +607,8 @@ func _move_calc_ground():
 		if _state == en.State.JMPA:
 			_state = en.State.FREE
 			_jumps = 2
+			_stored_x = 0
+			_jump_x = 0
 	_move_calc_bottom_y()
 
 
