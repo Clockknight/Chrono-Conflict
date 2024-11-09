@@ -372,23 +372,24 @@ func _input_step_influence():
 			self.directional_input.x = 0
 		
 	
+	# Ducking block
 	if _cur_input.y > 0:
 		self.scale.y = _base_scaley * .5
 		self.directional_input.x = 0
 		self.directional_input.y += self._base_scaley
-	elif _cur_input.y < 0 and _jumps > 0:
-		self.directional_input.y =-1 * _jump_velocity
-		_jumps -= 1
-
-	if not _grounded:
-		self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
-		if self._state == en.State.JMPS:
-			self.directional_input.x = self._cur_x * self.horizontal_speed
-		elif self._state == en.State.JMPA:
-			self.directional_input.x = self._stored_x * self.horizontal_speed
-		# clause for landing
-		if self.directional_input.y >= -1 * _bottom_pos:
-			self.directional_input.y = -1 * _bottom_pos
+	#elif _cur_input.y < 0 and _jumps > 0:
+		#self.directional_input.y =-1 * _jump_velocity
+		#_jumps -= 1
+##
+	##if not _grounded:
+		##self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
+		##if self._state == en.State.JMPS:
+			##self.directional_input.x = self._cur_x * self.horizontal_speed
+		##elif self._state == en.State.JMPA:
+			##self.directional_input.x = self._stored_x * self.horizontal_speed
+		### clause for landing
+		##if self.directional_input.y >= -1 * _bottom_pos:
+			##self.directional_input.y = -1 * _bottom_pos
 
 	if _state == en.State.FREE:
 		#X movement
@@ -418,6 +419,8 @@ func _state_subtick():
 		if new_state == null:
 			_debug_message(en.Level.FRAME, "state queue empty - returning to free")
 			if _state >= en.State.JMPB:
+				_jump_x = _stored_x
+				_stored_x = 0
 				_state = en.State.JMPF
 			else:
 				_state = en.State.FREE
