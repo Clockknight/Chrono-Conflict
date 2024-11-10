@@ -508,8 +508,6 @@ func _state_check_block(move):
 			return en.Hit.BLCK
 		return en.Hit.HURT
 	# returns 1 if t is holding back, -1 if not
-	#return int(self._cur_input.x) *   (1 - 2 * int(self._p1_side)) * step_low_check(move)
-	#int(self._cur_input.x)
 
 
 
