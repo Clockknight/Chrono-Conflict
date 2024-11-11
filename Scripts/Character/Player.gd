@@ -267,7 +267,9 @@ func _input_step_interpret(input: Input_Data):
 	
 	if not input.input_new_button():
 		var direction = int(input.get_direction(self._p1_side)[-1])
-		if direction >= 7:
+		if direction >= 7 and _jumps > 0:
+			_stored_x = input.x
+			_jumps -= 1
 			return 'jump'
 		return null
 	
@@ -550,26 +552,27 @@ func _state_step_interpret(
 func _move_subtick():
 	_debug_message(en.Level.FRAME, "Move Tick")
 	
-	move_step_state()
+	_move_step_state()
 	var collision_report = move_and_collide(self.directional_input)
 	self.current_position += directional_input
-	move_step_check(collision_report)
+	_move_step_check(collision_report)
 	_calc_side()
-	move_step_projectiles()
+	_move_step_projectiles()
 	return self.directional_input
 
 
-func move_step_state():
+func _move_step_state():
 	print()
 	
 	match self._state:
 		en.State.JMPB:
 			self.directional_input = Vector2.ZERO
 		en.State.JMPJ:
-			self.directional_input = Vector2(_stored_x, -1 * _jump_velocity)
+			self.directional_input = Vector2(_stored_x * _jump_velocity, -1 * _jump_velocity)
 			self.collision.disabled = true
+			_stored_x = 0
 			
-	if self._state > en.State.JMPJ:
+	if self._state > en.State.JMPB:
 		self.directional_input[1] += gravity
 
 	# todo
@@ -578,7 +581,7 @@ func move_step_state():
 	# if state is jumpa
 	
 
-func move_step_check(report):
+func _move_step_check(report):
 	_move_calc_ground()
 	
 	if _grounded:
@@ -587,7 +590,7 @@ func move_step_check(report):
 			self.position.x += width
 			self.current_position[0] += width
 			_grounded = true
-			# move_step_check(move_and_collide(Vector2.ZERO))
+			# _move_step_check(move_and_collide(Vector2.ZERO))
 			
 			# skeleton of landing lag
 			if self._state == en.State.JMPA:
@@ -608,8 +611,6 @@ func _move_calc_ground():
 		if _state == en.State.JMPA:
 			_state = en.State.FREE
 			_jumps = 2
-			_stored_x = 0
-			_jump_x = 0
 	_move_calc_bottom_y()
 
 
@@ -625,7 +626,7 @@ func _move_calc_bottom_y():
 	$Box_Collision.disable(!_grounded)
 
 
-func move_step_projectiles():
+func _move_step_projectiles():
 	for box in container_projectiles.get_children():
 		box.subtick_move()
 
