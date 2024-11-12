@@ -66,8 +66,8 @@ var _jump_x = 0
 var _cur_x = 0
 var _max_health
 var _health
-var _jumps_max
-var _jumps = 0
+var _air_actions_max
+var _air_actions = 0
 var _jump_velocity
 var combo = 0
 
@@ -116,7 +116,7 @@ func load_assets():
 func configure(other_player, bounds, levels, xdisp, ydisp):
 	# player object assumes it's player 1 until otherwise stated
 	_other = other_player
-	_jumps = _jumps_max
+	_air_actions = _air_actions_max
 	self._stage_bounds = bounds
 	self.audio_levels = levels
 	
@@ -267,9 +267,9 @@ func _input_step_interpret(input: Input_Data):
 	
 	if not input.input_new_button():
 		var direction = int(input.get_direction(self._p1_side)[-1])
-		if direction >= 7 and _jumps > 0:
+		if direction >= 7 and _air_actions > 0:
 			_stored_x = input.x
-			_jumps -= 1
+			_air_actions -= 1
 			return 'jump'
 		return null
 	
@@ -363,8 +363,8 @@ func _input_clear_queue():
 func _input_step_influence():
 	#This step assumes that the player is not attempting to use an attack
 	_move_calc_bottom_y()
-	if _grounded:
-		_jumps = _jumps_max
+	if _grounded and self._state > en.State.JMPB:
+		_air_actions = _air_actions_max
 		# todo refactor this so the repeated .xs are not necessary
 		if _state == en.State.FREE:
 			#Y movement
@@ -379,9 +379,9 @@ func _input_step_influence():
 		self.scale.y = _base_scaley * .5
 		self.directional_input.x = 0
 		self.directional_input.y += self._base_scaley
-	#elif _cur_input.y < 0 and _jumps > 0:
+	#elif _cur_input.y < 0 and _air_actions > 0:
 		#self.directional_input.y =-1 * _jump_velocity
-		#_jumps -= 1
+		#_air_actions -= 1
 ##
 	##if not _grounded:
 		##self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
@@ -445,8 +445,8 @@ func _state_subtick():
 				# ie these checks should be moved to input
 				# this function should just be for making the actual changes
 				en.State.JMPS:
-					if _jumps > 0:
-						_jumps -= 1
+					if _air_actions > 0:
+						_air_actions -= 1
 						$Box_Collision.disable(true)
 						_grounded = false
 						_debug_message(en.Level.FRAME, "jump started")
@@ -608,9 +608,9 @@ func _move_calc_ground():
 	if self._grounded:
 		self.current_position[1] -= self._bottom_pos
 		self.position.y -= self._bottom_pos
-		if _state == en.State.JMPA:
+		if _state == en.State.JMPF:
 			_state = en.State.FREE
-			_jumps = 2
+			_air_actions = _air_actions_max
 	_move_calc_bottom_y()
 
 
@@ -827,7 +827,7 @@ func _update_console():
 	var xposition = self.current_position[0]
 	var yposition = self._bottom_pos
 	var grounded = self._grounded
-	var jumps = self._jumps
+	var jumps = self._air_actions
 	var lastmove = self._last_move
 	var interacted = self._last_interacted
 	var boxqueue = str(self._box_queue)
