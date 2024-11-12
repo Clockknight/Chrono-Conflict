@@ -13,7 +13,7 @@ var levels = [0.5, 0.5, 0.5, 0.5, 0.5]
 var _camera_pos
 
 var _view_width = 350
-var _framerate = 1
+var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
 var _min_level = en.Level.ERROR

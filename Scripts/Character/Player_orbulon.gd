@@ -3,12 +3,11 @@ extends Player
 
 
 func _ready():
-	self.horizontal_speed = 50
-	self.vertical_speed = 80.0
+	self.horizontal_speed = 25
 	self.gravity = 10
 	self.terminal_speed = 100.0
 	self._air_actions_max = 2
-	self._jump_velocity = 30.0
+	self._jump_velocity = 100.0
 
 	self._max_health = 10.0
 

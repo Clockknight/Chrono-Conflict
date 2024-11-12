@@ -568,7 +568,7 @@ func _move_step_state():
 		en.State.JMPB:
 			self.directional_input = Vector2.ZERO
 		en.State.JMPJ:
-			self.directional_input = Vector2(_stored_x * _jump_velocity, -1 * _jump_velocity)
+			self.directional_input = Vector2(_stored_x * horizontal_speed, -1 * _jump_velocity)
 			self.collision.disabled = true
 			_stored_x = 0
 			
@@ -586,10 +586,10 @@ func _move_step_check(report):
 	
 	if _grounded:
 		var width = -collision.scale.x / 5
+		_grounded = true
 		if _p1_side:
 			self.position.x += width
 			self.current_position[0] += width
-			_grounded = true
 			# _move_step_check(move_and_collide(Vector2.ZERO))
 			
 			# skeleton of landing lag
@@ -608,8 +608,9 @@ func _move_calc_ground():
 	if self._grounded:
 		self.current_position[1] -= self._bottom_pos
 		self.position.y -= self._bottom_pos
-		if _state == en.State.JMPF:
+		if self._state == en.State.JMPF:
 			_state = en.State.FREE
+		if self._state < en.State.JMPB:
 			_air_actions = _air_actions_max
 	_move_calc_bottom_y()
 
