@@ -468,6 +468,7 @@ func _state_step_adopt(new_state_array):
 
 
 func _state_step_process(cur_move):
+	print(_state_check_block(cur_move))
 	match _state_check_block(cur_move):
 		en.Hit.HURT:
 			_other.acknowledge_hit(cur_move)
@@ -490,7 +491,7 @@ func _state_step_process(cur_move):
 func _state_check_block(move):
 	var hit
 	# if unblock hit = true
-	if _state != en.State.FREE and _state != en.State.JMPA:
+	if _state != en.State.FREE and _state != en.State.JMPF:
 		hit = true
 	elif int(self._cur_input.x) == 0:
 		hit = true
@@ -605,6 +606,16 @@ func _move_step_check(report):
 
 func _move_calc_ground():
 	_move_calc_bottom_y()
+	
+	
+	# todo move this to the ground function
+	self._grounded = _bottom_pos >= 0
+
+	if _state == en.State.JMPA:
+		self._grounded = false
+
+	$Box_Collision.disable(!_grounded)
+	
 	if self._grounded:
 		self.current_position[1] -= self._bottom_pos
 		self.position.y -= self._bottom_pos
@@ -619,12 +630,6 @@ func _move_calc_ground():
 func _move_calc_bottom_y():
 	_bottom_pos = self.position.y + ($Box_Collision.calc_height() + $Box_Collision.position.y) * abs(self.scale.y)
 	
-	self._grounded = _bottom_pos >= 0
-
-	if _state == en.State.JMPA:
-		self._grounded = false
-
-	$Box_Collision.disable(!_grounded)
 
 
 func _move_step_projectiles():
@@ -692,12 +697,12 @@ func _box_produce_hurt():
 	
 	
 func _box_subtick_each():
-	for _i in container_normals.get_children():
-		if _i is Box:
-			_i.tick()
+	for _n in container_normals.get_children():
+		if _n is Box:
+			_n.tick()
 
-	for _i in container_projectiles.get_children():
-		_i.tick()
+	for _p in container_projectiles.get_children():
+		_p.tick()
 
 
 func _interact_subtick():
@@ -715,6 +720,7 @@ func _interact_subtick():
 				_harm_queue.pop_front()
 
 		_state_step_process(cur_move)
+		
 	else:
 		_debug_message(en.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
 
