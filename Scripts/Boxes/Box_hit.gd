@@ -44,6 +44,7 @@ func set_box(inc_data, incharacter):
 
 func tick():
 	#check for hurt boxes
+	self.position[0]+=1
 	overlaps = get_overlapping_areas()
 	if overlaps != []:
 		for e in overlaps:

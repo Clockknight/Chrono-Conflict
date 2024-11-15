@@ -653,7 +653,7 @@ func _box_subtick():
 # once a box in the queue has reached appearance 0, then it should build the box
 #func _input_queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
 func _input_queue_box(move_id):
-	#spawn box given array of variables describing it
+	# spawn box given array of variables describing it
 	# TODO should fix box dimensions being based off of player dimensions (only a problem with crouching for now but obviously bad)
 	_last_move = move_id
 	for item in framedata[move_id]["boxes"]:

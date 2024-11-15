@@ -1,5 +1,5 @@
 class_name Box_Collision
-extends CollisionShape2D
+extends Box
 
 var parentcharacter
 
