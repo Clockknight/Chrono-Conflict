@@ -555,7 +555,7 @@ func _move_subtick():
 	
 	_move_step_state()
 	var collision_report = move_and_collide(self.directional_input)
-	self.current_position += directional_input
+	self.current_position += self.directional_input
 	_move_step_check(collision_report)
 	_calc_side()
 	_move_step_projectiles()
@@ -563,7 +563,6 @@ func _move_subtick():
 
 
 func _move_step_state():
-	print()
 	
 	match self._state:
 		en.State.JMPB:
@@ -589,9 +588,9 @@ func _move_step_check(report):
 		var width = -collision.scale.x / 5
 		_grounded = true
 		if _p1_side:
-			self.position.x += width
-			self.current_position[0] += width
-			# _move_step_check(move_and_collide(Vector2.ZERO))
+			#self.position.x += width
+			#self.current_position[0] += width
+			## _move_step_check(move_and_collide(Vector2.ZERO))
 			
 			# skeleton of landing lag
 			if self._state == en.State.JMPA:
