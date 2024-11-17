@@ -4,11 +4,10 @@ extends Box
 var parentcharacter
 
 
-func set_box(posx, posy, scalex, scaley, lifespan):
-	self.position = Vector2(posx, posy)
-	self.scale = Vector2(scalex, scaley)
-	self._frames_remaining = lifespan
+func set_box(indata, incharacter):
 	parentcharacter = self.get_parent()
+	
+	super.set_box(indata, incharacter)
 
 
 func calc_height():
