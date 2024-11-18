@@ -1,13 +1,14 @@
 class_name Box_Collision
-extends Box
+extends CollisionShape2D
 
 var parentcharacter
 
 
-func set_box(indata, incharacter):
+func set_box(posx, posy, scalex, scaley, lifespan):
 	parentcharacter = self.get_parent()
-	
-	super.set_box(indata, incharacter)
+	self.position = Vector2(posx, posy)
+	self.scale = Vector2(scalex, scaley)
+	self._frames_remaining = lifespan
 
 
 func calc_height():

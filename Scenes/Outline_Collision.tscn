@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://dy2hclvpq2dk6"]
+
+[ext_resource type="Script" path="res://Scripts/Boxes/Box_collision.gd" id="1_ab7g7"]
+[ext_resource type="Texture2D" uid="uid://c0ocrj67h731e" path="res://Sprites/mark.png" id="2_ycnea"]
+[ext_resource type="Texture2D" uid="uid://bfkrj767fujyo" path="res://Sprites/collisionbox.png" id="3_0c8gx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7a5i"]
+size = Vector2(64, 64)
+
+[node name="Collision_Outline" type="CollisionShape2D"]
+shape = SubResource("RectangleShape2D_i7a5i")
+script = ExtResource("1_ab7g7")
+
+[node name="Mark_Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, 10)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_ycnea")
+
+[node name="Collision_Outline_Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.501961)
+texture = ExtResource("3_0c8gx")

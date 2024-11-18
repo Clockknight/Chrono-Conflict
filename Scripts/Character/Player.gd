@@ -90,8 +90,7 @@ var _immediate_queue = []
 func _ready():
 	self._base_scaley = scale.y
 	self._base_scalex = scale.x
-	self.collision = $Box_Collision
-	self.collision.parentcharacter = self
+	self.collision = $"Box_Collision"
 	self._health = _max_health
 	self.container_projectiles = $"../Projectiles"
 	self.container_normals = $"./Normals"

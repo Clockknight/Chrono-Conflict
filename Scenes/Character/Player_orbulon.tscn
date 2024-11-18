@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://57xfr64q8e8f"]
 
-[ext_resource type="PackedScene" uid="uid://dy2hclvpq2dk6" path="res://Scenes/Boxes/Box_collision.tscn" id="1"]
 [ext_resource type="Script" path="res://Scripts/Character/Player_orbulon.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://bpxpqx7avrbwv" path="res://Sprites/Orbulon/_Idle.png" id="2_dsd1u"]
+[ext_resource type="PackedScene" uid="uid://dy2hclvpq2dk6" path="res://Scenes/Outline_Collision.tscn" id="3_0hvgg"]
 
 [sub_resource type="Animation" id="Animation_tkrbr"]
 length = 0.001
@@ -76,7 +76,7 @@ libraries = {
 "": SubResource("AnimationLibrary_prnko")
 }
 
-[node name="Box_Collision" parent="Character" instance=ExtResource("1")]
+[node name="Box_Collision" parent="Character" instance=ExtResource("3_0hvgg")]
 position = Vector2(-6.5, 44)
 scale = Vector2(0.75, 2.25)
 
