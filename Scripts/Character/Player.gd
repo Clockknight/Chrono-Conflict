@@ -805,7 +805,7 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	self.add_child(newSprite)
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
-
+#todo figure out jumping every frame
 func _debug_message(level, msg: String = ""):
 	if level is String:
 		msg = level
