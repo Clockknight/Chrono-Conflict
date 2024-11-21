@@ -46,7 +46,7 @@ func update_console(
 	text += "\nState: " + str(en.State.keys()[state])
 	text += "\nPosition " + str(xposition) + ", " + str(yposition)
 	text += "\nMovement: " + str(direction)
-	text += "\nStored x: " + str(storedx) +" Y:" + str(yposition)
+	text += "\nStored x: " + str(storedx) 
 	text += "\nGrounded: " + str(grounded)
 	text += "\nJumps Remaining: " + str(jumps)
 	text += "\nLast Move Input: " + str(lastmove)

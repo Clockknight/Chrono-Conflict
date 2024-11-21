@@ -7,11 +7,11 @@ enum State {
 	RECV = 3,  # Recovery
 	STUN = 4,  # Stun/ Histun
 	BLCK = 5,  # Blockstun
-	JMPB = 6,  # Jump Begin
-	JMPF = 7,  # Jump FREE
-	JMPS = 8,  # Jump STRT
-	JMPA = 9,  # Jump ACTV
-	JMPR = 10, # Jump RECV
+	JMPS = 6,  # Jump STRT
+	JMPA = 7,  # Jump ACTV
+	JMPR = 8, # Jump RECV
+	JMPB = 9,  # Jump Begin
+	JMPF = 10,  # Jump FREE
 	JMPJ = 11  # Jump Jumping
 }
 

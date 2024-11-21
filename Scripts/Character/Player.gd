@@ -371,6 +371,7 @@ func _input_step_influence():
 			self.directional_input.y = 0
 		if _state == en.State.ACTV:
 			self.directional_input.x = 0
+			self.directional_input.y = 0
 		
 	
 	# Ducking block
@@ -571,7 +572,7 @@ func _move_step_state():
 			self.collision.disabled = true
 			_stored_x = 0
 			
-	if self._state > en.State.JMPB:
+	if not _grounded:
 		self.directional_input[1] += gravity
 
 	# todo
