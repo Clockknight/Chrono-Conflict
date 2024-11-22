@@ -193,6 +193,7 @@ func _input_subtick():
 	var move_name = _input_step_interpret(_cur_input)
 	if move_name:
 		_input_step_addon(move_name)
+		
 	else:
 		_input_step_influence()
 	
@@ -328,6 +329,8 @@ func _input_help_get_motion(motion: String):
 # Step to cancel into or queue up frame data of given move
 func _input_step_addon(move_name):
 	# First check if the inputted move cancels into the next
+	
+	
 	if _input_check_cancel(move_name):
 		_input_clear_queue()
 		_input_queue_box(move_name)
@@ -659,6 +662,7 @@ func _input_queue_box(move_id):
 	for item in framedata[move_id]["boxes"]:
 		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
 	_state_step_interpret(framedata[move_id]["framedata"])
+	# TODO should add changes to directional input based on the move (default should be 2dVector ZERO)
 
 
 func _box_spawn_box(move_id, box_no):
