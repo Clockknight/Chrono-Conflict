@@ -267,7 +267,7 @@ func _input_step_interpret(input: Input_Data):
 	
 	if not input.input_new_button():
 		var direction = int(input.get_direction(self._p1_side)[-1])
-		if direction >= 7 and _air_actions > 0:
+		if direction >= 7 and _air_actions > 0 and self._state != en.State.JMPB:
 			_stored_x = input.x
 			_air_actions -= 1
 			return 'jump'
