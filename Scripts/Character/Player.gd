@@ -578,12 +578,6 @@ func _move_step_state():
 	if not _grounded:
 		self.directional_input[1] += gravity
 
-	# todo
-	# figure out the storing of x directions
-	
-	# if state is jumpa
-	
-
 func _move_step_check(report):
 	_move_calc_ground()
 	
