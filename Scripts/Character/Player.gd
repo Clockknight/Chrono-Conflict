@@ -378,10 +378,7 @@ func _input_step_influence():
 		
 	
 	# Ducking block
-	if _cur_input.y > 0:
-		self.scale.y = _base_scaley * .5
-		self.directional_input.x = 0
-		self.directional_input.y += self._base_scaley
+	#if _cur_input.y > 0:
 	#elif _cur_input.y < 0 and _air_actions > 0:
 		#self.directional_input.y =-1 * _jump_velocity
 		#_air_actions -= 1
