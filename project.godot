@@ -20,7 +20,7 @@ config/icon="res://sprites/icon.png"
 en="*res://Data/Enums.gd"
 Move_Data="*res://Data/Moves.gd"
 Menu_Button="*res://Scripts/Menu/Leaf.gd"
-Controls="*res://Data/controls.cfg"
+Controls="*res://Data/controls.txt"
 
 [debug]
 
