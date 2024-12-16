@@ -1,8 +1,8 @@
 extends Node2D
 
 var menu_location = "res://Data/menus.cfg"
-var preload_Leaf = load("res://Scenes/Menu/leaf.tscn")
-var preload_Leafslider = load("res://Scenes/Menu/Leaf_slider.tscn")
+var preload_Leaf = load("res://Scenes/Menu/Leaf.tscn")
+var preload_Leafslider = load("res://Scenes/Menu/Leaf_Slider.tscn")
 
 var highlighted_sprite = "res://Sprites/hurtbox.png"
 var unhighlighted_sprite = "res://Sprites/hitbox.png"
