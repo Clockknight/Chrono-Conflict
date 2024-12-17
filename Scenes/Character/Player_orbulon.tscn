@@ -53,7 +53,7 @@ _data = {
 "idle": SubResource("Animation_8equ8")
 }
 
-[node name="Character_Orbulon" type="Node"]
+[node name="Character_Orbulon" type="Node2D"]
 
 [node name="Projectiles" type="Node" parent="."]
 

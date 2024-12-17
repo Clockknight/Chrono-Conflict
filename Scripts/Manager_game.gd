@@ -49,7 +49,7 @@ func _ready():
 	UI.scale.y = size[1] / 1080.0
 
 	for player in self.get_children():
-		if player.get_class() == "Node":
+		if player.get_class() == "Node2D":
 			if not p1:
 				p1 = player.find_child("Character")
 			else:
