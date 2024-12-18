@@ -367,12 +367,8 @@ func _input_step_influence():
 	_move_calc_bottom_y()
 	if _grounded and self._state > en.State.JMPB:
 		_air_actions = _air_actions_max
-		# todo refactor this so the repeated .xs are not necessary
-		if _state == en.State.FREE:
+		if _state == en.State.FREE or  _state == en.State.ACTV:
 			#Y movement
-			self.directional_input.x = 0
-			self.directional_input.y = 0
-		if _state == en.State.ACTV:
 			self.directional_input.x = 0
 			self.directional_input.y = 0
 		
