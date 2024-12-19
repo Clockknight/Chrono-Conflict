@@ -650,7 +650,6 @@ func _input_queue_box(move_id):
 
 
 func _box_spawn_box(move_id, box_no):
-	# todo make this actually read off of values in frame data
 	var movedata = framedata[move_id]
 	var newBox
 	match movedata["type"]:
