@@ -332,15 +332,15 @@ func _input_step_addon(move_name):
 	
 	
 	if _input_check_cancel(move_name):
-		_input_clear_queue()
 		_input_queue_box(move_name)
 
 		# check if the current state is active or recovery
 		# check if the current move has landed a hit
 		# check if the overwriting move level is higher or greater than the current move's
 	# then check if the current move can be buffered in, or otherwise needs to create a box
-	elif _input_check_buffer():
+	if _input_check_buffer():
 		_input_queue_box(move_name)
+		_input_influence_move(move_name)
 
 
 func _input_check_cancel(incoming_move):
@@ -371,6 +371,19 @@ func _input_step_influence():
 			#Y movement
 			self.directional_input.x = 0
 			self.directional_input.y = 0
+
+
+# Should take in an id, and then pout it in the queue of boxes to create
+# the queue should tick up the appearance value each time the ACTV state begins
+# once a box in the queue has reached appearance 0, then it should build the box
+#func _input_queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
+func _input_queue_box(move_id):
+	_last_move = move_id
+	for item in framedata[move_id]["boxes"]:
+		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
+	_state_step_interpret(framedata[move_id]["framedata"])
+	
+	# TODO should add changes to directional input based on the move (default should be 2dVector ZERO)
 		
 	
 	# Ducking block
@@ -635,18 +648,6 @@ func _box_subtick():
 	_box_subtick_each()
 	
 	
-
-
-# Should take in an id, and then pout it in the queue of boxes to create
-# the queue should tick up the appearance value each time the ACTV state begins
-# once a box in the queue has reached appearance 0, then it should build the box
-#func _input_queue_box(posx = 100, posy=0, scalex=10, scaley=10, lifetime=15, damage=5):
-func _input_queue_box(move_id):
-	_last_move = move_id
-	for item in framedata[move_id]["boxes"]:
-		_box_queue.append(item + "|" + str(framedata[move_id]["boxes"][item]["queue"]))
-	_state_step_interpret(framedata[move_id]["framedata"])
-	# TODO should add changes to directional input based on the move (default should be 2dVector ZERO)
 
 
 func _box_spawn_box(move_id, box_no):
