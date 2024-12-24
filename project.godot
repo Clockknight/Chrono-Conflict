@@ -17,10 +17,11 @@ config/icon="res://sprites/icon.png"
 
 [autoload]
 
-en="*res://Data/Enums.gd"
-Move_Data="*res://Data/Moves.gd"
-Menu_Button="*res://Scripts/Menu/Leaf.gd"
-Controls="*res://Data/controls.cfg"
+ENUM="*res://Data/Enums.gd"
+MOVEDATA="*res://Data/Moves.gd"
+MENUBUTTON="*res://Scripts/Menu/Leaf.gd"
+CONTROLS="*res://Data/controls.cfg"
+INPUTDATA="*res://Data/Input_Data.gd"
 
 [debug]
 

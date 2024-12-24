@@ -258,7 +258,7 @@ func _input_step_process():
 # Return move if valid
 # if no valid motion with inputs pressed, return 5x
 # else return null
-func _input_step_interpret(input: Input_Data):	
+func _input_step_interpret(input: Input_Data):
 	
 	var tree = framedata["tree"]
 	var framedata_name = null
