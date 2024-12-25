@@ -6,9 +6,9 @@ var i
 var framedata
 
 # Constants
-const BUFFER_WINDOW = en.Constants.BUFFER_WINDOW
-const SIMULTANEOUS_WINDOW = en.Constants.SIMULTANEOUS_WINDOW
-const HISTORY_WINDOW = en.Constants.HISTORY_WINDOW
+const BUFFER_WINDOW = ENUM.Constants.BUFFER_WINDOW
+const SIMULTANEOUS_WINDOW = ENUM.Constants.SIMULTANEOUS_WINDOW
+const HISTORY_WINDOW = ENUM.Constants.HISTORY_WINDOW
 
 # Assets
 var audio_levels = []
@@ -53,7 +53,7 @@ var _other
 var _p1_side = true
 var _flipped = false
 var _grounded = false
-var _state = en.State.FREE
+var _state = ENUM.State.FREE
 
 # integers
 var _state_frames_left = 0
@@ -158,7 +158,7 @@ func update_dictionary(player1_option: String, player2_option: String):
 
 
 func tick():
-	_debug_message(en.Level.FRAME, "Tick Start ============")
+	_debug_message(ENUM.Level.FRAME, "Tick Start ============")
 	# Read Inputs and save the input for this frame for later use
 
 	# Parse inputs
@@ -188,7 +188,7 @@ func tick():
 
 
 func _input_subtick():
-	_debug_message(en.Level.FRAME, "Input Tick")
+	_debug_message(ENUM.Level.FRAME, "Input Tick")
 	_cur_input = _input_step_process()
 	var move_name = _input_step_interpret(_cur_input)
 	if move_name:
@@ -222,7 +222,7 @@ func _input_step_process():
 		d = _cur_input.d
 
 	if _input_queue != []:
-		_debug_message(en.Level.FRAME, "Processing input queue...")
+		_debug_message(ENUM.Level.FRAME, "Processing input queue...")
 	while _input_queue != []:
 		new_input = _input_queue.pop_front()
 		_ninput_event = new_input[0].keycode
@@ -267,7 +267,7 @@ func _input_step_interpret(input: Input_Data):
 	
 	if not input.input_new_button():
 		var direction = int(input.get_direction(self._p1_side)[-1])
-		if direction >= 7 and _air_actions > 0 and self._state != en.State.JMPB:
+		if direction >= 7 and _air_actions > 0 and self._state != ENUM.State.JMPB:
 			_stored_x = input.x
 			_air_actions -= 1
 			return 'jump'
@@ -311,7 +311,7 @@ func _input_help_get_motion(motion: String):
 
 	for char in history:
 		if int(motion[i]) % 2 == 0:
-			if en.Directions[motion[i]].contains(char):
+			if ENUM.Directions[motion[i]].contains(char):
 				i -= 1
 		else:
 			if motion[i] == char:
@@ -344,7 +344,7 @@ func _input_step_addon(move_name):
 
 
 func _input_check_cancel(incoming_move):
-	if _last_interacted and _state == en.State.RECV:
+	if _last_interacted and _state == ENUM.State.RECV:
 		# return dict[cur_move].prio < dict[incoming_move].prio
 		return framedata[_last_move].level < framedata[incoming_move].level
 
@@ -359,15 +359,15 @@ func _input_check_buffer():
 
 func _input_clear_queue():
 	_box_queue = []
-	_state = en.State.FREE
+	_state = ENUM.State.FREE
 	_state_frames_left = 1
 
 func _input_step_influence():
 	#This step assumes that the player is not attempting to use an attack
 	_move_calc_bottom_y()
-	if _grounded and self._state > en.State.JMPB:
+	if _grounded and self._state > ENUM.State.JMPB:
 		_air_actions = _air_actions_max
-		if _state == en.State.FREE or  _state == en.State.ACTV:
+		if _state == ENUM.State.FREE or  _state == ENUM.State.ACTV:
 			#Y movement
 			self.directional_input.x = 0
 			self.directional_input.y = 0
@@ -394,19 +394,19 @@ func _input_queue_box(move_id):
 ##
 	##if not _grounded:
 		##self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
-		##if self._state == en.State.JMPS:
+		##if self._state == ENUM.State.JMPS:
 			##self.directional_input.x = self._cur_x * self.horizontal_speed
-		##elif self._state == en.State.JMPA:
+		##elif self._state == ENUM.State.JMPA:
 			##self.directional_input.x = self._stored_x * self.horizontal_speed
 		### clause for landing
 		##if self.directional_input.y >= -1 * _bottom_pos:
 			##self.directional_input.y = -1 * _bottom_pos
 
-	if _state == en.State.FREE:
+	if _state == ENUM.State.FREE:
 		#X movement
 		self.directional_input.x = _cur_input.x * horizontal_speed
 
-	if _state == en.State.STUN:
+	if _state == ENUM.State.STUN:
 		self.directional_input.x = self.directional_input.x * _friction
 
 	#clause to stay in stage bounds
@@ -417,24 +417,24 @@ func _input_queue_box(move_id):
 		)
 
 func _state_subtick():
-	_debug_message(en.Level.FRAME, "State Tick")
+	_debug_message(ENUM.Level.FRAME, "State Tick")
 	# this tick is for dealing with the players' state. More specifically, a frameN by frame check to see if the current state has expired, and if so, which state should be next?
 	_state_frames_left -= 1
 
 	var new_state = _state_queue.pop_front()
 
 	if _state_frames_left <= 0:
-		_debug_message(en.Level.FRAME, "new_state: " + str(new_state))
-		_debug_message(en.Level.FRAME, "_state_queue: " + str(_state_queue))
+		_debug_message(ENUM.Level.FRAME, "new_state: " + str(new_state))
+		_debug_message(ENUM.Level.FRAME, "_state_queue: " + str(_state_queue))
 
 		if new_state == null:
-			_debug_message(en.Level.FRAME, "state queue empty - returning to free")
-			if _state >= en.State.JMPB:
+			_debug_message(ENUM.Level.FRAME, "state queue empty - returning to free")
+			if _state >= ENUM.State.JMPB:
 				_jump_x = _stored_x
 				_stored_x = 0
-				_state = en.State.JMPF
+				_state = ENUM.State.JMPF
 			else:
-				_state = en.State.FREE
+				_state = ENUM.State.FREE
 			_state_frames_left = 0
 			return
 		if new_state[0] != _state:
@@ -453,15 +453,15 @@ func _state_subtick():
 				# todo new states should not be queued if they are not possible
 				# ie these checks should be moved to input
 				# this function should just be for making the actual changes
-				en.State.JMPS:
+				ENUM.State.JMPS:
 					if _air_actions > 0:
 						_air_actions -= 1
 						$Box_Collision.disable(true)
 						_grounded = false
-						_debug_message(en.Level.FRAME, "jump started")
+						_debug_message(ENUM.Level.FRAME, "jump started")
 						self.directional_input.y = -1 * self.vertical_speed
 						_state_step_adopt(new_state)
-				en.State.STUN:
+				ENUM.State.STUN:
 					# If you're getting stunned, get rid of everything else.
 					_box_queue = []
 				_:
@@ -479,28 +479,28 @@ func _state_step_adopt(new_state_array):
 func _state_step_process(cur_move):
 	print(_state_check_block(cur_move))
 	match _state_check_block(cur_move):
-		en.Hit.HURT:
+		ENUM.Hit.HURT:
 			_other.acknowledge_hit(cur_move)
 			self._health -= cur_move.damage
 			var pct = float(_health / _max_health)
-			_adjust_ui(pct, en.Elem.HEALTH)
+			_adjust_ui(pct, ENUM.Elem.HEALTH)
 
 			if self._health <= 0:
 				self._health = 0
 				self.state_step_die()
 
-			self._state = en.State[cur_move.state]
+			self._state = ENUM.State[cur_move.state]
 			self._state_frames_left = cur_move.hitdur
 			self.directional_input = Vector2(cur_move.hitx * (-1 if _p1_side else 1), cur_move.hity)
-		en.Hit.BLCK:
+		ENUM.Hit.BLCK:
 			_other.acknowledge_block(cur_move)
-	_state_step_interpret([], en.State[cur_move.state], cur_move.hitdur)
+	_state_step_interpret([], ENUM.State[cur_move.state], cur_move.hitdur)
 
 
 func _state_check_block(move):
 	var hit
 	# if unblock hit = true
-	if _state != en.State.FREE and _state != en.State.JMPF:
+	if _state != ENUM.State.FREE and _state != ENUM.State.JMPF:
 		hit = true
 	elif int(self._cur_input.x) == 0:
 		hit = true
@@ -511,56 +511,56 @@ func _state_check_block(move):
 
 	if hit == false:
 		if step_low_check(move):
-			return en.Hit.BLCK
+			return ENUM.Hit.BLCK
 		hit = true
 	if hit == true:
-		if _state == en.State.STRT or _state == en.State.ACTV:
-			return en.Hit.CNTR
-		if _state == en.State.JMPS and en.Type[move.type] == en.Type.GRB:
-			return en.Hit.BLCK
-		return en.Hit.HURT
+		if _state == ENUM.State.STRT or _state == ENUM.State.ACTV:
+			return ENUM.Hit.CNTR
+		if _state == ENUM.State.JMPS and ENUM.Type[move.type] == ENUM.Type.GRB:
+			return ENUM.Hit.BLCK
+		return ENUM.Hit.HURT
 	# returns 1 if t is holding back, -1 if not
 
 
 
 func acknowledge_hit(cur_move):
-	play_sound(cur_move.hitid, en.AudioTypes.SFX)
-	_debug_message(en.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
+	play_sound(cur_move.hitid, ENUM.AudioTypes.SFX)
+	_debug_message(ENUM.Level.FRAME, "Damage incoming: " + str(cur_move.damage))
 	combo += 1
 	_last_interacted = true
 
 
 func acknowledge_block(cur_move):
-	play_sound(cur_move.blockid, en.AudioTypes.SFX)
+	play_sound(cur_move.blockid, ENUM.AudioTypes.SFX)
 	_last_interacted = true
 
 
 func state_step_die():
-	_debug_message(en.Level.EVENT, "I am Defeated!.")
+	_debug_message(ENUM.Level.EVENT, "I am Defeated!.")
 
 
 func _state_step_interpret(
-	incoming: Array = [], incoming_state: int = en.State.FREE, incoming_duration: int = 0
+	incoming: Array = [], incoming_state: int = ENUM.State.FREE, incoming_duration: int = 0
 ):
 	#if _state_queue != []:
-	#_debug_message(en.Level.EVENT, '_state_step_interpret() called when _state_queue not empty')
+	#_debug_message(ENUM.Level.EVENT, '_state_step_interpret() called when _state_queue not empty')
 	if incoming != []:
 		for s in incoming:
 			s = s.split("|")
-			s = [en.State[s[0]], int(s[1])]
+			s = [ENUM.State[s[0]], int(s[1])]
 			_state_queue.append(s)
 		return
 
-	if incoming_state != en.State.FREE and incoming_duration >= 0:
+	if incoming_state != ENUM.State.FREE and incoming_duration >= 0:
 		if (incoming_duration) <= 0:
-			_debug_message(en.Level.ERROR, "State with duration of 0 passed in!")
+			_debug_message(ENUM.Level.ERROR, "State with duration of 0 passed in!")
 		_state_queue.append([incoming_state, incoming_duration])
 		return
-	_debug_message(en.Level.ERROR, "Empty state passed to _state_step_interpret")
+	_debug_message(ENUM.Level.ERROR, "Empty state passed to _state_step_interpret")
 	return
 
 func _move_subtick():
-	_debug_message(en.Level.FRAME, "Move Tick")
+	_debug_message(ENUM.Level.FRAME, "Move Tick")
 	
 	_move_step_state()
 	var collision_report = move_and_collide(self.directional_input)
@@ -574,9 +574,9 @@ func _move_subtick():
 func _move_step_state():
 	
 	match self._state:
-		en.State.JMPB:
+		ENUM.State.JMPB:
 			self.directional_input = Vector2.ZERO
-		en.State.JMPJ:
+		ENUM.State.JMPJ:
 			self.directional_input = Vector2(_stored_x * horizontal_speed, -1 * _jump_velocity)
 			self.collision.disabled = true
 			_stored_x = 0
@@ -596,10 +596,10 @@ func _move_step_check(report):
 			## _move_step_check(move_and_collide(Vector2.ZERO))
 			
 			# skeleton of landing lag
-			if self._state == en.State.JMPA:
-				self._state = en.State.JMPR
-			elif self._state > en.State.JMPB:
-				self._state = en.State.FREE
+			if self._state == ENUM.State.JMPA:
+				self._state = ENUM.State.JMPR
+			elif self._state > ENUM.State.JMPB:
+				self._state = ENUM.State.FREE
 	if (_bottom_pos > 0) or ((_bottom_pos == 0) and (directional_input.y > 0)):
 		_move_calc_ground()
 	_move_calc_bottom_y()
@@ -612,7 +612,7 @@ func _move_calc_ground():
 	
 	self._grounded = _bottom_pos >= 0
 
-	if _state == en.State.JMPA:
+	if _state == ENUM.State.JMPA:
 		self._grounded = false
 
 	$Box_Collision.disable(!_grounded)
@@ -620,9 +620,9 @@ func _move_calc_ground():
 	if self._grounded:
 		self.current_position[1] -= self._bottom_pos
 		self.position.y -= self._bottom_pos
-		if self._state == en.State.JMPF:
-			_state = en.State.FREE
-		if self._state < en.State.JMPB:
+		if self._state == ENUM.State.JMPF:
+			_state = ENUM.State.FREE
+		if self._state < ENUM.State.JMPB:
 			_air_actions = _air_actions_max
 	_move_calc_bottom_y()
 
@@ -638,7 +638,7 @@ func _move_step_projectiles():
 		box.subtick_move()
 
 func _box_subtick():
-	_debug_message(en.Level.FRAME, "Box Tick")
+	_debug_message(ENUM.Level.FRAME, "Box Tick")
 	var temp
 	for move in _immediate_queue:
 		temp = move.split("-")
@@ -660,7 +660,7 @@ func _box_spawn_box(move_id, box_no):
 			newBox = _box_produce_normal()
 		"hurt":
 			newBox = _box_produce_hurt()
-	self.play_sound(0, en.AudioTypes.SFX)
+	self.play_sound(0, ENUM.AudioTypes.SFX)
 	#newBox.set_box(posx, posy, scalex,scaley, lifetime)
 	newBox.set_box(movedata["boxes"][move_id + "-" + str(box_no)], self)
 
@@ -693,11 +693,11 @@ func _box_subtick_each():
 
 
 func _interact_subtick():
-	_debug_message(en.Level.FRAME, "Interact Tick")
+	_debug_message(ENUM.Level.FRAME, "Interact Tick")
 
 	if _harm_queue != []:
-		_debug_message(en.Level.FRAME, "Interactions: " + str(_harm_queue))
-		_debug_message(en.Level.FRAME, "Processing interaction... " + str(_harm_queue[0]))
+		_debug_message(ENUM.Level.FRAME, "Interactions: " + str(_harm_queue))
+		_debug_message(ENUM.Level.FRAME, "Processing interaction... " + str(_harm_queue[0]))
 		var cur_move = _harm_queue.pop_front()
 
 		while _harm_queue != []:
@@ -709,7 +709,7 @@ func _interact_subtick():
 		_state_step_process(cur_move)
 		
 	else:
-		_debug_message(en.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
+		_debug_message(ENUM.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
 
 
 func interact_hit(incoming_move):
@@ -720,7 +720,7 @@ func clash(e1: Box_Hit, e2: Box_Hit):
 	if not _p1_side:
 		e1.queue_free()
 		e2.queue_free()
-		_debug_message(en.Level.EVENT, "Clash detected")
+		_debug_message(ENUM.Level.EVENT, "Clash detected")
 
 
 #	 is -1, 0, or 1. If it's 0, then it's failed.
@@ -728,8 +728,8 @@ func clash(e1: Box_Hit, e2: Box_Hit):
 
 func step_low_check(move):
 	if (
-		(en.Type[move.type] == en.Type.LOW and self._cur_input.y == 1)
-		or (en.Type[move.type] == en.Type.HIG and self._cur_input.y == -1)
+		(ENUM.Type[move.type] == ENUM.Type.LOW and self._cur_input.y == 1)
+		or (ENUM.Type[move.type] == ENUM.Type.HIG and self._cur_input.y == -1)
 	):
 		return false
 	return true
@@ -739,11 +739,11 @@ func step_low_check(move):
 
 
 func _process_subtick():
-	_debug_message(en.Level.FRAME, "Subtick Process")
+	_debug_message(ENUM.Level.FRAME, "Subtick Process")
 	#TODO how to tell if previous state was free or stun?
 	#$Sprite.set_texture(_state_sprites[_state])
 	$Sprite/AnimationPlayer.play("idle")
-	if _other._state != en.State.STUN:
+	if _other._state != ENUM.State.STUN:
 		self.combo = 0
 	_update_console()
 
@@ -768,7 +768,7 @@ func _calc_frames_left():
 	return temp
 
 
-func play_sound(sound_id: int, audiotype: en.AudioTypes, duration: int = 1):
+func play_sound(sound_id: int, audiotype: ENUM.AudioTypes, duration: int = 1):
 	var newSFX = SFx_Audio.instantiate(sound_id)
 	newSFX.stream = sfxs[sound_id]
 	self.add_child(newSFX)
@@ -798,11 +798,11 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 func _debug_message(level, msg: String = ""):
 	if level is String:
 		msg = level
-		level = en.Level.DEBUG
+		level = ENUM.Level.DEBUG
 	elif typeof(level) != TYPE_INT:
 		msg = "Misconfigured _Debug String..." + str(level)
 		print(typeof(level) != TYPE_INT)
-		level = en.Level.DEBUG
+		level = ENUM.Level.DEBUG
 
 	$"../.."._debug_message(level, msg, _p1_side)
 
