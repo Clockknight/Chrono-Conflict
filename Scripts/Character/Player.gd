@@ -340,7 +340,7 @@ func _input_step_addon(move_name):
 	# then check if the current move can be buffered in, or otherwise needs to create a box
 	if _input_check_buffer():
 		_input_queue_box(move_name)
-		_input_influence_move(move_name)
+		#_input_influence_move(move_name)
 
 
 func _input_check_cancel(incoming_move):

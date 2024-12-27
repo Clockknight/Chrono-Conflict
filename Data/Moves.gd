@@ -29,7 +29,7 @@ func _init(
 	inblock_id,
 	inhit_id,
 	intype: int,
-	instate: int = en.State.STUN
+	instate: int = ENUM.State.STUN
 ):
 	self.priority = inpriority
 	self.damage = indamage
