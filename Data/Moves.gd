@@ -1,5 +1,4 @@
-class_name MoveData
-extends Node
+class_name MoveData extends Node
 
 var priority
 var damage

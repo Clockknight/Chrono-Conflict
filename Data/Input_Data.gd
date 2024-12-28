@@ -1,5 +1,4 @@
-class_name Input_Data
-extends Node
+class_name Input_Data extends Node
 
 var duration
 

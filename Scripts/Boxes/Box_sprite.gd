@@ -1,5 +1,4 @@
-class_name Box_Sprite
-extends Box
+class_name Box_Sprite extends Box
 
 # Declare member variables here. Examples:
 # var a = 2

@@ -16,7 +16,7 @@ var _view_width = 350
 var _framerate = 60
 var _stage_boundaries = 3000
 var frames = 0
-var _min_level = en.Level.ERROR
+var _min_level = ENUM.Level.ERROR
 var frame_passed = false
 var size
 var diff_vector
@@ -136,7 +136,7 @@ func _tick_camera():
 
 func adjust_ui(inp1, new_val, item: int):
 	match item:
-		en.Elem.HEALTH:
+		ENUM.Elem.HEALTH:
 			UI.adjust_health(inp1 == self.p1, new_val)
 
 
@@ -164,9 +164,9 @@ func _debug_message(level: int, msg: String, inp1: bool):
 	if (
 		(
 			((inp1 and debug_state_for_p1n2[0]) or ((not inp1) and debug_state_for_p1n2[1]))
-			and (level >= _min_level and _min_level != en.Level.DEBUG)
+			and (level >= _min_level and _min_level != ENUM.Level.DEBUG)
 		)
-		or (level == en.Level.DEBUG and level == _min_level)
+		or (level == ENUM.Level.DEBUG and level == _min_level)
 	):
 		msg = "==> ".repeat(level + 1) + msg
 

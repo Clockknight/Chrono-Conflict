@@ -43,7 +43,7 @@ func update_console(
 	p1: bool, combo, state, direction, input, storedx, xposition, yposition, grounded, jumps, lastmove, boxqueue, interacted
 ):
 	var text = "Combo: " + str(combo)
-	text += "\nState: " + str(en.State.keys()[state])
+	text += "\nState: " + str(ENUM.State.keys()[state])
 	text += "\nPosition " + str(xposition) + ", " + str(yposition)
 	text += "\nMovement: " + str(direction)
 	text += "\nStored x: " + str(storedx) 

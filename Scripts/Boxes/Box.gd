@@ -1,5 +1,5 @@
-class_name Box
 extends Area2D
+class_name Box
 
 var _frames_remaining
 var character

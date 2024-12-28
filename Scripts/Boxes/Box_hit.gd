@@ -1,5 +1,4 @@
-extends "res://Scripts/Boxes/Box.gd"
-class_name Box_Hit
+class_name Box_Hit extends Box
 
 var overlaps = []
 var hits = []

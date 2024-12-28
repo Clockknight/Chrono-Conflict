@@ -1,5 +1,4 @@
-extends "res://Scripts/Character/Player.gd"
-class_name Orbulon
+class_name Orbulon extends Player
 
 
 func _ready():
