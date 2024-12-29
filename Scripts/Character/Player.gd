@@ -102,7 +102,7 @@ func _ready():
 
 func load_assets():
 	# Should be overwritten as part of character specific script
-	self.i = load("res://Data/Inputs.gd")
+	self.i = preload("res://Data/Input_Data.gd")
 	self.SFx_Audio = load("res://Scenes/Assets/Audio_SFx.tscn")
 	self.preloadSprite = load("res://Scenes/Boxes/Box_Sprite.tscn")
 	self.preloadBoxHit = load("res://Scenes/Boxes/Box_Hit.tscn")
@@ -249,7 +249,7 @@ func _input_step_process():
 		x = clamp(x, -1, 1)
 		y = clamp(y, -1, 1)
 
-	new_input = i.new(self, x, y, a, b, c, d)
+	new_input = self.i.new(self, x, y, a, b, c, d)
 
 	return new_input.compare(_cur_input)
 
