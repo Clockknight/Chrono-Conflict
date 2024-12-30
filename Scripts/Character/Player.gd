@@ -390,16 +390,9 @@ func _input_queue_box(move_id):
 	#elif _cur_input.y < 0 and _air_actions > 0:
 		#self.directional_input.y =-1 * _jump_velocity
 		#_air_actions -= 1
-##
-	##if not _grounded:
-		##self.directional_input.y = min(gravity + self.directional_input.y, terminal_speed)
-		##if self._state == ENUM.State.JMPS:
-			##self.directional_input.x = self._cur_x * self.horizontal_speed
-		##elif self._state == ENUM.State.JMPA:
-			##self.directional_input.x = self._stored_x * self.horizontal_speed
-		### clause for landing
-		##if self.directional_input.y >= -1 * _bottom_pos:
-			##self.directional_input.y = -1 * _bottom_pos
+		
+		
+#todo figure out jumping every frame
 
 	if _state == ENUM.State.FREE:
 		#X movement
@@ -793,7 +786,6 @@ func spawn_sprite(displacement: Vector2, duration: int, asset_index: int):
 	self.add_child(newSprite)
 	newSprite.set_sprite(displacement, duration, sprites[asset_index])
 
-#todo figure out jumping every frame
 func _debug_message(level, msg: String = ""):
 	if level is String:
 		msg = level
