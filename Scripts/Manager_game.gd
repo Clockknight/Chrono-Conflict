@@ -93,8 +93,7 @@ func _ready():
 func _on_timer_timeout():
 	if p1 == null:
 		return
-	
-	get_tree().get_current_scene().find_child("loading").visible = false
+	self.find_child("loading").visible = false
 
 	p1.tick()
 	_tick_camera()
