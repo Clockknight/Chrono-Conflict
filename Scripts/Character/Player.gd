@@ -371,6 +371,22 @@ func _input_step_influence():
 			self.directional_input.x = 0
 			self.directional_input.y = 0
 
+		
+#todo figure out jumping every frame
+
+	if _state == ENUM.State.FREE:
+		#X movement
+		self.directional_input.x = _cur_input.x * horizontal_speed
+		
+	if _state == ENUM.State.STUN:
+		self.directional_input.x = self.directional_input.x * _friction
+
+	#clause to stay in stage bounds
+	if abs(self.directional_input.x + self.position.x) > _stage_bounds:
+		self.directional_input.x -= (
+			(abs(self.directional_input.x + self.position.x) - _stage_bounds)
+			* sign(self.position.x)
+		)
 
 # Should take in an id, and then pout it in the queue of boxes to create
 # the queue should tick up the appearance value each time the ACTV state begins
@@ -391,22 +407,6 @@ func _input_queue_box(move_id):
 		#self.directional_input.y =-1 * _jump_velocity
 		#_air_actions -= 1
 		
-		
-#todo figure out jumping every frame
-
-	if _state == ENUM.State.FREE:
-		#X movement
-		self.directional_input.x = _cur_input.x * horizontal_speed
-
-	if _state == ENUM.State.STUN:
-		self.directional_input.x = self.directional_input.x * _friction
-
-	#clause to stay in stage bounds
-	if abs(self.directional_input.x + self.position.x) > _stage_bounds:
-		self.directional_input.x -= (
-			(abs(self.directional_input.x + self.position.x) - _stage_bounds)
-			* sign(self.position.x)
-		)
 
 func _state_subtick():
 	_debug_message(ENUM.Level.FRAME, "State Tick")
@@ -572,6 +572,9 @@ func _move_step_state():
 			self.directional_input = Vector2(_stored_x * horizontal_speed, -1 * _jump_velocity)
 			self.collision.disabled = true
 			_stored_x = 0
+			
+		#ENUM.State.FREE:
+			#self.directional_input = Vector2
 			
 	if not _grounded:
 		self.directional_input[1] += gravity
