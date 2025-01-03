@@ -534,8 +534,7 @@ func state_step_die():
 func _state_step_interpret(
 	incoming: Array = [], incoming_state: int = ENUM.State.FREE, incoming_duration: int = 0
 ):
-	#if _state_queue != []:
-	#_debug_message(ENUM.Level.EVENT, '_state_step_interpret() called when _state_queue not empty')
+	# TODO QUEUE HERE
 	if incoming != []:
 		for s in incoming:
 			s = s.split("|")
