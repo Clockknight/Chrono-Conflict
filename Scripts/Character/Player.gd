@@ -441,23 +441,7 @@ func _state_subtick():
 				else:
 					_box_queue.append(move[0] + "|" + str(occurences))
 
-			match new_state[0]:
-				# todo new states should not be queued if they are not possible
-				# ie these checks should be moved to input
-				# this function should just be for making the actual changes
-				ENUM.State.JMPS:
-					if _air_actions > 0:
-						_air_actions -= 1
-						$Box_Collision.disable(true)
-						_grounded = false
-						_debug_message(ENUM.Level.FRAME, "jump started")
-						self.directional_input.y = -1 * self.vertical_speed
-						_state_step_adopt(new_state)
-				ENUM.State.STUN:
-					# If you're getting stunned, get rid of everything else.
-					_box_queue = []
-				_:
-					_state_step_adopt(new_state)
+			
 
 	else:
 		_state_queue.insert(0, new_state)
@@ -534,12 +518,29 @@ func state_step_die():
 func _state_step_interpret(
 	incoming: Array = [], incoming_state: int = ENUM.State.FREE, incoming_duration: int = 0
 ):
-	# TODO QUEUE HERE
 	if incoming != []:
-		for s in incoming:
-			s = s.split("|")
-			s = [ENUM.State[s[0]], int(s[1])]
-			_state_queue.append(s)
+		for new_state in incoming:
+			new_state = new_state.split("|")
+			new_state = [ENUM.State[new_state[0]], int(new_state[1])]
+			# TODO QUEUE HERE
+			match new_state[0]:
+				# new states should not be queued if they are not possible
+				# ie these checks should be moved to input
+				# this function should just be for making the actual changes
+				ENUM.State.JMPS:
+					if _air_actions > 0:
+						_air_actions -= 1
+						$Box_Collision.disable(true)
+						_grounded = false
+						_debug_message(ENUM.Level.FRAME, "jump started")
+						self.directional_input.y = -1 * self.vertical_speed
+						_state_step_adopt(new_state)
+				ENUM.State.STUN:
+					# If you're getting stunned, get rid of everything else.
+					_box_queue = []
+				_:
+					_state_step_adopt(new_state)
+			_state_queue.append(new_state)
 		return
 
 	if incoming_state != ENUM.State.FREE and incoming_duration >= 0:
