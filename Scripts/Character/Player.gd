@@ -452,7 +452,7 @@ func _state_subtick():
 						_grounded = false
 						_debug_message(ENUM.Level.FRAME, "jump started")
 						self.directional_input.y = -1 * self.vertical_speed
-						# TODO call _state_step_adopt(new_state) after queue needs to be called on
+						_state_step_adopt(new_state)
 				ENUM.State.STUN:
 					# If you're getting stunned, get rid of everything else.
 					_box_queue = []
@@ -460,7 +460,7 @@ func _state_subtick():
 					_state_step_adopt(new_state)
 
 	else:
-		_state_queue.insert(0, new_state)
+		_state_queue.insert(ENUM.State.FREE, new_state)
 
 
 func _state_step_adopt(new_state_array):
