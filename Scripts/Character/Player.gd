@@ -421,15 +421,16 @@ func _state_subtick():
 
 		if new_state == null:
 			_debug_message(ENUM.Level.FRAME, "state queue empty - returning to free")
-			if _state >= ENUM.State.JMPB:
+			if self._state >= ENUM.State.JMPB:
 				_jump_x = _stored_x
 				_stored_x = 0
-				_state = ENUM.State.JMPF
+				self._state = ENUM.State.JMPF
 			else:
-				_state = ENUM.State.FREE
+				self._state = ENUM.State.FREE
 			_state_frames_left = 0
 			return
-		if new_state[0] != _state:
+			
+		if new_state[0] != self._state:
 			var occurences
 			for i in range(0, _box_queue.size()):
 				var move = _box_queue.pop_front().split("|")
@@ -440,8 +441,23 @@ func _state_subtick():
 					_immediate_queue.append(move[0])
 				else:
 					_box_queue.append(move[0] + "|" + str(occurences))
-
-			
+					
+		match new_state[0]:
+				# new states should not be queued if they are not possible
+				# this function should just be for making the actual changes
+				ENUM.State.JMPS:
+					if _air_actions > 0:
+						_air_actions -= 1
+						$Box_Collision.disable(true)
+						_grounded = false
+						_debug_message(ENUM.Level.FRAME, "jump started")
+						self.directional_input.y = -1 * self.vertical_speed
+						# TODO call _state_step_adopt(new_state) after queue needs to be called on
+				ENUM.State.STUN:
+					# If you're getting stunned, get rid of everything else.
+					_box_queue = []
+				_:
+					_state_step_adopt(new_state)
 
 	else:
 		_state_queue.insert(0, new_state)
@@ -455,6 +471,7 @@ func _state_step_adopt(new_state_array):
 func _state_step_process(cur_move):
 	print(_state_check_block(cur_move))
 	match _state_check_block(cur_move):
+		# If the hit lands, take the damage
 		ENUM.Hit.HURT:
 			_other.acknowledge_hit(cur_move)
 			self._health -= cur_move.damage
@@ -469,6 +486,8 @@ func _state_step_process(cur_move):
 			self._state_frames_left = cur_move.hitdur
 			self.directional_input = Vector2(cur_move.hitx * (-1 if _p1_side else 1), cur_move.hity)
 		ENUM.Hit.BLCK:
+		# If blocked, let the other player know
+		# TODO include data like chip damage, block pushback, etc
 			_other.acknowledge_block(cur_move)
 	_state_step_interpret([], ENUM.State[cur_move.state], cur_move.hitdur)
 
@@ -518,28 +537,11 @@ func state_step_die():
 func _state_step_interpret(
 	incoming: Array = [], incoming_state: int = ENUM.State.FREE, incoming_duration: int = 0
 ):
+	# Case for multiple states being queued, think attacks (startup, active, etc)
 	if incoming != []:
 		for new_state in incoming:
 			new_state = new_state.split("|")
 			new_state = [ENUM.State[new_state[0]], int(new_state[1])]
-			# TODO QUEUE HERE
-			match new_state[0]:
-				# new states should not be queued if they are not possible
-				# ie these checks should be moved to input
-				# this function should just be for making the actual changes
-				ENUM.State.JMPS:
-					if _air_actions > 0:
-						_air_actions -= 1
-						$Box_Collision.disable(true)
-						_grounded = false
-						_debug_message(ENUM.Level.FRAME, "jump started")
-						self.directional_input.y = -1 * self.vertical_speed
-						_state_step_adopt(new_state)
-				ENUM.State.STUN:
-					# If you're getting stunned, get rid of everything else.
-					_box_queue = []
-				_:
-					_state_step_adopt(new_state)
 			_state_queue.append(new_state)
 		return
 
@@ -701,6 +703,7 @@ func _interact_subtick():
 			else:
 				_harm_queue.pop_front()
 
+		# TODO  consider renaming thisto interact_step, since it happens in nthe interact subtick even though it deals with states
 		_state_step_process(cur_move)
 		
 	else:
