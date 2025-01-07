@@ -468,7 +468,7 @@ func _state_step_adopt(new_state_array):
 	_state_frames_left = new_state_array[1]
 
 
-func _state_step_process(cur_move):
+func _interact_step_process(cur_move):
 	print(_state_check_block(cur_move))
 	match _state_check_block(cur_move):
 		# If the hit lands, take the damage
@@ -702,9 +702,8 @@ func _interact_subtick():
 				cur_move = _harm_queue.pop_front()
 			else:
 				_harm_queue.pop_front()
-
-		# TODO  consider renaming thisto interact_step, since it happens in nthe interact subtick even though it deals with states
-		_state_step_process(cur_move)
+				
+		_interact_step_process(cur_move)
 		
 	else:
 		_debug_message(ENUM.Level.FRAME, "empty _state_queue: " + str(_state_queue == []))
