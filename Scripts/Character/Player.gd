@@ -53,6 +53,7 @@ var _p1_side = true
 var _flipped = false
 var _grounded = false
 var _state = ENUM.State.FREE
+var _last_state = ENUM.State.FREE
 
 # integers
 var _state_frames_left = 0
@@ -464,6 +465,7 @@ func _state_subtick():
 
 
 func _state_step_adopt(new_state_array):
+	_last_state = _state
 	_state = new_state_array[0]
 	_state_frames_left = new_state_array[1]
 
