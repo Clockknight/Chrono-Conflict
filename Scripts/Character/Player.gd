@@ -739,11 +739,11 @@ func step_low_check(move):
 
 func _process_subtick():
 	_debug_message(ENUM.Level.FRAME, "Subtick Process")
-	#TODO how to tell if previous state was free or stun?
-	#$Sprite.set_texture(_state_sprites[_state])
+	#TODO what to do if last state was stun
 	$Sprite/AnimationPlayer.play("idle")
 	if _other._state != ENUM.State.STUN:
 		self.combo = 0
+		
 	_update_console()
 
 
