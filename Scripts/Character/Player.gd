@@ -228,7 +228,6 @@ func _input_step_process():
 		_ninput_event = new_input[0].keycode
 		_ninput_state = new_input[1]
 
-		# TODO add check for simultaneous l/R input
 		match _input_dict[_ninput_event]:
 			_up_string:
 				y -= int(_ninput_state) * 2 - 1
@@ -739,7 +738,7 @@ func step_low_check(move):
 
 func _process_subtick():
 	_debug_message(ENUM.Level.FRAME, "Subtick Process")
-	#TODO what to do if last state was stun
+	#TODO last state was stun + current state = free then set animation to fake recovery
 	$Sprite/AnimationPlayer.play("idle")
 	if _other._state != ENUM.State.STUN:
 		self.combo = 0
