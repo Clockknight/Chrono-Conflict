@@ -223,6 +223,8 @@ func _input_step_process():
 
 	if _input_queue != []:
 		_debug_message(ENUM.Level.FRAME, "Processing input queue...")
+	
+		
 	while _input_queue != []:
 		new_input = _input_queue.pop_front()
 		_ninput_event = new_input[0].keycode
@@ -246,6 +248,13 @@ func _input_step_process():
 			_d_string:
 				d = _ninput_state
 
+	# TODO add check for player holding down the button on keyboard
+	# this check doesnt right if the inputs read
+	# 4
+	# 46...
+	# since  the new 6 held will overwrite both
+	# instead of above solution, we should 
+	# check each input to see if it is a change from the previous input.
 		x = clamp(x, -1, 1)
 		y = clamp(y, -1, 1)
 
