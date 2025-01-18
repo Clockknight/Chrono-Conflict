@@ -249,14 +249,16 @@ func _input_step_process():
 				d = _ninput_state
 
 	# TODO add check for player holding down the button on keyboard
+		x = clamp(x, -1, 1)
+		y = clamp(y, -1, 1)
 	# this check doesnt right if the inputs read
 	# 4
 	# 46...
 	# since  the new 6 held will overwrite both
 	# instead of above solution, we should 
 	# check each input to see if it is a change from the previous input.
-		x = clamp(x, -1, 1)
-		y = clamp(y, -1, 1)
+	# eg if down is pressed, if down is already pressed, ignore. If not, then is up pressed? if yes, set both to false
+	# if not, then set down to true.
 
 	new_input = self.i.new(self, x, y, a, b, c, d)
 
